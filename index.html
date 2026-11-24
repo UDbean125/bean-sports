@@ -210,12 +210,24 @@ h1[tabindex="-1"]:focus{outline:none}
 .pod-body{padding:0 18px 18px}
 .pod-sub{margin:0 0 12px;font-size:13.5px;color:#c9cad2;line-height:1.5}
 .pod-frame{display:block;width:100%;height:175px;min-height:175px;max-height:175px;border:0;border-radius:10px;overflow:hidden;background:#0b2242}
+.pod-note{margin:12px 2px 0;font-size:13px;color:var(--muted);line-height:1.5}
+.pod-note a{color:var(--red);font-weight:700;text-decoration:underline}
 .pod-more{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 @media(max-width:640px){.pod-more{grid-template-columns:1fr}}
 
 /* Video Center */
 .vc-player{background:var(--black);border-radius:14px;padding:14px;color:#fff;scroll-margin-top:60px}
-.vh-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+.vh-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden;width:min(100%,calc(72vh*16/9));margin:0 auto}
+.vh-fallback{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;padding:16px;text-align:center;background:#0b0b0e center/cover no-repeat}
+.vh-fallback:before{content:"";position:absolute;inset:0;background:rgba(10,10,14,.84)}
+.vh-fb-body{position:relative;max-width:460px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.vh-fb-body strong{font-size:20px;line-height:1.25}
+.vh-fb-body span{font-size:13.5px;color:#c9cad2;line-height:1.5}
+.vh-fb-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+.vh-fb-actions a,.vh-fb-actions button{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:9px 14px;border:1px solid #4a4a55;background:none;color:#fff}
+.vh-fb-actions a{background:#fff;color:#111;border-color:#fff}
+.vh-fb-actions a:hover{text-decoration:none}
+.hl-card.is-blocked .hl-src{background:#ffd166}
 .vh-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .vh-now{padding:12px 2px 2px}
 .vh-now label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
@@ -537,6 +549,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       <iframe class="pod-frame" id="podFrame" height="175" data-src="https://embed.podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521?theme=dark" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" title="The Starting Five Daily on Apple Podcasts"></iframe>
     </div>
   </section>
+  <p class="pod-note">Player won't start an episode? <a href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open the show in Apple Podcasts</a>. VPNs, content blockers and Safari's cross-site tracking protection can stop embedded players from playing.</p>
   <div class="pod-more">
     <a class="launch-card" href="#videos"><h3>Videos &amp; Highlights</h3><p>Watch the games the show talks about.</p><span class="launch-go">Watch →</span></a>
     <a class="launch-card" href="#headlines"><h3>Top Headlines</h3><p>Catch up on the six-team headline feed.</p><span class="launch-go">Read →</span></a>
@@ -553,7 +566,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     Tip: you opened this page as a local <code>file://</code> URL, so YouTube may block in-page embeds. Host the file on GitHub Pages for seamless playback, or use <b>Watch on YouTube ↗</b> below the player.
   </div>
   <section class="vc-player" id="vcPlayer" aria-label="Video player">
-    <div class="vh-frame"><iframe id="vhFrame" title="Bean Sports video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <div class="vh-frame"><iframe id="vhFrame" title="Bean Sports video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="vh-fallback" id="vhFallback" hidden><div class="vh-fb-body"><strong>This clip plays on YouTube only</strong><span>Its publisher doesn't allow it to play on other sites.</span><div class="vh-fb-actions"><a id="vhFbLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube ↗</a><button type="button" id="vhFbNext" hidden>Play another highlight</button></div></div></div></div>
     <div class="vh-now">
       <label id="vhNowLabel">Now Playing</label>
       <h2 id="vhNowTitle">Pick a highlight</h2>
@@ -1224,7 +1237,19 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   }
 
   /* ---------- Video Center ---------- */
-  var frame=$('vhFrame'), gridEl=$('hlGrid');
+  var frame=$('vhFrame'), gridEl=$('hlGrid'), fb=$('vhFallback');
+
+  // Some publishers (e.g. the NFL) forbid embedding. We remember those clips so visitors never see
+  // YouTube's raw "Video unavailable" screen. Seeded with clips already known to be blocked.
+  var blocked={dpzaBrsCo9U:1};
+  try{ JSON.parse(localStorage.getItem('beanBlockedVideos')||'[]').forEach(function(id){ blocked[id]=1; }); }catch(e){}
+  function saveBlocked(){ try{ localStorage.setItem('beanBlockedVideos',JSON.stringify(Object.keys(blocked))); }catch(e){} }
+
+  function embedSrc(id,autoplay){
+    var u=ytEmbed(id,autoplay)+'&enablejsapi=1';
+    if(location.protocol.indexOf('http')===0) u+='&origin='+encodeURIComponent(location.origin);
+    return u;
+  }
 
   function buildVideos(){
     if(videosBuilt) return;
@@ -1236,9 +1261,10 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       card.type='button'; card.className='hl-card';
       card.setAttribute('data-vid',v.id); card.setAttribute('data-team',v.team);
       card.innerHTML='<span class="hl-thumb"><img src="'+ytThumb(v.id)+'" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="hl-src">'+escapeHtml(v.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(v.kind)+'</span><span class="hl-play">▶</span></span><span class="hl-body"><span class="hl-team">'+escapeHtml(t.name)+' • '+escapeHtml(t.shortLeague)+'</span><span class="hl-title">'+escapeHtml(v.title)+'</span><span class="hl-meta">'+escapeHtml(v.meta)+'</span></span>';
-      card.addEventListener('click',function(){ playVideo(v,true,true); });
+      card.addEventListener('click',function(){ playVideo(v,{autoplay:true,scroll:true}); });
       gridEl.appendChild(card);
     });
+    applyBlocked();
 
     // "More Sports Networks": third-party sites that block iframe embeds, so they open in a new tab.
     var NET_ORDER=['espn','sportsnet','nba','nfl','fox','other'];
@@ -1254,6 +1280,15 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }).join('');
   }
 
+  function applyBlocked(){
+    gridEl.querySelectorAll('.hl-card').forEach(function(c){
+      var bad=!!blocked[c.getAttribute('data-vid')];
+      c.classList.toggle('is-blocked',bad);
+      var v=videoById(c.getAttribute('data-vid'));
+      c.querySelector('.hl-src').textContent=bad?'Opens on YouTube':(v?v.sourceLabel:'YouTube');
+    });
+  }
+
   function applyVideoFilter(){
     document.querySelectorAll('#hlFilters button').forEach(function(b){
       var on=b.getAttribute('data-team')===vidTeam;
@@ -1264,12 +1299,71 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     });
   }
 
-  function playVideo(v,autoplay,scroll){
+  function videoById(id){
+    for(var i=0;i<VIDEOS.length;i++){ if(VIDEOS[i].id===id) return VIDEOS[i]; }
+    return null;
+  }
+  // First clip in the current team filter that is allowed to play in-page (other than `except`).
+  function nextPlayable(except){
+    for(var i=0;i<VIDEOS.length;i++){
+      var v=VIDEOS[i];
+      if(v===except||blocked[v.id]) continue;
+      if(vidTeam==='all'||v.team===vidTeam) return v;
+    }
+    return null;
+  }
+  function firstPlayableAny(){
+    for(var i=0;i<VIDEOS.length;i++){ if(!blocked[VIDEOS[i].id]) return VIDEOS[i]; }
+    return VIDEOS[0];
+  }
+
+  /* YouTube IFrame API: lets us detect "embedding not allowed" (errors 100/101/150). */
+  var player=null, playerReady=false, apiRequested=false, currentSkip=false, lastAutoplay=false;
+  function loadYouTubeApi(){
+    if(apiRequested) return;
+    apiRequested=true;
+    window.onYouTubeIframeAPIReady=function(){
+      try{
+        player=new YT.Player(frame,{events:{
+          onReady:function(){ playerReady=true; },
+          onError:onPlayerError
+        }});
+      }catch(e){ player=null; }
+    };
+    var s=document.createElement('script');
+    s.src='https://www.youtube.com/iframe_api'; s.async=true;
+    document.head.appendChild(s);
+  }
+  function onPlayerError(e){
+    var code=e&&e.data;
+    if(code!==100&&code!==101&&code!==150) return;
+    var bad=currentVideo; if(!bad) return;
+    blocked[bad.id]=1; saveBlocked(); applyBlocked();
+    var alt=currentSkip?nextPlayable(bad):null;
+    if(alt) playVideo(alt,{autoplay:lastAutoplay,skip:true});
+    else showFallback(bad);
+  }
+
+  function showFallback(v){
+    fb.style.backgroundImage='url('+ytThumb(v.id)+')';
+    $('vhFbLink').href=ytWatch(v.id);
+    $('vhFbNext').hidden=!nextPlayable(v);
+    fb.hidden=false;
+  }
+  function hideFallback(){ fb.hidden=true; }
+  $('vhFbNext').addEventListener('click',function(){
+    var alt=nextPlayable(currentVideo);
+    if(alt) playVideo(alt,{autoplay:true,skip:true});
+  });
+
+  // opts: autoplay, scroll, skip (skip = if this clip is blocked, quietly pick the next playable one)
+  function playVideo(v,opts){
     if(!v) return;
-    var t=TEAMS[v.team];
-    currentVideo=v;
-    frame.src=ytEmbed(v.id,autoplay);
-    $('vhNowLabel').textContent='Now Playing • '+t.name+' • '+t.shortLeague+' • '+v.sourceLabel;
+    opts=opts||{};
+    if(blocked[v.id]&&opts.skip){ var alt=nextPlayable(v); if(alt) v=alt; }
+    var t=TEAMS[v.team], bad=!!blocked[v.id];
+    currentVideo=v; currentSkip=!!opts.skip; lastAutoplay=!!opts.autoplay;
+    $('vhNowLabel').textContent=(bad?'Plays on YouTube only':'Now Playing')+' • '+t.name+' • '+t.shortLeague+' • '+v.sourceLabel;
     $('vhNowTitle').textContent=v.title;
     $('vhNowMeta').textContent=v.meta;
     var link=$('vhNowLink');
@@ -1278,7 +1372,19 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     gridEl.querySelectorAll('.hl-card').forEach(function(c){
       c.classList.toggle('is-playing',c.getAttribute('data-vid')===v.id);
     });
-    if(scroll){ $('vcPlayer').scrollIntoView({behavior:'smooth',block:'start'}); }
+    if(bad){
+      showFallback(v);
+      try{ if(playerReady) player.stopVideo(); }catch(e){}
+      if(!frame.getAttribute('src')){ frame.src=embedSrc(firstPlayableAny().id,false); }
+    } else {
+      hideFallback();
+      if(playerReady&&player&&player.loadVideoById){
+        if(opts.autoplay) player.loadVideoById(v.id); else player.cueVideoById(v.id);
+      } else {
+        frame.src=embedSrc(v.id,opts.autoplay);
+      }
+    }
+    if(opts.scroll){ $('vcPlayer').scrollIntoView({behavior:'smooth',block:'start'}); }
   }
 
   // Jump to the Video Center, filtered to one team, and play that team's top highlight.
@@ -1291,11 +1397,12 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   function enterVideos(){
     buildVideos();
     applyVideoFilter();
+    loadYouTubeApi();
     if(pendingPlay){
       pendingPlay=false;
-      playVideo(firstForTeam(vidTeam),true,false);
+      playVideo(firstForTeam(vidTeam),{autoplay:true,skip:true});
     } else if(!currentVideo){
-      playVideo(firstForTeam(vidTeam),false,false);
+      playVideo(firstForTeam(vidTeam),{autoplay:false,skip:true});
     }
   }
 
