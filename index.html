@@ -1,0 +1,1476 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#121214">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Bean Sports">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Crect rx=%22115.2%22 fill=%22%23d6002a%22/%3E%3Cpath d=%22M156.68 112.64L307.69 112.64C346.75 112.64 373.96 144.3 368.47 183.36L364.44 212.04C362.55 225.52 357.0 238.13 348.94 248.85C363.79 262.88 371.53 283.99 368.21 307.61L366.06 322.9C360.13 365.13 321.09 399.36 278.86 399.36L116.39 399.36ZM209.23 282.76L200.37 345.84L276.82 345.84C289.49 345.84 301.21 335.57 302.99 322.9L305.4 305.7C307.18 293.03 298.36 282.76 285.69 282.76ZM225.62 166.16L216.48 231.15L279.56 231.15C292.23 231.15 303.94 220.88 305.72 208.21L308.41 189.1C310.19 176.43 301.36 166.16 288.7 166.16Z%22 fill=%22%23ffffff%22/%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAABmJLR0QA/wD/AP+gvaeTAAAKR0lEQVR4nO3daWwcZx3H8Weu9a6v2F5f6ytOnXA0VlNoLZoeikRpKgESKg1IKCK0TXlBpUacAZtL1C0CiYikEhTahEYQiEhaQEVJSRqJNiYOpElIUeOmytG69VHf9np37T1mlhcWxkeeZveZZ/Z5ns3v87LSPPqr/mZ2dnb2Wa2H3EgArkYXPQDIC3EAFeIAKsQBVIgDqBAHUCEOoEIcQIU4gApxABXiACrEAVSIA6gQB1AhDqBCHECFOIAKcQAV4gAqxAFUiAOoEAdQIQ6gQhxAhTiACnEAFeIAKsQBVIgDqBAHUCEOoEIcQIU4gApxABXiACpT9ADZKdzQtvLlvaKnWMBx7KmIMzWduNgbf+NK7JVXY38/ZU+ERY/Fh6bWhnFlW+8P7X5M9BTvJ51MRQ4fn3z6YOTFLpJOix7HFcVeVnwtjaJHuAbNMks+8/HGQ0+tOvXHortvEz2OK4rFYa1uEj1Cpvy3rm16aXfomR/pJUWiZ2GkWBw+deIghBBNK3t4U3P3761VDaJHYYE4PFfQuqb5xD7fmpWiB8maSnGYNUFFT9FmqKrp2B4zVCV6kOyoFIdCFxzLWU2hhud3apZK9w5UisPXonAchJDA+psrvvGA6CmyoFQcKp855lR+/ytWU0j0FJlCHDmlF/qD394qeopMqRSH0tcc88oevM+oLBc9RUZUiiMPzhyEEC3gL/3cvaKnyIgycRjBMqO8VPQUfJRs2ih6hIwoE0d+nDbmFK5fp/ks0VNcmzJxWNJ/5JY5LeAvaF0jeoprU+aeDK8zR7JvyB4aZTtWK/CZddVGxQr3Y/haGmfP9rhfx1PXXRwjHTunfveCmxX8t64Nbt/q8qLSbKx1c3huKPOywiuOxOV3XK4we/p8/+e/PvjlHxLHYV5ELwy4HCMHrrs4kpfcxjFncvdzYztcPLBoKPB/XoERCSF6abFRVeF+HSccSQ2P85iIEEJGO3/lTEcZJ4nEeI3hHTXi4Paawum0MceZjkZfOsl2rM2vUe8gDncLvvkW24GpgWG+k3hBkTg4PUaVuNjLZZ3/0zTGSXhn6gU14uB1Byx5+V0u68wzqlmuhNLxRLJviO8kXlAjDmlfVtgGS1zpI7bNdxIvIA5X2Abj9XbaawrEoRcFzNpK9+s4sdnUe4w3zq9KL/SzPTOsxAWHGnH4VjcxX/ctlLz0Dt/vJ1qsg7m/S5sbCsTB6wEwSV5TcObgid8FB+f3sf6PfJjtQFxzcMPrGwkJ3u9ji+69k+EoJzab7B3gO4lHFIiD200Orv9eA7ffHGhrZThw9mxPOqXA+1g14uB2e5RfHJpl1j7ZwXbszD9f4zWG12SPQ/MXWPXV7tdJz8a53ZTU9dCzT/hvWct29EzXGT5jeE/2J8F8NzQQnUPBiSt9bp7NmWdUltftfaL4UxvYDrcnwpEjJ9yPkRvSx8HrGR/XV6O+lsbSzZ+u+OoWN9+QmH7+aDqecDlJzsgeB6+bHIH161adPsB2rGZZRm2lyfQZ2xKTv/mz+0VyRvY4eJ05jMpy4V9CjB7tnjl5TuwMWZH9gjSfvss02vmU6BGyI30ciu/JMS984G+xf5wVPUV2pI5D81nWSmV2s3gf9ujE0LYfi54ia1LHYTXXE8MQPQUHw+07U0NjoqfImtRxqLgD31VVPLpZxS0C5I4jX748XXDTBxpe+IVau8XJHkc+fbO+8M6PVj2+TfQU2ZE6jnx6H0sICX7zwcINbaKnyALiyCFdr9nVzuWjotyQd1DNNKzmetFTcOZf98EVX/ik6CkyJW8cZlNIib2RslX+6GbRI2RK3jjy7TXlfwIfu4n54dMckzmOPLnJsVzJfZ8QPUJGJI4jj97HLlF0z3rRI2RE3tsyvJ7kGH9yX/z8JffraD7LqqsuvPu2QFuryy9ZBdpaNX9BejbufipPyRsHr2uOyV8fiPdc5rLUnMK7bgnt6XR1a98wfKub4q9f5DiVF2R9WdF13w08fvrKcRJX+jiss0Cs60zvXV90+Sy7Eh8bSRqH1VCj+Qvcr5PsH/bi7J0aGht86HtuVuCymanXJI1Dtr0Dl4t1nZk9fZ75cM3v4zqOJySNg9dHbp5+ZTl2/DTzsZop79XePEnjkHa3loVSgyPMx9rjU1xn8YS0cfD6CiTvHeIW0IrYdyG2R7DVJCslzhzWyjrmY5PYapKRpvG55kinuW8fuBB7wR4PxouMcZihKt3FGXteanDEic7wmOjqmOPwejBeZIxDidcUN9vYYdsndkrEYbU05vf2xZLGIe1+xQu5eSaDyweBOSBjHEqcOYqZNgSbEz93gessXkEcLMyGmpL772E82Lbl/3W3OVLGweveuWcvK7W7Opifb42dfM2enOY9kSeki8OoqtBXlLhfJzU87kx58jeoenxbyWfZn/OLHD7OdRwPSffxj8yfx+qF/ppd7WUPb2JfwnHCfzjEcyYv5W0cfPcXN+uqSzdtDG5/yKyvcbNO5MgJVXaozec4ijbewbwJ2CK6btYEzVAVl835x3f+lsNIuZK3cZg1QbMmyGUpXma6z0WPdoueIgvSXZDyeuhcOun0cPvPRQ+RHeniyNcvuk3u/YubJ8eEkCsOo7xUiSdvs5UaHBnevkP0FFmTKw4lHtjPmuMMbGm3RydEz5E1ueLIp6185g1/d1f0GOMPV4slVxz5d+aYfPrg2E92i56CkWRx5NeZI7z/8OAjnaKnYCdZHHm07cLUvr8ObPmOEj8uTCNXHHlykyOdHvvpnoEvdajyc100Et0h1UuKuPxshVip4fHBBzoiL3aJHoQDieLIg9tf4eeOvvdIpxJfWMqETHGo/FYl3nN5ePuOyKFXRA/Ck0RxKHqTY+Zf/xn/2bPhPx3j8htyUpEoDrXexyb7hqYPHgnvPzTz6uuiZ/GKTHFIe81h23Y46kyGk28PJC72zv77jejLpxIX3hI9lue0HnKj6BlAUnLd5wCpIA6gQhxAhTiACnEAFeIAKsQBVIgDqBAHUEl0+5wQst8fO+abZTjw9mTB1pmihf+l20rsCUQYlqp3jMcii74e0a/bPyhm2VNWI9ovw+UK7GNNIVcc58zkm2aK4cA7kkt30b/AulRlcukPpL9tpNiWCjq6umVI97LSbzA+V1fvLP2L9uusS9lL/5/0G4yfxTcsm0otEsXhEDKos/wDJYTU28vikKIzxMHJiG7HWXc5qLeXvj72G4ydNSxbqo95KUeuV+1sSRQH87/1orRWnl6UVVRLT2hpttWWvxb04cwh3Lusf4OGZX+DPtbODKLVLL7msEl66Hq95pDovPch2/pWlGWruNplf4MyR2Nbyp/WTLLoJJTSyNeixQxLEUKaFT9z4EkwoJLoZQVkgziACnEAFeIAKsQBVIgDqBAHUCEOoEIcQIU4gApxABXiACrEAVSIA6gQB1AhDqBCHECFOIAKcQAV4gAqxAFUiAOoEAdQIQ6gQhxAhTiACnEAFeIAKsQBVIgDqBAHUCEOoEIcQIU4gApxANV/AYRxqsHZN1z2AAAAAElFTkSuQmCC">
+<title>Bean Sports — Lions, Pistons, Ohio State, Dayton, Gamecocks, Alter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#d6002a; --black:#121214; --nav:#1b1b1e; --nav2:#2b2b2f;
+  --bg:#f1f1f3; --card:#ffffff; --card2:#f8f8f9;
+  --text:#17181c; --muted:#6b6e77; --line:#e3e3e7;
+  --red-ink:#d6002a; --win:#0a7a33; /* Bean Sports v1: small red text and wins */
+  --lions:#0076b6; --pistons:#c8102e; --osu:#bb0000; --dayton:#ce1141; --sc:#73000a; --alter:#7a5a12;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 6px 18px rgba(0,0,0,.05);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){ --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4); --red-ink:#ff8aa0; --win:#129c49; }
+}
+:root[data-theme="dark"]{
+  --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4); --red-ink:#ff8aa0; --win:#129c49;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Barlow",system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none} a:hover{text-decoration:underline}
+button{font:inherit;cursor:pointer}
+h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em;line-height:.95;margin:0;text-transform:uppercase}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+
+/* Masthead */
+.masthead{background:var(--black);color:#fff;overflow:hidden}
+.masthead-inner{display:flex;align-items:center;gap:18px;padding:10px 0 12px;flex-wrap:wrap}
+.logo{display:flex;align-items:stretch;line-height:1;flex-shrink:0}
+.logo:hover{text-decoration:none}
+.logo-bean{background:var(--red);color:#fff;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:38px;letter-spacing:.04em;padding:4px 10px 2px;transform:skewX(-8deg)}
+.logo-sports{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:38px;letter-spacing:.06em;padding:4px 0 2px 10px;color:#fff}
+.mast-meta{margin-left:auto;text-align:right}
+.mast-meta .date{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+.mast-meta .edition{font-size:12px;color:#bdbec6;letter-spacing:.04em}
+.edition b{color:#fff}
+.mast-controls{display:inline-flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap;justify-content:flex-end}
+.live-pill{display:inline-flex;align-items:center;gap:6px;background:#fff;color:#111;font-size:11px;font-weight:800;letter-spacing:.07em;padding:4px 9px;border-radius:999px;text-transform:uppercase}
+.live-dot{width:7px;height:7px;background:var(--red);border-radius:50%}
+.live-dot.ok{background:#129c49}
+.live-dot.pulse{animation:pulse 1.6s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.85)}}
+.mast-btn{background:#232329;color:#fff;border:1px solid #3a3a44;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.mast-btn:hover{border-color:#fff}
+
+/* Game-day countdown strip */
+.countdown-bar{background:#191a20;color:#e6e7ee;border-bottom:1px solid #2b2c35;font-size:12.5px}
+.countdown-inner{display:flex;align-items:center;gap:12px;padding:7px 0;flex-wrap:wrap}
+.cd-badge{background:var(--red);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
+.cd-text{font-weight:600}
+.cd-text b{color:#fff}
+.cd-timer{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:17px;letter-spacing:.06em;color:#ffd166;white-space:nowrap}
+
+/* Scoreboard */
+.scoreboard{background:var(--card);border-bottom:1px solid var(--line)}
+.sb-head{display:flex;align-items:center;gap:10px;padding:10px 0 8px;flex-wrap:wrap}
+.sb-head h2{font-size:18px;letter-spacing:.06em}
+.sb-head h2 span{color:var(--red-ink)}
+.sb-tools{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;align-items:center}
+.sb-filters{display:flex;gap:6px;flex-wrap:wrap}
+.sb-filters button,.sb-sort{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px}
+.sb-filters button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.sb-sort{background:var(--card2);color:var(--red-ink);border-color:var(--line)}
+.sb-sort:hover{border-color:var(--red)}
+.sb-track{display:flex;gap:12px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
+.sb-card{min-width:268px;flex:0 0 268px;border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:var(--card);display:flex;flex-direction:column}
+.sb-card.is-live{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
+.sb-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:8px}
+.sb-status{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px;background:var(--card2);color:var(--text);white-space:nowrap}
+.sb-status.live{background:var(--red);color:#fff}
+.sb-status.final{background:var(--black);color:#fff}
+.team-row{display:flex;align-items:center;gap:9px;padding:4px 0}
+.abbr{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:11px;font-weight:800;letter-spacing:.03em;flex-shrink:0}
+.team-row .tname{font-weight:700;font-size:14px;line-height:1.15}
+.team-row .trec{font-size:12px;color:var(--muted)}
+.team-row .ttime{margin-left:auto;font-size:12px;font-weight:800;color:var(--text);text-align:right;line-height:1.2}
+.team-row .tscore{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;line-height:1;color:var(--text)}
+.sb-note{font-size:12px;color:var(--muted);margin-top:7px;border-top:1px dashed var(--line);padding-top:6px;line-height:1.4;flex:1}
+.sb-actions{display:flex;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
+.preview-btn{flex:1;justify-content:center;font-style:normal;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--red);border:0;border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
+.preview-btn:hover{background:#a80022}
+.preview-btn:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.dash-btn{flex:1;justify-content:center;font-style:normal;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center}
+.dash-btn:hover{border-color:var(--red);color:var(--red-ink)}
+
+/* Preview drawer */
+.preview-panel{display:none;background:var(--black);color:#fff;border-bottom:2px solid var(--red)}
+.preview-panel.open{display:block}
+.preview-inner{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;padding:20px 0 24px}
+@media(max-width:820px){.preview-inner{grid-template-columns:1fr}}
+.preview-inner label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
+.preview-inner h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:26px;line-height:1.15;margin:8px 0 8px;font-weight:800}
+.preview-inner p{margin:0;color:#c9cad2;font-size:14.5px;line-height:1.6}
+.pv-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pv-meta span{border:1px solid #3a3a42;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;letter-spacing:.04em}
+.pv-keys{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.pv-keys li{display:flex;gap:10px;font-size:14px;line-height:1.5;color:#e8e8ec}
+.pv-keys .kn{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:20px;color:var(--red);line-height:1;min-width:16px}
+.pv-close{margin-left:auto;background:none;border:1px solid #3a3a42;color:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.pv-close:hover{border-color:#fff}
+.pv-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.pv-actions a,.pv-actions button{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:8px 13px;border:1px solid #3a3a42;background:none;color:#fff}
+.pv-actions a:first-child{background:#fff;color:#111;border-color:#fff}
+
+/* Main Nav */
+.mainnav{position:sticky;top:0;z-index:50;background:var(--nav);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
+.mainnav-inner{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+.mainnav-inner::-webkit-scrollbar{display:none}
+.mainnav a{white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:13px 14px;color:#e8e8ec}
+.mainnav a:hover{background:var(--nav2);text-decoration:none}
+.mainnav a.active{background:var(--red);color:#fff}
+.mainnav a.my{color:#ffd166}
+.mainnav a.my.active{color:#fff}
+
+/* Hero */
+.hero{padding:16px 0 0}
+.hero-grid{display:grid;grid-template-columns:1.85fr .95fr;gap:16px}
+@media(max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.hero-main{background:var(--black);color:#fff;border-radius:14px;overflow:hidden}
+.hero-art{min-height:220px;background:linear-gradient(135deg,#0f1e3a 0%,#0076b6 42%,#0a0a12 100%);position:relative;overflow:hidden;padding:22px}
+.hero-art:after{content:"BEAN";position:absolute;right:-6px;bottom:-28px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:170px;line-height:1;color:rgba(255,255,255,.13)}
+.hero-kicker{display:inline-block;background:var(--red);color:#fff;font-size:11px;font-weight:800;letter-spacing:.12em;padding:5px 8px;text-transform:uppercase;position:relative;z-index:1}
+.hero-art h2{font-size:22px;margin-top:12px;max-width:560px;text-transform:none;font-family:"Barlow",sans-serif;font-weight:700;line-height:1.2;position:relative;z-index:1}
+.hero-body{padding:18px 20px 20px}
+.hero-body h1{font-size:44px;line-height:.92}
+.hero-body h1 span{color:#ff3355}
+.hero-body p{color:#c9cad2;line-height:1.55;margin:10px 0 0;font-size:15px}
+.hero-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hero-links a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid #3a3a42;padding:7px 11px;border-radius:999px}
+.hero-links a:first-child{background:#fff;color:#111;border-color:#fff}
+.hero-side{display:flex;flex-direction:column;gap:12px}
+.mini-story{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+.mini-story label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
+.mini-story h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:17px;line-height:1.25;margin:6px 0 6px;font-weight:700}
+.mini-story p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
+.mini-story[data-dash]{cursor:pointer;transition:border-color .15s}
+.mini-story[data-dash]:hover{border-color:var(--red)}
+
+/* Team Strip */
+.team-strip{margin:18px 0 6px;background:#121521;color:#eef0f7;border-radius:12px;padding:16px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border:1px solid #2a2f42}
+.team-strip strong{font-family:"Barlow Condensed",sans-serif;font-size:44px;line-height:1;text-shadow:3px 3px 0 #941c52}
+.team-strip p{margin:0;color:#c9cdd9;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;line-height:1.7}
+.team-strip p span{color:#7cbc54}
+.strip-team{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;padding:2px 4px;border-radius:4px}
+.strip-team:hover{color:#fff;text-decoration:underline}
+.strip-muse{margin-left:auto;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#ffd166;border:1px solid #3c435c;border-radius:999px;padding:6px 12px;white-space:nowrap}
+.strip-muse:hover{border-color:#ffd166;text-decoration:none}
+
+/* Layout & Feed */
+.layout{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:20px 0 8px;align-items:start}
+@media(max-width:980px){.layout{grid-template-columns:1fr}}
+.section-head{display:flex;align-items:center;gap:12px;margin:22px 0 12px}
+.section-head h2{font-size:28px}
+.section-head h2 i{color:var(--red);font-style:normal}
+.section-head .rule{height:3px;background:var(--text);flex:1}
+.section-head a{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red-ink);white-space:nowrap}
+.feed{display:flex;flex-direction:column}
+.article{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
+@media(max-width:560px){.article{grid-template-columns:86px 1fr}.hero-body h1{font-size:34px}}
+.thumb{min-height:86px;border-radius:10px;display:flex;align-items:flex-end;padding:8px;color:#fff;font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;line-height:1.1}
+.article label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
+.article h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:19px;line-height:1.2;margin:4px 0 5px;font-weight:700}
+.article p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
+.byline{font-size:12px;color:var(--muted);margin-top:7px;font-weight:600}
+.byline b{color:var(--text)}
+.dash-link{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--red-ink);border-bottom:2px solid var(--red);padding-bottom:2px;display:inline-block;margin-top:8px}
+
+/* Teams grid */
+.teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.teams-grid{grid-template-columns:1fr}}
+.team-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.team-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;color:#fff}
+.team-card-head .abbr{width:38px;height:38px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:12px}
+.team-card-head h3{font-size:20px;color:#fff}
+.team-card-head span{display:block;font-family:"Barlow",sans-serif;text-transform:none;font-size:12px;opacity:1;font-weight:600}
+.team-card-head .abbr{display:grid;place-items:center} /* Bean Sports v1: keep the disc centred */
+.team-card-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
+.team-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--muted)}
+.next{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;display:flex;justify-content:space-between;gap:10px}
+.next b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red-ink)}
+.team-links{display:flex;gap:12px;margin-top:auto;padding-top:11px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap}
+.team-links a{border-bottom:2px solid var(--red);padding-bottom:2px}
+
+/* Rail */
+.rail{position:sticky;top:52px;display:flex;flex-direction:column;gap:16px}
+@media(max-width:980px){.rail{position:static}}
+.rail-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.rail-head{background:var(--black);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center}
+.rail-head h3{font-size:18px;color:#fff}
+.rail-head span{font-size:11px;font-weight:800;letter-spacing:.08em;color:#ff8aa0;text-transform:uppercase}
+.headlines{list-style:none;margin:0;padding:6px 0}
+.headlines li{display:flex;gap:11px;padding:10px 14px;border-bottom:1px solid var(--line)}
+.headlines li:last-child{border-bottom:0}
+.headlines .num{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:var(--red);line-height:1;min-width:18px}
+.headlines a{font-weight:600;font-size:14.5px;line-height:1.35}
+.headlines small{display:block;color:var(--muted);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
+.standings{width:100%;border-collapse:collapse;font-size:13.5px}
+.standings th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
+.standings td{padding:7px 12px;border-bottom:1px solid var(--line)}
+.standings tr.bean td{font-weight:800}
+.watchlist{padding:10px 14px 14px;display:flex;flex-direction:column;gap:9px}
+.watch-item{display:flex;gap:10px;align-items:center;font-size:13.5px}
+.watch-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.watch-item time{margin-left:auto;font-weight:700;font-size:12px;color:var(--muted);white-space:nowrap}
+
+/* Video Hub */
+.video-hub{margin-top:22px;background:var(--black);border-radius:14px;overflow:hidden;color:#fff}
+.vh-head{display:flex;align-items:center;gap:12px;padding:16px 18px 0;flex-wrap:wrap}
+.vh-head h2{font-size:30px;color:#fff}
+.vh-head h2 i{color:#ff3355;font-style:normal}
+.vh-head p{margin:0 0 0 auto;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aeb0ba}
+.vh-local-warn{display:none;margin:10px 18px 0;padding:9px 12px;background:#261a1d;border:1px solid #6b2434;border-radius:8px;font-size:12.5px;color:#ffd0d8;line-height:1.45}
+.vh-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:0;padding:14px 18px 18px}
+@media(max-width:900px){.vh-grid{grid-template-columns:1fr}}
+.vh-player{min-width:0}
+.vh-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+.vh-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vh-now{padding:12px 2px 0}
+.vh-now label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
+.vh-now h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:21px;line-height:1.25;margin:5px 0 4px;font-weight:700}
+.vh-now p{margin:0;color:#aeb0ba;font-size:13.5px;line-height:1.5}
+.vh-now a{color:#fff;font-weight:700;text-decoration:underline}
+.vh-list{display:flex;flex-direction:column;gap:6px;padding-left:16px;max-height:520px;overflow-y:auto;scrollbar-width:thin}
+@media(max-width:900px){.vh-list{padding-left:0;margin-top:14px;max-height:none}}
+.vh-item{display:flex;gap:11px;align-items:center;text-align:left;background:#1d1d21;border:1px solid #2c2c33;border-radius:10px;padding:8px;color:#fff;width:100%}
+.vh-item:hover{border-color:#4a4a55}
+.vh-item.active{border-color:var(--red);background:#26262c}
+.vh-thumb{position:relative;width:104px;flex:0 0 104px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000}
+.vh-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.vh-thumb .play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.28)}
+.vh-thumb .play span{width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:11px;padding-left:2px}
+.vh-item .vt{font-size:13.5px;font-weight:700;line-height:1.3}
+.vh-item .vm{font-size:11px;color:#aeb0ba;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:3px}
+.vh-item .vsrc{color:#ffd166}
+.src-badge{position:absolute;left:6px;top:6px;z-index:2;background:#fff;color:#111;font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 6px;border-radius:4px;box-shadow:0 1px 6px rgba(0,0,0,.35)}
+.src-dir{padding:0 18px 18px}
+.src-dir-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:4px 0 10px}
+.src-dir-head h3{font-size:20px;color:#fff}
+.src-dir-head p{margin:0;font-size:12.5px;color:#aeb0ba;line-height:1.5}
+.src-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+@media(max-width:900px){.src-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.src-grid{grid-template-columns:1fr}}
+.src-card{display:block;background:#1d1d21;border:1px solid #2c2c33;border-radius:10px;padding:13px 14px;color:#fff}
+.src-card:hover{border-color:var(--red);text-decoration:none}
+.src-card .src-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.src-card .src-name{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:19px;letter-spacing:.04em;text-transform:uppercase}
+.src-card .src-go{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#ff8aa0;white-space:nowrap}
+.src-card p{margin:6px 0 0;font-size:13px;line-height:1.5;color:#c9cad2}
+.src-card small{display:block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#aeb0ba}
+
+/* Highlights Grid */
+.hl-filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.hl-filters button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:999px}
+.hl-filters button.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+.vh-srcbar{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
+.vh-srcbar span.lbl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink);margin-right:2px}
+.vh-srcbar button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
+.vh-srcbar button.active{background:var(--red);color:#fff;border-color:var(--red)}
+.hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.hl-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hl-grid{grid-template-columns:1fr}}
+.hl-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);text-align:left;padding:0;width:100%;color:var(--text);display:flex;flex-direction:column}
+.hl-card:hover{border-color:var(--red);text-decoration:none}
+.hl-thumb{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.hl-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hl-thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+.hl-watermark{position:absolute;right:12px;bottom:-14px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:84px;line-height:1;color:rgba(255,255,255,.18);letter-spacing:.02em;pointer-events:none;z-index:1}
+.hl-ext-brand{position:absolute;left:12px;bottom:48px;z-index:2;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:#fff;letter-spacing:.04em;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.4)}
+.hl-play{position:absolute;left:10px;bottom:10px;z-index:2;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:13px;padding-left:2px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.hl-kind{position:absolute;right:10px;top:10px;z-index:2;background:rgba(0,0,0,.72);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
+.hl-src{position:absolute;left:10px;top:10px;z-index:2;background:#fff;color:#111;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
+.hl-body{padding:11px 13px 13px;flex:1;display:flex;flex-direction:column}
+.hl-body label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
+.hl-body h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:16px;line-height:1.3;margin:4px 0 4px;font-weight:700}
+.hl-body p{margin:0;font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.45}
+.hl-ext{display:inline-block;margin-top:auto;padding-top:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red-ink)}
+
+/* Views & Dashboards */
+.view[hidden]{display:none!important}
+.dash-head{border-radius:14px;color:#fff;padding:22px;margin-top:16px;position:relative;overflow:hidden}
+.dash-head:after{content:attr(data-abbr);position:absolute;right:6px;bottom:-34px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:150px;line-height:1;color:rgba(255,255,255,.14)}
+.dash-head-top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:relative;z-index:1}
+.dash-head .abbr{width:64px;height:64px;font-size:20px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4)}
+.dash-head h1{font-size:46px}
+.dash-head .sub{font-size:14px;font-weight:600;opacity:.92;margin-top:3px}
+.dash-pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;position:relative;z-index:1}
+.dash-pills span{border:1px solid rgba(255,255,255,.45);border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;letter-spacing:.04em}
+.dash-pills span.solid{background:#fff;color:#111;border-color:#fff}
+.backrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.backrow button,.backrow a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 13px}
+.backrow button:hover,.backrow a:hover{border-color:var(--red);color:var(--red-ink);text-decoration:none}
+.dash-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px;border-bottom:2px solid var(--text);padding-bottom:0}
+.dash-tabs a{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px}
+.dash-tabs a:hover{background:var(--card);text-decoration:none;color:var(--red-ink)}
+.dash-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:12px 0 8px;align-items:start}
+@media(max-width:980px){.dash-grid{grid-template-columns:1fr}}
+.dash-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px}
+.dash-card-head{background:var(--black);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dash-card-head h3{font-size:18px;color:#fff}
+.dash-card-head span{font-size:11px;font-weight:800;letter-spacing:.08em;color:#ff8aa0;text-transform:uppercase}
+.dash-headlines{list-style:none;margin:0;padding:4px 0}
+.dash-headlines li{padding:11px 14px;border-bottom:1px solid var(--line)}
+.dash-headlines li:last-child{border-bottom:0}
+.dash-headlines b{display:block;font-size:15.5px;line-height:1.35;font-weight:700}
+.dash-headlines p{margin:3px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+.dash-headlines small{display:block;color:var(--red-ink);font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+table.dash-table{width:100%;border-collapse:collapse;font-size:13.5px}
+table.dash-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
+table.dash-table td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+table.dash-table tr:last-child td{border-bottom:0}
+table.dash-table tr.bean td{font-weight:800}
+.res-w{color:var(--win);font-weight:800}.res-l{color:var(--red-ink);font-weight:800}
+.facts{padding:6px 0;margin:0}
+.facts div{display:flex;justify-content:space-between;gap:14px;padding:8px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
+.facts div:last-child{border-bottom:0}
+.facts dt{color:var(--muted);font-weight:600}.facts dd{margin:0;font-weight:700;text-align:right}
+.dash-note{margin:0;padding:10px 14px 13px;font-size:12px;color:var(--muted);line-height:1.55}
+.dash-about{padding:13px 14px 15px;font-size:14px;line-height:1.6;color:var(--muted);margin:0}
+.quick-links{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px 14px}
+.quick-links a{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
+.quick-links a:hover{border-color:var(--red);color:var(--red-ink);text-decoration:none}
+.hub-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:900px){.hub-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hub-grid{grid-template-columns:1fr}}
+
+/* Footer */
+footer{background:var(--black);color:#aeb0ba;margin-top:28px;padding:26px 0 34px}
+footer .wrap{display:flex;gap:20px;flex-wrap:wrap;justify-content:space-between}
+footer b{color:#fff;font-family:"Barlow Condensed",sans-serif;font-size:22px;letter-spacing:.05em}
+footer p{margin:6px 0 0;font-size:13px;line-height:1.6;max-width:560px}
+footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+
+/* Bean Sports v1: one focus style for everything interactive */
+a:focus-visible,button:focus-visible,[tabindex="0"]:focus-visible{outline:2px solid var(--text);outline-offset:2px}
+.masthead a:focus-visible,.masthead button:focus-visible,.mainnav a:focus-visible,.video-hub a:focus-visible,.video-hub button:focus-visible,.preview-panel a:focus-visible,.preview-panel button:focus-visible,footer a:focus-visible,.hero-main a:focus-visible{outline-color:#fff}
+</style>
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap masthead-inner">
+    <a href="#" class="logo" data-home aria-label="Bean Sports home"><span class="logo-bean">BEAN</span><span class="logo-sports">SPORTS</span></a>
+    <div class="mast-meta">
+      <div class="date" id="mastDate">Monday, November 23, 2026</div>
+      <div class="edition">Bean's Edition • <b>Lexington, SC</b> • Lions • Pistons • Buckeyes • Flyers • Gamecocks • Knights</div>
+      <div class="mast-controls">
+        <span class="live-pill" id="livePill"><span class="live-dot" id="liveDot"></span> <span id="liveLabel">CONNECTING LIVE…</span></span>
+        <button type="button" class="mast-btn" id="refreshBtn" title="Refresh live scores and schedules">↻ Refresh</button>
+        <button type="button" class="mast-btn" id="themeToggle" title="Toggle light or dark mode">◐ Theme</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="countdown-bar" id="countdownBar">
+  <div class="wrap countdown-inner">
+    <span class="cd-badge">Next Up</span>
+    <span class="cd-text" id="cdText">Loading next game across Bean's teams…</span>
+    <span class="cd-timer" id="cdTimer"></span>
+  </div>
+</div>
+
+<section class="scoreboard" aria-label="My teams scoreboard">
+  <div class="wrap">
+    <div class="sb-head">
+      <h2>SCOREBOARD <span>/// MY TEAMS</span></h2>
+      <div class="sb-tools">
+        <div class="sb-filters" id="sbFilters">
+          <button class="active" data-filter="all">All</button>
+          <button data-filter="nfl">NFL</button>
+          <button data-filter="nba">NBA</button>
+          <button data-filter="ncaaf">College FB</button>
+          <button data-filter="ncaam">College BB</button>
+          <button data-filter="hs">High School</button>
+        </div>
+        <button type="button" class="sb-sort" id="sbSortBtn" title="Switch scoreboard order">Sort: Bean's Rank</button>
+      </div>
+    </div>
+    <div class="sb-track" id="sbTrack"></div>
+  </div>
+</section>
+
+<section class="preview-panel" id="previewPanel" aria-label="Game preview" aria-live="polite">
+  <div class="wrap">
+    <div class="preview-inner">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px"><label id="pvLeague">Game Preview</label><button type="button" class="pv-close" id="pvClose">Close ✕</button></div>
+        <h3 id="pvTitle">Matchup</h3>
+        <p id="pvSummary"></p>
+        <div class="pv-meta" id="pvMeta"></div>
+        <div class="pv-actions">
+          <a href="#videos">▶ Watch Highlights</a>
+          <a href="#my-teams" id="pvTeamLink">Team Dashboard →</a>
+          <button type="button" id="pvWatch">Watch This Team's Video</button>
+        </div>
+      </div>
+      <div>
+        <label>Keys to the Game</label>
+        <ol class="pv-keys" id="pvKeys" style="margin-top:12px"></ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<nav class="mainnav" aria-label="Sports sections">
+  <div class="wrap mainnav-inner" id="mainNav">
+    <a href="#" class="active" data-home data-nav="home">Home</a>
+    <a href="#team-lions" data-dash="lions" data-nav="lions">NFL • Lions</a>
+    <a href="#team-pistons" data-dash="pistons" data-nav="pistons">NBA • Pistons</a>
+    <a href="#team-osu" data-dash="osu" data-nav="osu">Ohio State</a>
+    <a href="#team-dayton" data-dash="dayton" data-nav="dayton">Dayton</a>
+    <a href="#team-gamecocks" data-dash="gamecocks" data-nav="gamecocks">Gamecocks</a>
+    <a href="#team-alter" data-dash="alter" data-nav="alter">Alter Knights</a>
+    <a href="#videos" class="my" data-nav="videos">▶ Videos &amp; Highlights</a>
+    <a href="#headlines" class="my" data-nav="headlines">★ Top Headlines</a>
+    <a href="#my-teams" class="my" data-hub data-nav="hub">★ My Teams — Dashboards</a>
+    <a href="#standings" data-nav="standings">Standings</a>
+  </div>
+</nav>
+
+<div class="wrap view" id="homeView">
+  <section class="hero" aria-label="Top story">
+    <div class="hero-grid">
+      <article class="hero-main">
+        <div class="hero-art">
+          <span class="hero-kicker">Top Story • Detroit Lions</span>
+          <h2>Ford Field, rivalry week, and a six-team slate that runs straight through Bean's house — Detroit to Dayton to Columbia.</h2>
+        </div>
+        <div class="hero-body">
+          <h1>Bean's Week: <span>Lions First,</span> Everybody Else Right Behind</h1>
+          <p>Built the way Bean actually watches sports: Lions on top, Pistons next, then Ohio State, Dayton, the Gamecocks, and Alter. Live scores and schedules update automatically when online, with one scoreboard, one headline feed, and full dashboards for every team that matters.</p>
+          <div class="hero-links"><a href="#videos">▶ Watch Highlights</a><a href="#my-teams" data-hub>See My Teams ↓</a><a href="#headlines">Top Headlines</a><a href="#standings">Standings</a></div>
+        </div>
+      </article>
+      <div class="hero-side" id="heroSide"></div>
+    </div>
+  </section>
+
+  <div class="team-strip" aria-label="Bean Sports quick strip">
+    <strong>BEAN</strong>
+    <p><span>01</span> <button type="button" class="strip-team" data-dash="lions">Lions</button> &nbsp; <span>02</span> <button type="button" class="strip-team" data-dash="pistons">Pistons</button> &nbsp; <span>03</span> <button type="button" class="strip-team" data-dash="osu">Ohio State</button> &nbsp; <span>04</span> <button type="button" class="strip-team" data-dash="dayton">Dayton</button> &nbsp; <span>05</span> <button type="button" class="strip-team" data-dash="gamecocks">Gamecocks</button> &nbsp; <span>06</span> <button type="button" class="strip-team" data-dash="alter">Alter</button></p>
+    <a class="strip-muse" href="https://muse.ai/s/bean-sports-banner-xlg6ixf5xsxk0j3/Imr7csnKpBpA-QSQVKBnrR7Z5yXVTnDB3yZr-8pgCqQ" target="_blank" rel="noopener">Open Bean Sports ↗</a>
+  </div>
+
+  <section class="video-hub" id="videos" aria-label="Videos and highlights">
+    <div class="vh-head">
+      <h2>Videos <i>&amp;</i> Highlights</h2>
+      <p>Plays in-page on YouTube • 6 more sources linked below</p>
+    </div>
+    <div class="vh-local-warn" id="vhLocalWarn">
+      Tip: You opened this page as a local <code>file://</code> URL, so YouTube may block in-page embeds. Host this file on GitHub Pages or Cloudflare Pages (free) for seamless in-page playback—or click <b>Watch on YouTube ↗</b> below any video.
+    </div>
+    <div class="vh-grid">
+      <div class="vh-player">
+        <div class="vh-frame"><iframe id="vhFrame" src="https://www.youtube-nocookie.com/embed/dpzaBrsCo9U?rel=0" title="Bean Sports video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+        <div class="vh-now">
+          <label id="vhNowLabel">Now Playing • Detroit Lions • NFL • YouTube</label>
+          <h3 id="vhNowTitle">Lions vs. Buccaneers — Full Game Highlights</h3>
+          <p><span id="vhNowMeta">Week 11 • Nov 22, 2026 • Detroit won 31–21 for its sixth straight win.</span> &nbsp;<a id="vhNowLink" href="https://www.youtube.com/watch?v=dpzaBrsCo9U" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
+        </div>
+      </div>
+      <div class="vh-list" id="vhList" role="listbox" aria-label="Video playlist"></div>
+    </div>
+    <div class="src-dir" aria-label="Highlight sources directory">
+      <div class="src-dir-head"><h3>6 More Sources — Watch on Their Sites</h3><p>The in-page player above plays on YouTube. These six sources open on their own sites instead — tap one to watch highlights there.</p></div>
+      <div class="src-grid" id="srcDirGrid"></div>
+    </div>
+  </section>
+
+  <div class="section-head"><h2>Latest <i>Highlights</i></h2><div class="rule"></div><a href="#videos">Video Center ↑</a></div>
+  <div class="hl-filters" id="hlFilters">
+    <button class="active" data-team="all">All Teams</button>
+    <button data-team="lions">Lions</button>
+    <button data-team="pistons">Pistons</button>
+    <button data-team="osu">Ohio State</button>
+    <button data-team="dayton">Dayton</button>
+    <button data-team="gamecocks">Gamecocks</button>
+    <button data-team="alter">Alter</button>
+  </div>
+  <div class="vh-srcbar" id="srcFilters" aria-label="Filter highlights by where they play">
+    <span class="lbl">Plays / Opens On:</span>
+    <button class="active" data-source="all">All Sources (7)</button>
+    <button data-source="youtube">YouTube — Plays Here</button>
+    <button data-source="espn">ESPN ↗</button>
+    <button data-source="nfl">NFL / Lions.com ↗</button>
+    <button data-source="nba">NBC Sports ↗</button>
+    <button data-source="sportsnet">Sportsnet ↗</button>
+    <button data-source="fox">FOX Sports / BTN ↗</button>
+    <button data-source="other">MaxPreps ↗</button>
+  </div>
+  <div class="hl-grid" id="hlGrid"></div>
+
+  <div class="layout">
+    <main>
+      <div class="section-head"><h2>Headline <i>Feed</i></h2><div class="rule"></div><a href="#headlines">All Headlines →</a></div>
+      <div class="feed" id="headlineFeed"></div>
+
+      <div class="section-head" id="my-teams"><h2>My <i>Teams</i></h2><div class="rule"></div><a href="#my-teams" data-hub>All Dashboards →</a></div>
+      <div class="teams-grid" id="teamsGrid"></div>
+
+      <div class="section-head"><h2>Bean's <i>Take</i></h2><div class="rule"></div></div>
+      <article class="mini-story" style="padding:18px"><label>Why this page exists</label><h3 style="font-size:20px;margin:8px 0">A national homepage makes you hunt. This one starts with your teams.</h3><p style="color:var(--muted);line-height:1.6;margin:0">ESPN's layout works — scoreboard on top, headlines in the middle, Top Headlines on the rail. Bean Sports keeps that exact rhythm, but the teams are fixed: Lions, Pistons, Ohio State, Dayton, Gamecocks, and Alter. Open the page and you're already home.</p></article>
+    </main>
+
+    <aside class="rail" id="headlines" aria-label="Top headlines and standings">
+      <section class="rail-card"><div class="rail-head"><h3>Top Headlines</h3><span>Bean's Teams</span></div><ol class="headlines" id="railHeadlines"></ol></section>
+      <section class="rail-card" id="standings"><div class="rail-head"><h3>Standings Snapshot</h3><span id="standingsBadge">Watch List</span></div><div id="railStandings"></div><p class="dash-note" id="standingsNote">Records update automatically from ESPN when online; Alter Knights reflects final 2026 season mark.</p></section>
+      <section class="rail-card"><div class="rail-head"><h3>Watch List</h3><span>This Week</span></div><div class="watchlist" id="railWatchlist"></div></section>
+      <section class="rail-card" style="background:var(--black);color:#fff;border-color:#000"><div style="padding:16px"><div style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#ff5d7e;text-transform:uppercase">Bean Sports • For One Fan</div><h3 style="color:#fff;font-size:24px;margin:8px 0 6px;line-height:1">Six teams.<br>One front page.</h3><p style="margin:0;color:#c9cad2;font-size:13.5px;line-height:1.6">Lions. Pistons. Ohio State. Dayton. Gamecocks. Alter. In that order, every day.</p></div></section>
+    </aside>
+  </div>
+</div>
+
+<div class="wrap view" id="hubView" hidden>
+  <div class="backrow"><button type="button" data-home>← Back to Front Page</button></div>
+  <div class="section-head" style="margin-top:14px"><h2>My Teams <i>Dashboards</i></h2><div class="rule"></div></div>
+  <p style="margin:0 0 4px;color:var(--muted);font-size:14.5px;line-height:1.6;max-width:720px">Pick a team to open its full dashboard — latest headlines, standings watch, team details, roster, schedule, quick links, and highlights.</p>
+  <div class="hub-grid" id="hubGrid"></div>
+</div>
+
+<div class="wrap view" id="dashView" hidden>
+  <div class="backrow"><button type="button" data-home>← Front Page</button><button type="button" data-hub>★ All My Teams</button><a href="#videos" id="dashVideoTop">▶ Team Highlights</a></div>
+  <header class="dash-head" id="dashHead">
+    <div class="dash-head-top">
+      <span class="abbr" id="dashAbbr">DET</span>
+      <div><h1 id="dashName">Team</h1><div class="sub" id="dashSub"></div></div>
+    </div>
+    <div class="dash-pills" id="dashPills"></div>
+  </header>
+  <nav class="dash-tabs" aria-label="Team dashboard sections">
+    <a href="#dash-headlines">Headlines</a><a href="#dash-schedule">Schedule</a><a href="#dash-roster">Roster</a><a href="#dash-standings">Standings</a><a href="#dash-details">Team Details</a><a href="#videos" id="dashVideoTab">▶ Videos</a>
+  </nav>
+  <div class="dash-grid">
+    <main>
+      <section class="dash-card" id="dash-headlines"><div class="dash-card-head"><h3>Latest Headlines</h3><span>Top 5</span></div><ol class="dash-headlines" id="dashHeadlines"></ol></section>
+      <section class="dash-card" id="dash-schedule"><div class="dash-card-head"><h3>Schedule &amp; Results</h3><span id="dashSchedNote">2026 Season</span></div><table class="dash-table" id="dashSchedule"></table><p class="dash-note" id="dashSchedFooter">Times in Eastern Time. Live schedule updates automatically when connected.</p></section>
+      <section class="dash-card" id="dash-roster"><div class="dash-card-head"><h3>Roster</h3><span>Key Players</span></div><table class="dash-table" id="dashRoster"></table><p class="dash-note">The core rotation and depth-chart leaders Bean watches every game.</p></section>
+    </main>
+    <aside>
+      <section class="dash-card" id="dash-details"><div class="dash-card-head"><h3>Team Details</h3><span>Info</span></div><dl class="facts" id="dashFacts"></dl><p class="dash-about" id="dashAbout"></p></section>
+      <section class="dash-card"><div class="dash-card-head"><h3>Quick Links</h3><span>Official &amp; Live</span></div><div class="quick-links" id="dashLinks"></div></section>
+      <section class="dash-card" id="dash-standings"><div class="dash-card-head"><h3>Standings Watch</h3><span id="dashStandName">Division</span></div><table class="dash-table" id="dashStandings"></table><p class="dash-note">Bean's standings watch — where this team sits and who it's chasing.</p></section>
+      <section class="dash-card"><div class="dash-card-head"><h3>Next Up</h3><span>Don't Miss It</span></div><div style="padding:13px 14px 15px"><div id="dashNext" style="font-size:15px;font-weight:700;line-height:1.45"></div><div class="pv-actions" style="margin-top:12px"><button type="button" id="dashPreviewBtn" style="border-color:var(--line);color:var(--text)">▶ Game Preview</button><button type="button" id="dashPlayBtn" style="border-color:var(--line);color:var(--text)">▶ Watch Highlights</button></div></div></section>
+    </aside>
+  </div>
+</div>
+
+<footer><div class="wrap"><div><b>BEAN SPORTS</b><p>An ESPN-style front page rebuilt around Bean's teams — Detroit Lions, Detroit Pistons, Ohio State Football, Dayton Flyers, South Carolina Gamecocks, and Alter Knights. Powered by a single-source data engine with live ESPN score/schedule syncing.</p></div><nav><a href="#team-lions" data-dash="lions">Lions</a><a href="#team-pistons" data-dash="pistons">Pistons</a><a href="#team-osu" data-dash="osu">Ohio State</a><a href="#team-dayton" data-dash="dayton">Dayton</a><a href="#team-gamecocks" data-dash="gamecocks">Gamecocks</a><a href="#team-alter" data-dash="alter">Alter</a><a href="#my-teams" data-hub>My Teams</a></nav></div></footer>
+
+<script>
+(function(){
+  /* =========================================================================
+     SINGLE SOURCE OF TRUTH: Edit team info, schedules, and videos here only.
+     Live ESPN data automatically enriches the 5 pro/college teams when online.
+     ========================================================================= */
+  var TEAM_ORDER=['lions','pistons','osu','dayton','gamecocks','alter'];
+
+  var TEAMS={
+    lions:{
+      id:'lions', order:1, name:'Detroit Lions', shortName:'Lions', abbr:'DET',
+      league:'NFL • NFC North', leagueKey:'nfl', shortLeague:'NFL',
+      color:'var(--lions)', rawColor:'#0076b6', grad:'linear-gradient(160deg,#0076b6,#0a2a4a)',
+      sub:'NFL • NFC North • Detroit, Michigan', rank:"Bean's #1 Team",
+      venue:'Ford Field • Detroit, MI', coach:'Dan Campbell',
+      identity:'Run it, stop the run, finish in the red zone',
+      record:"Bean's #1 team",
+      espn:{sport:'football',league:'nfl',teamId:'8'},
+      quickLinks:[
+        ['ESPN Team Page','https://www.espn.com/nfl/team/_/name/det/detroit-lions'],
+        ['Schedule','https://www.espn.com/nfl/team/schedule/_/name/det'],
+        ['Roster','https://www.espn.com/nfl/team/roster/_/name/det'],
+        ['DetroitLions.com','https://www.detroitlions.com/']
+      ],
+      game:{
+        status:'upcoming', statusLabel:'Upcoming',
+        opponent:'Green Bay Packers', oppAbbr:'GB', oppColor:'#203731', oppSub:'At Ford Field',
+        dateISO:'2026-11-29T13:00:00-05:00', timeShort:'SUN 1:00 PM', timeLines:'SUN<br>1:00 PM ET',
+        tv:'FOX', note:'Lions at home — run game and red-zone defense set the tone.',
+        teamScore:null, oppScore:null
+      },
+      preview:{
+        summary:'Detroit comes home to Ford Field riding a six-game win streak after the 31–21 win over Tampa Bay. Green Bay brings the rivalry — and the division race — with it. Expect Detroit to lean on the run game early and let the crowd turn every Packers third down into a problem.',
+        keys:[
+          'Win the line of scrimmage — Detroit’s identity starts with the run game and stopping the run.',
+          'Finish in the red zone: field goals won’t beat Green Bay at home.',
+          'Protect the football — rivalry games flip on one short field.'
+        ]
+      },
+      story:{
+        kicker:'NFL • Detroit Lions',
+        title:'Lions win with identity: run it, stop the run, finish in the red zone',
+        body:"Detroit's formula hasn't been a secret — physical up front, explosive when it counts, and a Ford Field crowd that makes every third down louder. That's the standard every Lions preview starts from.",
+        byline:'NFL Coverage',
+        railTitle:'Lions lead the page: identity football at Ford Field'
+      },
+      pills:['6-game win streak','W 31–21 vs. Tampa Bay (Nov 22)','Next: vs. Packers — Sun 1:00 PM ET'],
+      about:'Bean’s #1 team. Physical, loud, and built to win in the trenches — Detroit’s formula hasn’t been a secret: own the line of scrimmage, be explosive when it counts, and let a Ford Field crowd make every third down louder.',
+      headlines:[
+        ['Top Story','Lions make it six straight, 31–21 over Tampa Bay','Detroit’s identity showed up again at Ford Field — physical up front, balanced on offense, and in control late. Full highlights are in the Video Center.'],
+        ['Rivalry Week','Packers at Ford Field: the division runs through Detroit','Green Bay brings the rivalry — and the NFC North race — to town Sunday at 1:00 PM ET on FOX.'],
+        ['Offense','The run game sets the table for everything Detroit does','When the Lions run it early, the whole playbook opens up — play-action, deep shots, and long clock-killing drives.'],
+        ['Defense','Red-zone defense is Detroit’s quiet superpower','Bend in the middle of the field, stiffen inside the 20 — that’s been the Lions’ formula during the streak.'],
+        ['Video Center','Calls of the Game: Dan Miller on the Bucs win','The Lions Radio Network’s best calls from the 31–21 win are queued up in Bean’s Video Center.']
+      ],
+      schedule:[
+        ['Nov 22','vs. Tampa Bay Buccaneers','W 31–21 — sixth straight win','w'],
+        ['Sun • 1:00 PM ET','vs. Green Bay Packers','Next Up • Ford Field • FOX',''],
+        ['Upcoming','vs. Minnesota Vikings','NFC North stretch • Ford Field',''],
+        ['Upcoming','at Chicago Bears','NFC North stretch • Road',''],
+        ['Upcoming','at Green Bay Packers','Return trip • Lambeau Field','']
+      ],
+      roster:[
+        ['Jared Goff','QB','Runs the offense — timing, play-action, command at the line'],
+        ['Jahmyr Gibbs','RB','Home-run speed; the big-play engine of the backfield'],
+        ['David Montgomery','RB','Between-the-tackles hammer who finishes drives'],
+        ['Amon-Ra St. Brown','WR','The Sun God — chain-mover and third-down answer'],
+        ['Jameson Williams','WR','Field-stretching speed that changes coverages'],
+        ['Sam LaPorta','TE','Seam threat and Goff’s safety valve'],
+        ['Penei Sewell','OT','Tone-setter on the best offensive line in football'],
+        ['Aidan Hutchinson','DE','Face of the pass rush off the edge'],
+        ['Jack Campbell','LB','Middle of the defense — run fits and green-dot calls'],
+        ['Brian Branch','DB','Versatile playmaker all over the secondary'],
+        ['Kerby Joseph','S','Ballhawk deep — takes the football away']
+      ],
+      standings:{title:'NFC North',rows:[['DET','Detroit Lions','6 straight wins — Bean #1',1],['GB','Green Bay Packers','Rival — in town Sunday',0],['MIN','Minnesota Vikings','Division chase',0],['CHI','Chicago Bears','Division chase',0]]}
+    },
+
+    pistons:{
+      id:'pistons', order:2, name:'Detroit Pistons', shortName:'Pistons', abbr:'DET',
+      league:'NBA • Eastern Conf.', leagueKey:'nba', shortLeague:'NBA',
+      color:'var(--pistons)', rawColor:'#c8102e', grad:'linear-gradient(160deg,#c8102e,#1d428a)',
+      sub:'NBA • Eastern Conference • Detroit, Michigan', rank:"Bean's #2 Team",
+      venue:'Little Caesars Arena • Detroit, MI', coach:'J.B. Bickerstaff',
+      identity:'Defense and pace from a young core',
+      record:'10–6',
+      espn:{sport:'basketball',league:'nba',teamId:'8'},
+      quickLinks:[
+        ['ESPN Team Page','https://www.espn.com/nba/team/_/name/det/detroit-pistons'],
+        ['Schedule','https://www.espn.com/nba/team/schedule/_/name/det'],
+        ['Roster','https://www.espn.com/nba/team/roster/_/name/det'],
+        ['Pistons.com','https://www.nba.com/pistons']
+      ],
+      game:{
+        status:'upcoming', statusLabel:'Upcoming',
+        opponent:'Boston Celtics', oppAbbr:'BOS', oppColor:'#007a33', oppSub:'Visitor',
+        dateISO:'2026-11-24T19:00:00-05:00', timeShort:'TUE 7:00 PM', timeLines:'TUE<br>7:00 PM ET',
+        tv:'FDSDET', note:'Backcourt matchup to watch — pace vs. half-court defense.',
+        teamScore:null, oppScore:null
+      },
+      preview:{
+        summary:'Detroit is 10–6 and back home at Little Caesars Arena after the trip to Atlanta. Boston tests exactly what the Pistons are still building: 48 minutes of connected defense and clean late-game execution against a veteran contender.',
+        keys:[
+          'Defend for 48, not in stretches — Boston punishes every lapse.',
+          'Win the backcourt matchup and control the pace.',
+          'Close quarters: Detroit’s young core has to finish possessions with rebounds.'
+        ]
+      },
+      story:{
+        kicker:'NBA • Detroit Pistons',
+        title:"Pistons' next step is consistency — defend for 48, not for stretches",
+        body:'The talent flashes are there. The Pistons story is whether the defense and late-game execution show up every night, especially at home at Little Caesars Arena.',
+        byline:'NBA Coverage',
+        railTitle:'Pistons need 48 minutes of defense, every night'
+      },
+      pills:['Record: 10–6','Next: vs. Celtics — 7:00 PM ET','Little Caesars Arena'],
+      about:'Detroit basketball, second on Bean’s list. The talent flashes are there — the Pistons’ story is whether the defense and late-game execution show up for 48 minutes, every night, especially at home.',
+      headlines:[
+        ['Top Story','Pistons at 10–6: the next step is consistency','Defend for 48, not for stretches — that’s the leap this young core is chasing as Boston comes to town.'],
+        ['Game Preview','Celtics test Detroit’s half-court defense','A veteran contender at Little Caesars Arena is exactly the measuring stick the Pistons need.'],
+        ['Highlights','2OT epic: Pistons 144, Wizards 140','The Nov 12 double-overtime thriller is in the Video Center — Detroit’s wildest win of the young season.'],
+        ['Backcourt Watch','Pace vs. patience in the guard matchup','Detroit wants to run; Boston wants to grind. Whoever dictates tempo owns the night.'],
+        ['Home Court','Little Caesars Arena is becoming a tough trip','A young team learning to protect its floor — the home crowd is starting to believe again.']
+      ],
+      schedule:[
+        ['Nov 12','at Washington Wizards','W 144–140 (2OT) — instant classic','w'],
+        ['Nov 22','at Atlanta Hawks','Road test • Highlights in Video Center',''],
+        ['Tue • 7:00 PM ET','vs. Boston Celtics','Next Up • Little Caesars Arena • FDSDET',''],
+        ['Upcoming','Eastern Conference stretch','Home stand continues in Detroit','']
+      ],
+      roster:[
+        ['Cade Cunningham','G','Franchise guard — scorer, creator, closer'],
+        ['Jaden Ivey','G','Explosive downhill speed in the backcourt'],
+        ['Ausar Thompson','F','Defensive menace and transition weapon'],
+        ['Ron Holland II','F','Energy wing from the 2024 lottery class'],
+        ['Jalen Duren','C','Rim runner and rebounding anchor'],
+        ['Isaiah Stewart','F/C','Enforcer — toughness and floor spacing'],
+        ['Marcus Sasser','G','Bench spark and shot-making']
+      ],
+      standings:{title:'Eastern Conference',rows:[['DET','Detroit Pistons','10–6 — Bean #2',1],['BOS','Boston Celtics','Veteran contender — in town next',0],['CLE','Cleveland Cavaliers','East chase',0],['NYK','New York Knicks','East chase',0]]}
+    },
+
+    osu:{
+      id:'osu', order:3, name:'Ohio State Buckeyes', shortName:'Ohio State', abbr:'OSU',
+      league:'College FB • Big Ten', leagueKey:'ncaaf', shortLeague:'Big Ten',
+      color:'var(--osu)', rawColor:'#bb0000', grad:'linear-gradient(160deg,#bb0000,#3a0000)',
+      sub:'College Football • Big Ten • Columbus, Ohio', rank:"Bean's #3 Team",
+      venue:'Ohio Stadium • Columbus, OH', coach:'Ryan Day',
+      identity:'Won in the trenches when games get biggest',
+      record:'The Game',
+      espn:{sport:'football',league:'college-football',teamId:'194'},
+      quickLinks:[
+        ['ESPN Team Page','https://www.espn.com/college-football/team/_/id/194/ohio-state-buckeyes'],
+        ['Schedule','https://www.espn.com/college-football/team/schedule/_/id/194'],
+        ['Roster','https://www.espn.com/college-football/team/roster/_/id/194'],
+        ['OhioStateBuckeyes.com','https://ohiostatebuckeyes.com/sports/football']
+      ],
+      game:{
+        status:'upcoming', statusLabel:'Rivalry Week',
+        opponent:'Michigan Wolverines', oppAbbr:'MICH', oppColor:'#00274c', oppSub:'The Game',
+        dateISO:'2026-11-28T12:00:00-05:00', timeShort:'SAT 12:00 PM', timeLines:'SAT<br>12:00 PM ET',
+        tv:'FOX', note:'Everything on the line in The Game — trenches decide it.',
+        teamScore:null, oppScore:null
+      },
+      heroSide:{label:'Ohio State Football',title:'The Game still runs the calendar',text:'When Ohio State–Michigan week arrives, everything else moves. Line play, turnovers, and who controls the fourth quarter.'},
+      preview:{
+        summary:'The Game. Ohio State comes in off the 31–28 loss at Nebraska with its season on the line, and Michigan is the only thing standing in the way. Everything about this week is the trenches: protection, run fits, and who owns the fourth quarter.',
+        keys:[
+          'Line play decides it — the Buckeyes’ biggest games are won up front.',
+          'Turnover margin: one giveaway swings a rivalry game.',
+          'Control the fourth quarter — finish drives, no empty trips.'
+        ]
+      },
+      story:{
+        kicker:'College Football • Ohio State',
+        title:"Ohio State's margin is in the trenches when the games get biggest",
+        body:"Skill players get the highlights, but the Buckeyes' biggest games are still decided up front — protection, run fits, and owning the line in the fourth quarter.",
+        byline:'Big Ten Coverage',
+        railTitle:'The Game looms: Ohio State–Michigan decides the season'
+      },
+      pills:['Next: vs. Michigan — The Game','Sat • 12:00 PM ET • FOX','Ohio Stadium'],
+      about:'Scarlet and Gray — Bean’s college football standard. Skill players get the highlights, but Ohio State’s biggest games are decided up front: protection, run fits, and owning the line in the fourth quarter.',
+      headlines:[
+        ['Top Story','The Game looms: Ohio State–Michigan decides the season','Everything about this week is the trenches — and a season’s worth of stakes rides on Saturday at noon.'],
+        ['From Lincoln','Buckeyes close the Nebraska trip, turn the page fast','Extended highlights from the Nov 21 trip to Lincoln are in the Video Center — then it’s all Michigan.'],
+        ['Trenches','Ohio State’s margin is up front in the biggest games','Protection and run fits: the Buckeyes’ formula when the calendar turns to late November.'],
+        ['Rivalry','Noon kick, FOX cameras, 100,000+ in the Shoe','The Game at Ohio Stadium — the loudest Saturday of Bean’s year.'],
+        ['Keys','Turnover margin swings rivalry games','One giveaway, one short field — that’s the whole ballgame in a one-score rivalry finish.']
+      ],
+      schedule:[
+        ['Nov 21','at Nebraska Cornhuskers','L 28–31 • Lincoln • Extended highlights in Video Center','l'],
+        ['Sat • 12:00 PM ET','vs. Michigan Wolverines','THE GAME • Ohio Stadium • FOX',''],
+        ['Postseason','Big Ten / Playoff picture','Set by The Game’s result','']
+      ],
+      roster:[
+        ['Julian Sayin','QB','The Buckeyes’ triggerman — accuracy and poise'],
+        ['Jeremiah Smith','WR','Generational talent on the outside'],
+        ['Carnell Tate','WR','Polished route-runner opposite Smith'],
+        ['Max Klare','TE','Mismatch target over the middle'],
+        ['Caleb Downs','S','Best safety in America — erases mistakes'],
+        ['Sonny Styles','LB','Size, speed, everywhere at once'],
+        ['Arvell Reese','LB','Rising star in the middle of the defense']
+      ],
+      standings:{title:'Big Ten',rows:[['OSU','Ohio State','The Game decides it — Bean #3',1],['MICH','Michigan','Rival — Saturday at the Shoe',0],['NEB','Nebraska','Hosted OSU Nov 21',0],['PSU','Penn State','Big Ten chase',0]]}
+    },
+
+    dayton:{
+      id:'dayton', order:4, name:'Dayton Flyers', shortName:'Dayton', abbr:'DAY',
+      league:'College BB • A-10', leagueKey:'ncaam', shortLeague:'A-10',
+      color:'var(--dayton)', rawColor:'#ce1141', grad:'linear-gradient(160deg,#ce1141,#002664)',
+      sub:'College Basketball • Atlantic 10 • Dayton, Ohio', rank:"Bean's #4 Team — His School",
+      venue:'UD Arena • Dayton, OH', coach:'Anthony Grant',
+      identity:'Defend the floor like few programs in America',
+      record:'At UD Arena',
+      espn:{sport:'basketball',league:'mens-college-basketball',teamId:'2168'},
+      quickLinks:[
+        ['ESPN Team Page','https://www.espn.com/mens-college-basketball/team/_/id/2168/dayton-flyers'],
+        ['Schedule','https://www.espn.com/mens-college-basketball/team/schedule/_/id/2168'],
+        ['Roster','https://daytonflyers.com/sports/mens-basketball/roster'],
+        ['DaytonFlyers.com','https://daytonflyers.com/sports/mens-basketball']
+      ],
+      game:{
+        status:'upcoming', statusLabel:'Upcoming',
+        opponent:'Xavier Musketeers', oppAbbr:'XAV', oppColor:'#041e42', oppSub:'Crosstown feel',
+        dateISO:'2026-11-25T19:00:00-05:00', timeShort:'WED 7:00 PM', timeLines:'WED<br>7:00 PM ET',
+        tv:'ESPN2', note:'UD Arena crowd factor — Flyers defend home floor first.',
+        teamScore:null, oppScore:null
+      },
+      heroSide:{label:'Dayton Flyers',title:'UD Arena is a home-court weapon',text:'Few places in college basketball feel like Dayton at home. The Flyers feed off that crowd from the opening tip.'},
+      preview:{
+        summary:'A crosstown feel at UD Arena, where Dayton defends its floor like few programs in America. The Flyer Faithful will be loud from the opening tip — the question is whether Dayton’s defense turns that energy into a wire-to-wire home win.',
+        keys:[
+          'Feed off the crowd early — UD Arena is a real home-court weapon.',
+          'Defend the arc and finish possessions on the glass.',
+          'Protect home floor: in the A-10, home wins are the season.'
+        ]
+      },
+      story:{
+        kicker:'College Basketball • Dayton Flyers',
+        title:'Dayton defends its floor like few programs in America',
+        body:'UD Arena sells out, the Flyer Faithful bring it early, and Dayton turns home games into an event. In the A-10, protecting that floor is everything.',
+        byline:'A-10 Coverage',
+        railTitle:'UD Arena gives Dayton a real A-10 edge at home'
+      },
+      pills:['Next: vs. Xavier — 7:00 PM ET','UD Arena','TV: ESPN2'],
+      about:'University of Dayton — Bean’s school. UD Arena sells out, the Flyer Faithful bring it from the opening tip, and Dayton turns home games into an event. In the A-10, protecting that floor is everything.',
+      headlines:[
+        ['Top Story','Dayton defends its floor like few programs in America','A sold-out UD Arena and a defense that feeds off it — the Flyers’ home edge is the program’s backbone.'],
+        ['Game Preview','Xavier brings a crosstown feel to UD Arena','A rivalry atmosphere on ESPN2 — Dayton’s defense has to turn crowd energy into a wire-to-wire win.'],
+        ['Highlights','Every single bucket vs. NJIT','The full scoring reel from the NJIT win is in the Video Center — every made basket, one cut.'],
+        ['From the Arena','Cincinnati at Dayton: a heavyweight non-conference night','Official highlights from the UD Arena showdown are queued in the Video Center.'],
+        ['A-10 Watch','Home wins are the season in the Atlantic 10','Protect the floor, steal a few on the road — that’s the Flyers’ path to March.']
+      ],
+      schedule:[
+        ['Recent','vs. NJIT','W — Every bucket in Video Center','w'],
+        ['Recent','vs. Cincinnati Bearcats','UD Arena showdown • Highlights in Video Center',''],
+        ['Wed • 7:00 PM ET','vs. Xavier Musketeers','Next Up • UD Arena • ESPN2',''],
+        ['Upcoming','Atlantic 10 play','Conference grind begins — protect home floor','']
+      ],
+      roster:[
+        ['Anthony Grant','Head Coach','The program’s standard-setter on the sideline'],
+        ['Amaël L’Etang','F','7\'1" rim presence on both ends'],
+        ['Jaiun Simon','F','Senior frontcourt energy and rebounding'],
+        ['Malcolm Thomas','F','Length and athleticism in the paint'],
+        ['Zaide Lowery','G','Experienced perimeter scorer and defender'],
+        ['Jaron McKie','G','Sophomore guard playmaking']
+      ],
+      standings:{title:'Atlantic 10',rows:[['DAY','Dayton','Home-floor kings — Bean #4',1],['VCU','VCU','A-10 chase',0],['SLU','Saint Louis','A-10 chase',0],['XAV','Xavier','Crosstown test — next at UD Arena',0]]}
+    },
+
+    gamecocks:{
+      id:'gamecocks', order:5, name:'South Carolina Gamecocks', shortName:'Gamecocks', abbr:'SC',
+      league:'College FB • SEC', leagueKey:'ncaaf', shortLeague:'SEC',
+      color:'var(--sc)', rawColor:'#73000a', grad:'linear-gradient(160deg,#73000a,#1a0003)',
+      sub:'College Football • SEC • Columbia, South Carolina', rank:"Bean's #5 Team — Home State",
+      venue:'Williams-Brice Stadium • Columbia, SC', coach:'Shane Beamer',
+      identity:'Sandstorm, noise, and a real home edge',
+      record:'6–5',
+      espn:{sport:'football',league:'college-football',teamId:'2579'},
+      quickLinks:[
+        ['ESPN Team Page','https://www.espn.com/college-football/team/_/id/2579/south-carolina-gamecocks'],
+        ['Schedule','https://www.espn.com/college-football/team/schedule/_/id/2579'],
+        ['Roster','https://gamecocksonline.com/sports/football/roster/'],
+        ['GamecocksOnline','https://gamecocksonline.com/sports/football/']
+      ],
+      game:{
+        status:'upcoming', statusLabel:'Palmetto Bowl',
+        opponent:'Clemson Tigers', oppAbbr:'CLEM', oppColor:'#f56600', oppSub:'Palmetto Bowl',
+        dateISO:'2026-11-28T19:30:00-05:00', timeShort:'SAT 7:30 PM', timeLines:'SAT<br>7:30 PM ET',
+        tv:'SEC Net', note:'Palmetto Bowl energy — night game at Williams-Brice.',
+        teamScore:null, oppScore:null
+      },
+      heroSide:{label:'South Carolina',title:'Night games at Williams-Brice hit different',text:"Sandstorm, a loud student section, and SEC stakes — the Gamecocks' home edge is real when the lights come on."},
+      preview:{
+        summary:'The Palmetto Bowl under the lights at Williams-Brice. South Carolina (6–5) closes the regular season against its in-state rival after hosting No. 1 Georgia — Sandstorm, 79,000 strong, and bragging rights for a year on the line.',
+        keys:[
+          'Use the crowd — night games at Williams-Brice are an SEC edge.',
+          'Get the run game going to keep Clemson’s front honest.',
+          'Win the turnover battle in a one-score rivalry game.'
+        ]
+      },
+      story:{
+        kicker:'College Football • South Carolina Gamecocks',
+        title:'Gamecocks at home: Sandstorm, noise, and an SEC edge in Columbia',
+        body:"Williams-Brice Stadium at night is one of the SEC's toughest trips. For Bean in South Carolina, this is the local Saturday ritual — garnet, loud, and personal.",
+        byline:'SEC Coverage',
+        railTitle:'Palmetto Bowl week: Gamecocks vs. Clemson in Columbia'
+      },
+      pills:['Record: 6–5','Next: vs. Clemson — Palmetto Bowl','Sat • 7:30 PM ET • SEC Network'],
+      about:'The home-state team. Living in South Carolina means Gamecocks Saturdays are local — Williams-Brice at night, Sandstorm rolling, 79,000 strong. One of the SEC’s toughest trips when the lights come on.',
+      headlines:[
+        ['Top Story','Palmetto Bowl week: Gamecocks vs. Clemson in Columbia','Bragging rights for a year, under the lights at Williams-Brice, Saturday at 7:30 on SEC Network.'],
+        ['From Saturday','No. 1 Georgia at Williams-Brice: the full highlights','ESPN’s full-game cut from Nov 21 is in the Video Center — a measuring-stick night in Columbia.'],
+        ['Classic','The Tennessee upset: 27–24 on a walk-off field goal','South Carolina beat No. 11 Tennessee at the gun — the full highlights live in the Video Center.'],
+        ['Home Edge','Night games at Williams-Brice hit different','Sandstorm, a loud student section, and SEC stakes — the Gamecocks’ edge is real after dark.'],
+        ['Keys vs. Clemson','Run game and turnovers decide a one-score rivalry','Keep Clemson’s front honest, win the turnover battle, and let the crowd do the rest.']
+      ],
+      schedule:[
+        ['Recent','vs. Tennessee (No. 11)','W 27–24 — walk-off field goal','w'],
+        ['Nov 21','vs. Georgia (No. 1)','Williams-Brice • Full highlights in Video Center',''],
+        ['Sat • 7:30 PM ET','vs. Clemson Tigers','PALMETTO BOWL • Williams-Brice • SEC Network',''],
+        ['Postseason','Bowl assignment','6–5 and bowl-eligible — destination TBD','']
+      ],
+      roster:[
+        ['LaNorris Sellers','QB','Dual-threat centerpiece of the offense'],
+        ['Nyck Harbor','WR','World-class speed on the outside'],
+        ['Mazeo Bennett Jr.','WR','Reliable hands in the slot and outside'],
+        ['Dylan Stewart','DE','Freak edge rusher — backfields beware'],
+        ['Gerald Kilgore','DB','Playmaker in the secondary']
+      ],
+      standings:{title:'SEC',rows:[['SC','South Carolina','6–5 — Bean #5',1],['UGA','Georgia','No. 1 — visited Columbia Nov 21',0],['TENN','Tennessee','No. 11 — lost 27–24 to SC',0],['CLEM','Clemson','Palmetto Bowl — Saturday night',0]]}
+    },
+
+    alter:{
+      id:'alter', order:6, name:'Alter Knights', shortName:'Alter', abbr:'ALT',
+      league:'High School • Ohio', leagueKey:'hs', shortLeague:'GCL Co-Ed',
+      color:'#5c4510', rawColor:'#7a5a12', grad:'linear-gradient(160deg,#a8841e,#3d2f08)',
+      sub:'High School Football • Kettering, Ohio', rank:"Bean's #6 Team — Where It Started",
+      venue:'Kettering, Ohio', coach:'Ed Domsitz',
+      identity:'Friday nights, Kettering pride',
+      record:'8–2 Regular Season',
+      espn:null,
+      quickLinks:[
+        ['MaxPreps Hub','https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/'],
+        ['MaxPreps Videos','https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/25-26/media/videos/']
+      ],
+      game:{
+        status:'final', statusLabel:'Season Wrap',
+        opponent:'McNicholas Rockets', oppAbbr:'MCN', oppColor:'#2d4d2a', oppSub:'OHSAA Playoffs',
+        dateISO:null, timeShort:'8–2 Final', timeLines:'SEASON<br>WRAP',
+        tv:'MaxPreps', note:'8–2 regular season (W 28–21 vs. Fairmont); playoff run ended at McNicholas.',
+        teamScore:null, oppScore:null
+      },
+      preview:{
+        summary:'Where Bean’s sports list started. Alter closed the regular season 8–2 — wins over Fairmont in the Battle of Kettering, Fenwick, Carroll and Chaminade Julienne — before the playoff run ended at McNicholas.',
+        keys:[
+          'Battle of Kettering bragging rights (28–21 over Fairmont) set the season tone.',
+          'Explosive offense: Alter hung 47, 44, 50 and 49 on opponents this fall.',
+          'Defense travels: the Knights allowed 7 points or fewer five times.'
+        ]
+      },
+      story:{
+        kicker:'High School • Alter Knights',
+        title:'Alter Knights: Friday nights, Kettering pride, and football that raised Bean',
+        body:"Every fan's list has a first team. For Bean, Alter is where it started — the Knights close out this front page the way they close out the lineup: always on it.",
+        byline:'High School Coverage',
+        railTitle:'Friday nights belong to Alter — Knights season recap'
+      },
+      pills:['Regular season: 8–2','Battle of Kettering: W 28–21','Playoffs: at McNicholas'],
+      about:'Where it all started. Every fan’s list has a first team — for Bean, Alter is it. The Knights closed the regular season 8–2 behind a balanced, explosive offense and a defense that allowed 7 points or fewer five times.',
+      headlines:[
+        ['Top Story','Friday nights belong to Alter','Kettering pride under the lights — the Knights close out Bean’s front page the way they close out the lineup: always on it.'],
+        ['Battle of Kettering','Owens Jr. leads Alter past Fairmont, 28–21','Rod Owens Jr. ran for 137 yards and 2 TDs and threw for another — hear from him in the Video Center.'],
+        ['Offense','A balanced attack that hangs 40+ in a hurry','47, 44, 50 and 49 — the Knights scored in bunches all fall.'],
+        ['Defense','Seven points or fewer, five times','The Alter defense traveled all season — the backbone of an 8–2 regular season.'],
+        ['Playoffs','Postseason run ends at McNicholas','A strong fall closes in the playoffs — and the standard for next season is set.']
+      ],
+      schedule:[
+        ['Regular Season','vs. Fairmont Firebirds','W 28–21 — Battle of Kettering','w'],
+        ['Regular Season','vs. Fenwick, Carroll & Chaminade Julienne','W — rivalry wins across the fall','w'],
+        ['Regular Season','Season mark','8–2 — five games allowing 7 points or fewer',''],
+        ['Playoffs','at McNicholas','L — postseason run ends','l']
+      ],
+      roster:[
+        ['Rod Owens Jr.','QB','Dual-threat leader — 137 rushing yards & 2 TDs vs. Fairmont, plus a passing TD'],
+        ['Knights Ground Game','RB Unit','The engine of the 40-point outbursts'],
+        ['Knights Receiving Corps','WR Unit','Balance that keeps defenses honest'],
+        ['Knights Defense','Defensive Unit','Allowed 7 points or fewer five times this fall'],
+        ['Ed Domsitz','Head Coach','The longtime standard on the Alter sideline']
+      ],
+      standings:{title:'Season Watch',rows:[['ALT','Alter Knights','8–2 regular season — Bean #6',1],['FAIR','Fairmont','Battle of Kettering — L 21–28',0],['MCN','McNicholas','Ended Alter’s playoff run',0],['CJ','Chaminade Julienne','Rivalry win for Alter',0]]}
+    }
+  };
+
+  var VIDEOS=[
+    {id:'dpzaBrsCo9U',team:'lions',kind:'Full Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Lions vs. Buccaneers — Full Game Highlights',meta:'Week 11 • Nov 22, 2026 • Detroit won 31–21 for its sixth straight win.'},
+    {id:'ya7OoSbLxlE',team:'lions',kind:'Calls of the Game',source:'youtube',sourceLabel:'YouTube',title:'Calls of the Game: Detroit picks up a tough 31–21 win over Tampa Bay',meta:'Dan Miller & Lomas Brown’s radio calls over the big plays from the win over Tampa Bay.'},
+    {id:'wQ8QMIYmWeA',team:'pistons',kind:'Full Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Pistons at Hawks — Full Game Highlights',meta:'Nov 22, 2026 • Full highlights from Detroit’s trip to Atlanta.'},
+    {id:'vk9wsWTp5Ns',team:'pistons',kind:'Full Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Pistons at Wizards — Full Game Highlights',meta:'Nov 12, 2026 • Detroit won a 2OT epic, 144–140.'},
+    {id:'eOy6r7CZeXs',team:'osu',kind:'Extended Highlights',source:'youtube',sourceLabel:'YouTube',title:'Ohio State at Nebraska — Extended Highlights',meta:'Nov 21, 2026 • Extended cut of the Buckeyes’ trip to Lincoln.'},
+    {id:'tyRmMgMgknU',team:'osu',kind:'Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Ohio State vs. Nebraska — Game Highlights',meta:'Nov 21, 2026 • Every big play from the Buckeyes at Nebraska.'},
+    {id:'jYg8O0iUg_E',team:'dayton',kind:'Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Cincinnati vs. Dayton — Game Highlights',meta:'2026–27 season • Highlights from the showdown at UD Arena.'},
+    {id:'Tm1Jf00415A',team:'dayton',kind:'Every Bucket',source:'youtube',sourceLabel:'YouTube',title:'Dayton: Every Single Bucket vs. NJIT',meta:'Every made basket from the win over NJIT, in one cut.'},
+    {id:'XICdvRxvhk4',team:'gamecocks',kind:'Full Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Georgia vs. South Carolina — Full Game Highlights',meta:'Nov 21, 2026 • No. 1 Georgia at Williams-Brice.'},
+    {id:'l9WfO_dBKYI',team:'gamecocks',kind:'Full Game Highlights',source:'youtube',sourceLabel:'YouTube',title:'Tennessee vs. South Carolina — Full Game Highlights',meta:'Gamecocks beat No. 11 Tennessee 27–24 on a walk-off field goal.'},
+    {id:'KnQyn-Dkfvw',team:'alter',kind:'Postgame Interview',source:'youtube',sourceLabel:'YouTube',title:'Alter QB Rod Owens Jr. leads Knights to rivalry win over Fairmont',meta:'Battle of Kettering • Owens ran for 137 yards & 2 TDs, threw for another in the 28–21 win.'}
+  ];
+
+  var EXTERNAL=[
+    {team:'lions',source:'sportsnet',sourceLabel:'Sportsnet',url:'https://www.sportsnet.ca/nfl/video/nfl-highlights-lions-31-buccaneers-21/',kind:'Game Highlights • 3:09',title:'NFL Highlights: Lions 31, Buccaneers 21 — Sportsnet Cut',meta:'Nov 22, 2026 • Goff threw for 2 TDs, Gibbs added 2 on the ground.',bestFor:'Lions • NFL roundup'},
+    {team:'pistons',source:'nba',sourceLabel:'NBC Sports',url:'https://www.nbcsports.com/watch/nba/nba-2026-27-highlights-detroit-pistons-105-san-antonio-spurs-93',kind:'Game Highlights',title:'Highlights: Pistons snap Spurs’ 12-game win streak, 105–93',meta:'Nov 17, 2026 • Coast 2 Coast Tuesday on NBC Sports — Detroit’s depth ends the streak.',bestFor:'Detroit Pistons'},
+    {team:'gamecocks',source:'espn',sourceLabel:'ESPN',url:'https://www.espn.ph/college-football/story/_/id/50558713/georgia-clinches-sec-title-game-berth-win-south-carolina',kind:'Full Highlights • 1:18',title:'Georgia vs. South Carolina: Full Highlights — on ESPN',meta:'Nov 21, 2026 • ESPN’s own highlight cut + full game story from Columbia.',bestFor:'Gamecocks • Dayton • National'},
+    {team:'lions',source:'nfl',sourceLabel:'NFL / Lions.com',url:'https://www.detroitlions.com/video/lions-vs-buccaneers-full-highlights-x0977',kind:'Official Team Highlights',title:'Lions vs. Buccaneers: Full Highlights — on DetroitLions.com',meta:'Official team site • Every highlight, plus Gibbs & Goff best-plays reels.',bestFor:'Detroit Lions'},
+    {team:'osu',source:'fox',sourceLabel:'FOX Sports / BTN',url:'https://www.huskermax.com/video-highlights-2026-nebraska-football-vs-ohio-state/',kind:'Video Board',title:'Ohio State at Nebraska — FOX & Big Ten Network Video Board',meta:'Nov 21, 2026 • FOX College Football and BTN clips, sights & sounds, postgame.',bestFor:'Ohio State • Big Ten'},
+    {team:'alter',source:'other',sourceLabel:'MaxPreps',url:'https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/25-26/media/videos/',kind:'Team Video Hub',title:'Alter Knights Videos — on MaxPreps',meta:'Highlights & full replays from Kettering • Stats presented by Hudl.',bestFor:'Alter Knights • High School'}
+  ];
+
+  /* ---------- Utilities ---------- */
+  function escapeHtml(s){
+    return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function ytWatch(id){return 'https://www.youtube.com/watch?v='+id;}
+  function ytThumb(id){return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg';}
+  function ytEmbed(id,autoplay){return 'https://www.youtube-nocookie.com/embed/'+id+'?rel=0'+(autoplay?'&autoplay=1':'');}
+  function firstForTeam(team){for(var i=0;i<VIDEOS.length;i++){if(VIDEOS[i].team===team)return VIDEOS[i];}return null;}
+
+  /* ---------- Theme Toggle ---------- */
+  var themeBtn=document.getElementById('themeToggle');
+  function applyTheme(t){
+    if(t==='dark'||t==='light'){ document.documentElement.setAttribute('data-theme',t); }
+    else { document.documentElement.removeAttribute('data-theme'); }
+    var isDark=(t==='dark')||(!t&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);
+    themeBtn.textContent=isDark?'☀ Light':'☾ Dark';
+  }
+  try{ applyTheme(localStorage.getItem('beanSportsTheme')); }catch(e){ applyTheme(null); }
+  themeBtn.addEventListener('click',function(){
+    var cur=document.documentElement.getAttribute('data-theme');
+    var sysDark=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var next=(cur==='dark'||(!cur&&sysDark))?'light':'dark';
+    try{ localStorage.setItem('beanSportsTheme',next); }catch(e){}
+    applyTheme(next);
+  });
+
+  /* ---------- Masthead Date & Local File Notice ---------- */
+  (function(){
+    var d=new Date();
+    var el=document.getElementById('mastDate');
+    if(el&&!isNaN(d.getTime())){
+      el.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+    }
+    if(location.protocol==='file:'){
+      var w=document.getElementById('vhLocalWarn');
+      if(w) w.style.display='block';
+    }
+  })();
+
+  /* ---------- State ---------- */
+  var sbFilter='all', sbSortMode='rank';
+  var hlTeamFilter='all', hlSourceFilter='all';
+  var openPreviewKey=null, currentTeam=null;
+
+  /* ---------- Renderers ---------- */
+  function getSortedTeamIds(){
+    var ids=TEAM_ORDER.slice();
+    if(sbSortMode==='soonest'){
+      ids.sort(function(a,b){
+        var ga=TEAMS[a].game, gb=TEAMS[b].game;
+        if(ga.status==='live'&&gb.status!=='live') return -1;
+        if(gb.status==='live'&&ga.status!=='live') return 1;
+        var ta=ga.dateISO?Date.parse(ga.dateISO):Infinity;
+        var tb=gb.dateISO?Date.parse(gb.dateISO):Infinity;
+        return ta-tb;
+      });
+    }
+    return ids;
+  }
+
+  function renderScoreboard(){
+    var track=document.getElementById('sbTrack');
+    track.innerHTML='';
+    getSortedTeamIds().forEach(function(key){
+      var t=TEAMS[key], g=t.game;
+      if(sbFilter!=='all'&&t.leagueKey!==sbFilter) return;
+      var card=document.createElement('article');
+      card.className='sb-card'+(g.status==='live'?' is-live':'');
+      var statusCls=g.status==='live'?'live':(g.status==='final'?'final':'');
+      var scoreMode=(g.teamScore!==null&&g.oppScore!==null);
+      card.innerHTML=
+        '<div class="sb-card-top"><span>'+escapeHtml(t.league)+'</span><span class="sb-status '+statusCls+'">'+escapeHtml(g.statusLabel)+'</span></div>'+
+        '<div class="team-row"><span class="abbr" style="background:'+t.color+'">'+escapeHtml(t.abbr)+'</span><div><div class="tname">'+escapeHtml(t.name)+'</div><div class="trec">'+escapeHtml(t.record)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.teamScore)+'</div>':'<div class="ttime">'+g.timeLines+'</div>')+'</div>'+
+        '<div class="team-row"><span class="abbr" style="background:'+g.oppColor+'">'+escapeHtml(g.oppAbbr)+'</span><div><div class="tname">'+escapeHtml(g.opponent)+'</div><div class="trec">'+escapeHtml(g.oppSub)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.oppScore)+'</div>':'<div class="ttime">'+escapeHtml(g.tv)+'</div>')+'</div>'+
+        '<div class="sb-note">'+escapeHtml(g.note)+'</div>'+
+        '<div class="sb-actions"><button type="button" class="preview-btn" data-preview="'+key+'" aria-expanded="'+(openPreviewKey===key?'true':'false')+'">'+(openPreviewKey===key?'✕ Close':'▶ Preview')+'</button><button type="button" class="dash-btn" data-dash="'+key+'">Dashboard →</button></div>';
+      track.appendChild(card);
+    });
+  }
+
+  function renderHomeSections(){
+    var heroSide=document.getElementById('heroSide');
+    heroSide.innerHTML=['osu','dayton','gamecocks'].map(function(k){
+      var t=TEAMS[k], hs=t.heroSide;
+      return '<article class="mini-story" data-dash="'+k+'" tabindex="0" role="link" aria-label="Open '+escapeHtml(t.name)+' dashboard"><label>'+escapeHtml(hs.label)+'</label><h3>'+escapeHtml(hs.title)+'</h3><p>'+escapeHtml(hs.text)+'</p></article>';
+    }).join('');
+
+    var feed=document.getElementById('headlineFeed');
+    feed.innerHTML=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], s=t.story;
+      return '<article class="article" id="feed-'+k+'"><div class="thumb" style="background:'+t.grad+'">'+escapeHtml(t.name).replace(' ','<br>')+'</div><div><label>'+escapeHtml(s.kicker)+'</label><h3>'+escapeHtml(s.title)+'</h3><p>'+escapeHtml(s.body)+'</p><div class="byline"><b>Bean Sports Staff</b> • '+escapeHtml(s.byline)+'</div><div><a class="dash-link" href="#team-'+k+'" data-dash="'+k+'">Open '+escapeHtml(t.shortName)+' Dashboard →</a></div></div></article>';
+    }).join('');
+
+    var cardHtml=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], g=t.game;
+      return '<article class="team-card"><div class="team-card-head" style="background:'+t.color+'"><span class="abbr">'+escapeHtml(t.abbr)+'</span><div><h3>'+escapeHtml(t.name)+'</h3><span>'+escapeHtml(t.sub)+'</span></div></div><div class="team-card-body"><p>'+escapeHtml(t.about)+'</p><div class="next"><span><b>'+(g.status==='final'?'Latest':'Next Up')+'</b><br>vs. '+escapeHtml(g.opponent)+'</span><span style="text-align:right">'+escapeHtml(g.timeShort)+'<br>'+escapeHtml(g.tv)+'</span></div><div class="team-links"><a href="#team-'+k+'" data-dash="'+k+'">Team Dashboard →</a><a href="#videos" data-play="'+k+'">▶ Highlights</a><a href="'+t.quickLinks[0][1]+'" target="_blank" rel="noopener">Box / Info ↗</a></div></div></article>';
+    }).join('');
+    document.getElementById('teamsGrid').innerHTML=cardHtml;
+    document.getElementById('hubGrid').innerHTML=cardHtml;
+
+    var railHl=document.getElementById('railHeadlines');
+    railHl.innerHTML=TEAM_ORDER.map(function(k,idx){
+      var t=TEAMS[k];
+      return '<li><span class="num">'+(idx+1)+'</span><div><a href="#team-'+k+'" data-dash="'+k+'">'+escapeHtml(t.story.railTitle)+'</a><small>'+escapeHtml(t.shortLeague)+' • '+escapeHtml(t.shortName)+'</small></div></li>';
+    }).join('')+'<li><span class="num">7</span><div><a href="#my-teams" data-hub>All six of Bean\'s teams, one front page — open full hub</a><small>My Teams</small></div></li>';
+
+    document.getElementById('railStandings').innerHTML=
+      '<table class="standings"><tr><th colspan="2">Pro Teams</th><th>Record / Status</th></tr>'+
+      '<tr class="bean"><td>DET</td><td>Detroit Lions</td><td>'+escapeHtml(TEAMS.lions.record)+'</td></tr>'+
+      '<tr class="bean"><td>DET</td><td>Detroit Pistons</td><td>'+escapeHtml(TEAMS.pistons.record)+'</td></tr></table>'+
+      '<table class="standings" style="border-top:1px solid var(--line)"><tr><th colspan="2">College &amp; High School</th><th>Record / Status</th></tr>'+
+      '<tr class="bean"><td>OSU</td><td>Ohio State</td><td>'+escapeHtml(TEAMS.osu.record)+'</td></tr>'+
+      '<tr class="bean"><td>DAY</td><td>Dayton Flyers</td><td>'+escapeHtml(TEAMS.dayton.record)+'</td></tr>'+
+      '<tr class="bean"><td>SC</td><td>South Carolina</td><td>'+escapeHtml(TEAMS.gamecocks.record)+'</td></tr>'+
+      '<tr class="bean"><td>ALT</td><td>Alter Knights</td><td>'+escapeHtml(TEAMS.alter.record)+'</td></tr></table>';
+
+    document.getElementById('railWatchlist').innerHTML=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], g=t.game;
+      return '<div class="watch-item"><span class="dot" style="background:'+t.color+'"></span><span><b>'+escapeHtml(t.shortName)+'</b> vs. '+escapeHtml(g.opponent)+'</span><time>'+escapeHtml(g.timeShort)+'</time></div>';
+    }).join('');
+  }
+
+  /* ---------- Countdown Strip ---------- */
+  function updateCountdown(){
+    var now=Date.now(), liveTeam=null, nextTeam=null, nextMs=Infinity;
+    TEAM_ORDER.forEach(function(k){
+      var t=TEAMS[k], g=t.game;
+      if(g.status==='live'&&!liveTeam){ liveTeam=t; }
+      if(g.dateISO){
+        var ts=Date.parse(g.dateISO);
+        if(!isNaN(ts)&&ts>now&&ts-now<nextMs){ nextMs=ts-now; nextTeam=t; }
+      }
+    });
+    var cdText=document.getElementById('cdText');
+    var cdTimer=document.getElementById('cdTimer');
+    if(liveTeam){
+      cdText.innerHTML='<b>LIVE NOW:</b> '+escapeHtml(liveTeam.name)+' vs. '+escapeHtml(liveTeam.game.opponent)+' ('+escapeHtml(liveTeam.game.statusLabel)+')';
+      cdTimer.textContent='ON AIR';
+      return;
+    }
+    if(!nextTeam){
+      cdText.textContent='All six Bean Sports teams ready — tap any team for its dashboard.';
+      cdTimer.textContent='';
+      return;
+    }
+    var diff=Math.max(0,Math.floor(nextMs/1000));
+    var d=Math.floor(diff/86400), h=Math.floor((diff%86400)/3600), m=Math.floor((diff%3600)/60);
+    cdText.innerHTML='<b>'+escapeHtml(nextTeam.name)+'</b> vs. '+escapeHtml(nextTeam.game.opponent)+' • '+escapeHtml(nextTeam.game.timeShort)+' ('+escapeHtml(nextTeam.game.tv)+')';
+    cdTimer.textContent=(d>0?d+'d ':'')+h+'h '+m+'m';
+  }
+
+  /* ---------- Video Hub & Highlights ---------- */
+  var frame=document.getElementById('vhFrame');
+  var nowLabel=document.getElementById('vhNowLabel');
+  var nowTitle=document.getElementById('vhNowTitle');
+  var nowMeta=document.getElementById('vhNowMeta');
+  var nowLink=document.getElementById('vhNowLink');
+  var listEl=document.getElementById('vhList');
+  var gridEl=document.getElementById('hlGrid');
+
+  function playVideo(v,scroll){
+    if(!v||!frame) return;
+    var t=TEAMS[v.team];
+    frame.src=ytEmbed(v.id,true);
+    nowLabel.textContent='Now Playing • '+t.name+' • '+t.shortLeague+' • '+v.sourceLabel;
+    nowTitle.textContent=v.title;
+    nowMeta.textContent=v.meta;
+    nowLink.href=ytWatch(v.id);
+    nowLink.textContent='Watch on '+v.sourceLabel+' ↗';
+    listEl.querySelectorAll('.vh-item').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-vid')===v.id);});
+    gridEl.querySelectorAll('.hl-card').forEach(function(c){c.style.outline=(c.getAttribute('data-vid')===v.id)?'2px solid var(--red)':'';});
+    if(scroll){document.getElementById('videos').scrollIntoView({behavior:'smooth',block:'start'});}
+  }
+
+  function renderVideos(){
+    listEl.innerHTML=''; gridEl.innerHTML='';
+    VIDEOS.forEach(function(v,i){
+      var t=TEAMS[v.team];
+      var b=document.createElement('button');
+      b.type='button'; b.className='vh-item'+(i===0?' active':''); b.setAttribute('data-vid',v.id); b.setAttribute('role','option');
+      b.innerHTML='<span class="vh-thumb"><img src="'+ytThumb(v.id)+'" alt="" loading="lazy"><span class="src-badge">'+escapeHtml(v.sourceLabel)+'</span><span class="play"><span>▶</span></span></span><span><span class="vt">'+escapeHtml(v.title)+'</span><span class="vm" style="display:block">'+escapeHtml(t.name)+' • '+escapeHtml(v.kind)+' • <span class="vsrc">'+escapeHtml(v.sourceLabel)+'</span></span></span>';
+      b.addEventListener('click',function(){playVideo(v,false);});
+      listEl.appendChild(b);
+
+      var card=document.createElement('button');
+      card.type='button'; card.className='hl-card'; card.setAttribute('data-vid',v.id); card.setAttribute('data-team',v.team); card.setAttribute('data-source',v.source);
+      card.innerHTML='<span class="hl-thumb" style="display:block"><img src="'+ytThumb(v.id)+'" alt="'+escapeHtml(v.title)+'" loading="lazy"><span class="hl-src">'+escapeHtml(v.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(v.kind)+'</span><span class="hl-play">▶</span></span><span class="hl-body" style="display:block"><label>'+escapeHtml(t.name)+' • '+escapeHtml(t.shortLeague)+' • '+escapeHtml(v.sourceLabel)+'</label><h3>'+escapeHtml(v.title)+'</h3><p>'+escapeHtml(v.meta)+'</p></span>';
+      card.addEventListener('click',function(){playVideo(v,true);});
+      gridEl.appendChild(card);
+    });
+
+    var dirEl=document.getElementById('srcDirGrid');
+    dirEl.innerHTML='';
+    EXTERNAL.forEach(function(x){
+      var t=TEAMS[x.team];
+      var card=document.createElement('a');
+      card.className='hl-card'; card.href=x.url; card.target='_blank'; card.rel='noopener'; card.setAttribute('data-team',x.team); card.setAttribute('data-source',x.source);
+      card.innerHTML='<span class="hl-thumb" style="display:block;background:'+t.grad+'"><span class="hl-watermark">'+escapeHtml(t.abbr)+'</span><span class="hl-ext-brand">'+escapeHtml(t.shortName)+'</span><span class="hl-src">'+escapeHtml(x.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(x.kind)+'</span><span class="hl-play">↗</span></span><span class="hl-body" style="display:block"><label>'+escapeHtml(t.name)+' • '+escapeHtml(t.shortLeague)+' • '+escapeHtml(x.sourceLabel)+'</label><h3>'+escapeHtml(x.title)+'</h3><p>'+escapeHtml(x.meta)+'</p><span class="hl-ext">Opens on '+escapeHtml(x.sourceLabel)+' ↗</span></span>';
+      gridEl.appendChild(card);
+
+      var sc=document.createElement('a');
+      sc.className='src-card'; sc.href=x.url; sc.target='_blank'; sc.rel='noopener';
+      sc.innerHTML='<span class="src-top"><span class="src-name">'+escapeHtml(x.sourceLabel)+'</span><span class="src-go">Open ↗</span></span><p>'+escapeHtml(x.meta)+'</p><small>Best for: '+escapeHtml(x.bestFor)+'</small>';
+      dirEl.appendChild(sc);
+    });
+  }
+
+  function applyHlFilters(){
+    gridEl.querySelectorAll('.hl-card').forEach(function(c){
+      var okT=(hlTeamFilter==='all'||c.getAttribute('data-team')===hlTeamFilter);
+      var okS=(hlSourceFilter==='all'||c.getAttribute('data-source')===hlSourceFilter);
+      c.style.display=(okT&&okS)?'':'none';
+    });
+  }
+
+  /* ---------- Preview Drawer ---------- */
+  var panel=document.getElementById('previewPanel');
+  var pvLeague=document.getElementById('pvLeague'), pvTitle=document.getElementById('pvTitle'),
+      pvSummary=document.getElementById('pvSummary'), pvMeta=document.getElementById('pvMeta'),
+      pvKeys=document.getElementById('pvKeys'), pvWatch=document.getElementById('pvWatch');
+
+  function closePreview(){
+    panel.classList.remove('open');
+    openPreviewKey=null;
+    renderScoreboard();
+  }
+  function openPreview(key){
+    var t=TEAMS[key]; if(!t) return;
+    if(openPreviewKey===key){ closePreview(); return; }
+    openPreviewKey=key;
+    var g=t.game;
+    pvLeague.textContent='Game Preview • '+t.league;
+    pvTitle.textContent=t.name+' vs. '+g.opponent;
+    pvSummary.textContent=t.preview.summary;
+    pvMeta.innerHTML=[g.timeShort, t.venue, 'TV: '+g.tv].map(function(m){return '<span>'+escapeHtml(m)+'</span>';}).join('');
+    pvKeys.innerHTML=t.preview.keys.map(function(k,i){return '<li><span class="kn">'+(i+1)+'</span><span>'+escapeHtml(k)+'</span></li>';}).join('');
+    panel.classList.add('open');
+    renderScoreboard();
+    panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+  document.getElementById('pvClose').addEventListener('click',closePreview);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&openPreviewKey) closePreview(); });
+  pvWatch.addEventListener('click',function(){
+    if(!openPreviewKey) return;
+    var v=firstForTeam(openPreviewKey);
+    if(v){ goHome('#videos',true); setTimeout(function(){playVideo(v,true);},60); }
+  });
+
+  /* ---------- Views & Proper Browser History Routing ---------- */
+  var homeView=document.getElementById('homeView'), hubView=document.getElementById('hubView'), dashView=document.getElementById('dashView');
+
+  function syncNav(activeKey){
+    document.querySelectorAll('#mainNav a').forEach(function(a){
+      a.classList.toggle('active', a.getAttribute('data-nav')===activeKey);
+    });
+  }
+  function showView(which){
+    homeView.hidden=which!=='home';
+    hubView.hidden=which!=='hub';
+    dashView.hidden=which!=='dash';
+    if(which!=='home'){ closePreview(); window.scrollTo({top:0,behavior:'smooth'}); }
+  }
+  function renderDash(key){
+    var t=TEAMS[key]; if(!t) return;
+    currentTeam=key;
+    var g=t.game;
+    var head=document.getElementById('dashHead');
+    head.style.background=t.color; head.setAttribute('data-abbr',t.abbr);
+    document.getElementById('dashAbbr').textContent=t.abbr;
+    document.getElementById('dashName').textContent=t.name;
+    document.getElementById('dashSub').textContent=t.sub+' • '+t.rank;
+    var pills=t.pills.slice();
+    if(t.record&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
+    document.getElementById('dashPills').innerHTML=pills.map(function(p,i){return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>';}).join('');
+    document.getElementById('dashHeadlines').innerHTML=t.headlines.map(function(h){return '<li><small>'+escapeHtml(h[0])+'</small><b>'+escapeHtml(h[1])+'</b><p>'+escapeHtml(h[2])+'</p></li>';}).join('');
+    document.getElementById('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+t.schedule.map(function(r){
+      var cls=r[3]==='w'?'res-w':(r[3]==='l'?'res-l':'');
+      return '<tr><td style="white-space:nowrap;font-weight:700">'+escapeHtml(r[0])+'</td><td style="font-weight:600">'+escapeHtml(r[1])+'</td><td class="'+cls+'">'+escapeHtml(r[2])+'</td></tr>';
+    }).join('');
+    document.getElementById('dashRoster').innerHTML='<tr><th>Player</th><th>Pos</th><th>What to Watch</th></tr>'+t.roster.map(function(r){return '<tr><td style="font-weight:700">'+escapeHtml(r[0])+'</td><td style="white-space:nowrap">'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>';}).join('');
+    var facts=[['League',t.league],['Home',t.venue],['Head Coach',t.coach],['Record',t.record],['Identity',t.identity],["Bean's Rank",t.rank]];
+    document.getElementById('dashFacts').innerHTML=facts.map(function(f){return '<div><dt>'+escapeHtml(f[0])+'</dt><dd>'+escapeHtml(f[1])+'</dd></div>';}).join('');
+    document.getElementById('dashAbout').textContent=t.about;
+    document.getElementById('dashLinks').innerHTML=t.quickLinks.map(function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+escapeHtml(l[0])+' ↗</a>';}).join('');
+    document.getElementById('dashStandName').textContent=t.standings.title;
+    document.getElementById('dashStandings').innerHTML='<tr><th></th><th>Team</th><th>Watch Note</th></tr>'+t.standings.rows.map(function(r){return '<tr'+(r[3]?' class="bean"':'')+'><td style="font-weight:800">'+escapeHtml(r[0])+'</td><td>'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>';}).join('');
+    document.getElementById('dashNext').innerHTML='<b>vs. '+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(g.timeShort)+' • '+escapeHtml(t.venue)+'<br>TV: '+escapeHtml(g.tv);
+    syncNav(key);
+    showView('dash');
+  }
+  function pushHash(h){
+    try{ if(location.hash!==h) history.pushState(null,'',h); }catch(e){}
+  }
+  function openDash(key,skipHistory){
+    renderDash(key);
+    if(!skipHistory) pushHash('#team-'+key);
+  }
+  function openHub(skipHistory){
+    syncNav('hub'); showView('hub');
+    if(!skipHistory) pushHash('#my-teams');
+  }
+  function goHome(anchor,skipHistory){
+    syncNav(anchor?anchor.replace('#',''):'home');
+    showView('home');
+    if(!skipHistory) pushHash(anchor||'#');
+    if(anchor&&anchor!=='#'){
+      setTimeout(function(){var el=document.querySelector(anchor); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});},60);
+    }
+  }
+  function routeFromHash(){
+    var raw=location.hash||'';
+    if(raw.indexOf('#team-')===0){
+      var k=raw.replace('#team-','');
+      if(TEAMS[k]){ openDash(k,true); return; }
+    }
+    if(raw==='#my-teams'){ openHub(true); return; }
+    goHome(raw&&raw!=='#'?raw:null,true);
+  }
+  window.addEventListener('popstate',routeFromHash);
+  window.addEventListener('hashchange',routeFromHash);
+
+  /* ---------- Event Wiring ---------- */
+  document.getElementById('sbFilters').addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    sbFilter=btn.getAttribute('data-filter');
+    renderScoreboard();
+  });
+  document.getElementById('sbSortBtn').addEventListener('click',function(){
+    sbSortMode=(sbSortMode==='rank')?'soonest':'rank';
+    this.textContent=(sbSortMode==='rank')?"Sort: Bean's Rank":'Sort: Soonest Game';
+    renderScoreboard();
+  });
+  document.getElementById('hlFilters').addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    hlTeamFilter=btn.getAttribute('data-team');
+    applyHlFilters();
+  });
+  document.getElementById('srcFilters').addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+    btn.classList.add('active');
+    hlSourceFilter=btn.getAttribute('data-source');
+    applyHlFilters();
+  });
+
+  document.addEventListener('click',function(e){
+    var pv=e.target.closest('[data-preview]');
+    if(pv){ e.preventDefault(); openPreview(pv.getAttribute('data-preview')); return; }
+    var dash=e.target.closest('[data-dash]');
+    if(dash){ e.preventDefault(); openDash(dash.getAttribute('data-dash')); return; }
+    var hub=e.target.closest('[data-hub]');
+    if(hub){ e.preventDefault(); openHub(); return; }
+    var home=e.target.closest('[data-home]');
+    if(home){ e.preventDefault(); goHome(); return; }
+    var play=e.target.closest('[data-play]');
+    if(play){
+      e.preventDefault();
+      var v=firstForTeam(play.getAttribute('data-play'));
+      goHome('#videos');
+      if(v) setTimeout(function(){playVideo(v,true);},80);
+      return;
+    }
+    var sec=e.target.closest('a[href="#videos"],a[href="#headlines"],a[href="#standings"]');
+    if(sec){
+      e.preventDefault();
+      goHome(sec.getAttribute('href'));
+    }
+  });
+  document.addEventListener('keydown',function(e){
+    var card=e.target.closest('.mini-story[data-dash]');
+    if(card&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); openDash(card.getAttribute('data-dash')); }
+  });
+
+  document.getElementById('pvTeamLink').addEventListener('click',function(e){
+    e.preventDefault(); if(openPreviewKey) openDash(openPreviewKey);
+  });
+  document.getElementById('dashPreviewBtn').addEventListener('click',function(){
+    if(!currentTeam) return; var k=currentTeam; goHome(); setTimeout(function(){openPreview(k);},90);
+  });
+  function dashPlay(){
+    if(!currentTeam) return;
+    var v=firstForTeam(currentTeam);
+    goHome('#videos');
+    if(v) setTimeout(function(){playVideo(v,true);},80);
+  }
+  document.getElementById('dashPlayBtn').addEventListener('click',dashPlay);
+  document.getElementById('dashVideoTop').addEventListener('click',function(e){e.preventDefault(); dashPlay();});
+  document.getElementById('dashVideoTab').addEventListener('click',function(e){e.preventDefault(); dashPlay();});
+
+  /* ---------- Live ESPN Sync (Graceful Fallback) ---------- */
+  function formatGameDate(iso){
+    var d=new Date(iso);
+    if(isNaN(d.getTime())) return {short:'TBD',lines:'TBD'};
+    var day=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
+    var time=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+    return {short:day+' '+time.replace(':00 ',' '),lines:day+'<br>'+time};
+  }
+
+  function fetchTeamLive(key){
+    var t=TEAMS[key];
+    if(!t.espn) return Promise.resolve(false);
+    var url='https://site.api.espn.com/apis/site/v2/sports/'+t.espn.sport+'/'+t.espn.league+'/teams/'+t.espn.teamId;
+    return fetch(url,{cache:'no-store'}).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(data){
+      var tm=data&&data.team; if(!tm) return false;
+      if(tm.record&&tm.record.items&&tm.record.items[0]&&tm.record.items[0].summary){
+        t.record=tm.record.items[0].summary;
+      }
+      if(tm.standingSummary){
+        t.pills[0]=t.record+' • '+tm.standingSummary;
+      }
+      var ev=tm.nextEvent&&tm.nextEvent[0];
+      if(ev&&ev.competitions&&ev.competitions[0]){
+        var comp=ev.competitions[0];
+        var me=null, opp=null;
+        (comp.competitors||[]).forEach(function(c){
+          if(String(c.id)===String(t.espn.teamId)) me=c; else opp=c;
+        });
+        if(me&&opp&&opp.team){
+          var st=comp.status&&comp.status.type||{};
+          t.game.opponent=opp.team.displayName||opp.team.shortDisplayName||t.game.opponent;
+          t.game.oppAbbr=opp.team.abbreviation||t.game.oppAbbr;
+          if(opp.team.color) t.game.oppColor='#'+opp.team.color.replace('#','');
+          t.game.oppSub=(me.homeAway==='home'?'At '+t.venue.split('•')[0].trim():'Away');
+          t.game.dateISO=ev.date||t.game.dateISO;
+          var fmt=formatGameDate(t.game.dateISO);
+          t.game.timeShort=fmt.short;
+          t.game.timeLines=fmt.lines;
+          var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||t.game.tv;
+          t.game.tv=bcast;
+          if(st.state==='in'){
+            t.game.status='live';
+            t.game.statusLabel=st.shortDetail||'LIVE';
+            t.game.teamScore=me.score&&me.score.displayValue!=null?me.score.displayValue:(me.score||'0');
+            t.game.oppScore=opp.score&&opp.score.displayValue!=null?opp.score.displayValue:(opp.score||'0');
+          } else if(st.state==='post'){
+            t.game.status='final';
+            t.game.statusLabel=st.shortDetail||'Final';
+            t.game.teamScore=me.score&&me.score.displayValue!=null?me.score.displayValue:(me.score||'0');
+            t.game.oppScore=opp.score&&opp.score.displayValue!=null?opp.score.displayValue:(opp.score||'0');
+          } else {
+            t.game.status='upcoming';
+            t.game.statusLabel=st.shortDetail||'Upcoming';
+            t.game.teamScore=null; t.game.oppScore=null;
+          }
+        }
+      }
+      return true;
+    }).catch(function(){ return false; });
+  }
+
+  function syncLive(){
+    var dot=document.getElementById('liveDot'), lbl=document.getElementById('liveLabel');
+    lbl.textContent='SYNCING…';
+    Promise.all(TEAM_ORDER.map(fetchTeamLive)).then(function(results){
+      var okCount=results.filter(Boolean).length;
+      if(okCount>0){
+        dot.className='live-dot ok pulse';
+        var nowStr=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
+        lbl.textContent='LIVE ESPN • '+nowStr;
+        document.getElementById('standingsBadge').textContent='Live Records';
+      } else {
+        dot.className='live-dot';
+        lbl.textContent='SNAPSHOT MODE';
+      }
+      renderScoreboard();
+      renderHomeSections();
+      updateCountdown();
+      if(currentTeam&&!dashView.hidden) renderDash(currentTeam);
+    });
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click',syncLive);
+
+  /* ---------- Initial Boot ---------- */
+  renderScoreboard();
+  renderHomeSections();
+  renderVideos();
+  updateCountdown();
+  routeFromHash();
+  syncLive();
+  setInterval(updateCountdown, 30000);
+  setInterval(function(){
+    var anyLive=TEAM_ORDER.some(function(k){return TEAMS[k].game.status==='live';});
+    if(anyLive) syncLive();
+  }, 60000);
+})();
+</script>
+</body>
+</html>
