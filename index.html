@@ -210,6 +210,27 @@ h1[tabindex="-1"]:focus{outline:none}
 .pod-body{padding:0 18px 18px}
 .pod-sub{margin:0 0 12px;font-size:13.5px;color:#c9cad2;line-height:1.5}
 .pod-frame{display:block;width:100%;height:175px;min-height:175px;max-height:175px;border:0;border-radius:10px;overflow:hidden;background:#0b2242}
+.pod-now{background:#1d1d21;border:1px solid #2c2c33;border-radius:12px;padding:14px 16px;margin-bottom:12px}
+.pod-now-label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
+.pod-now h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:21px;line-height:1.25;margin:5px 0 6px;font-weight:700;color:#fff}
+.pod-now p{margin:0 0 12px;color:#aeb0ba;font-size:13.5px;line-height:1.5}
+.pod-now p.pod-status{margin:10px 0 0;color:#ffd0d8;font-size:13px}
+.pod-status a{color:#fff;font-weight:700;text-decoration:underline}
+.pod-now audio{display:block;width:100%;height:44px;color-scheme:dark}
+.pod-skip{display:flex;gap:8px;margin-top:10px}
+.pod-skip button,.pod-showall{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:7px 13px;border:1px solid #3a3a42;background:none;color:#fff}
+.pod-skip button:hover,.pod-showall:hover{border-color:#fff}
+.pod-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+.pod-ep{display:flex;width:100%;align-items:center;gap:12px;text-align:left;background:#1d1d21;border:1px solid #2c2c33;border-radius:10px;padding:10px 12px;color:#fff}
+.pod-ep:hover{border-color:#4a4a55}
+.pod-ep.active{border-color:var(--red);background:#26262c}
+.pe-play{flex:0 0 28px;width:28px;height:28px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:11px;padding-left:2px}
+.pe-t{display:block;font-weight:700;font-size:14px;line-height:1.3}
+.pe-m{display:block;font-size:11px;color:#aeb0ba;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:2px}
+.pod-showall{margin-top:10px}
+details.pod-apple{margin-top:14px;border-top:1px solid #2c2c33;padding-top:12px}
+details.pod-apple summary{cursor:pointer;color:#c9cad2;font-size:13px;font-weight:700}
+details.pod-apple .pod-frame{margin-top:10px}
 .pod-note{margin:12px 2px 0;font-size:13px;color:var(--muted);line-height:1.5}
 .pod-note a{color:var(--red);font-weight:700;text-decoration:underline}
 .pod-more{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
@@ -546,7 +567,21 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       <a class="pod-cta" href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open in Apple Podcasts ↗</a>
     </div>
     <div class="pod-body">
-      <iframe class="pod-frame" id="podFrame" height="175" data-src="https://embed.podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521?theme=dark" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" title="The Starting Five Daily on Apple Podcasts"></iframe>
+      <p class="pod-sub" id="podLoading" role="status">Loading episodes…</p>
+      <div class="pod-now" id="podNow" hidden>
+        <span class="pod-now-label" id="podNowLabel">Latest episode</span>
+        <h3 id="podNowTitle"></h3>
+        <p id="podNowDesc"></p>
+        <audio id="podAudio" controls preload="none"></audio>
+        <div class="pod-skip"><button type="button" id="podBack">↺ 15s</button><button type="button" id="podFwd">30s ↻</button></div>
+        <p class="pod-status" id="podStatus" role="status"></p>
+      </div>
+      <ol class="pod-list" id="podList"></ol>
+      <button type="button" class="pod-showall" id="podMore" hidden>Show all episodes</button>
+      <details class="pod-apple" id="podApple">
+        <summary>Use Apple's embedded player instead</summary>
+        <iframe class="pod-frame" id="podFrame" height="175" data-src="https://embed.podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521?theme=dark" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" title="The Starting Five Daily on Apple Podcasts"></iframe>
+      </details>
     </div>
   </section>
   <p class="pod-note">Player won't start an episode? <a href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open the show in Apple Podcasts</a>.</p>
@@ -1477,6 +1512,110 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     openPreview(currentTeam);
   });
 
+  /* ---------- Podcast: native in-page player fed by the show's own RSS feed ---------- */
+  // Apple's embedded player can't play this show's episodes, so we stream the feed's audio directly.
+  var FEED_URL='https://udbean125.github.io/podcasts/the-starting-five-daily/feed.xml';
+  var episodes=[], podStarted=false, podIdx=-1, podShowAll=false, podCover='';
+  var audio=$('podAudio'), podFrame=$('podFrame'), podApple=$('podApple');
+
+  function xmlText(node,tag){ var el=node.getElementsByTagName(tag)[0]; return el?el.textContent.trim():''; }
+  function fmtDur(s){ var m=Math.round(s/60); return m>0?m+' min':''; }
+  function shortTitle(t){ var x=t.replace(/^The Starting Five\s*-\s*/,''); return x||t; }
+  function parseFeed(xml){
+    var doc=new DOMParser().parseFromString(xml,'application/xml');
+    if(doc.getElementsByTagName('parsererror').length) throw new Error('feed parse');
+    var img=doc.getElementsByTagName('itunes:image')[0];
+    podCover=img?img.getAttribute('href'):'';
+    var out=[], items=doc.getElementsByTagName('item');
+    for(var i=0;i<items.length;i++){
+      var it=items[i], enc=it.getElementsByTagName('enclosure')[0];
+      if(!enc||!enc.getAttribute('url')) continue;
+      out.push({
+        title:xmlText(it,'title'), desc:xmlText(it,'description'),
+        date:Date.parse(xmlText(it,'pubDate'))||0,
+        url:enc.getAttribute('url'),
+        secs:parseInt(xmlText(it,'itunes:duration'),10)||0
+      });
+    }
+    out.sort(function(a,b){ return b.date-a.date; });
+    return out;
+  }
+  function fetchText(url,ms){
+    var ctl=window.AbortController?new AbortController():null, timer=null;
+    if(ctl) timer=setTimeout(function(){ ctl.abort(); },ms);
+    return fetch(url,{cache:'no-cache',signal:ctl?ctl.signal:undefined}).then(function(r){
+      clearTimeout(timer);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.text();
+    },function(err){ clearTimeout(timer); throw err; });
+  }
+
+  function renderPodList(){
+    var shown=podShowAll?episodes:episodes.slice(0,8);
+    $('podList').innerHTML=shown.map(function(e,i){
+      return '<li><button type="button" class="pod-ep'+(i===podIdx?' active':'')+'" data-ep="'+i+'"><span class="pe-play" aria-hidden="true">▶</span><span><span class="pe-t">'+escapeHtml(shortTitle(e.title))+'</span><span class="pe-m">'+escapeHtml(fmtDur(e.secs))+'</span></span></button></li>';
+    }).join('');
+    var more=$('podMore');
+    more.hidden=podShowAll||episodes.length<=8;
+    more.textContent='Show all '+episodes.length+' episodes';
+  }
+
+  function showPodError(){
+    $('podStatus').innerHTML='This episode couldn\'t play in the browser. <a href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open the show in Apple Podcasts ↗</a>';
+  }
+
+  function selectEpisode(i,play){
+    var e=episodes[i]; if(!e) return;
+    podIdx=i;
+    $('podStatus').textContent='';
+    $('podNowLabel').textContent=i===0?'Latest episode':'Now selected';
+    $('podNowTitle').textContent=e.title;
+    $('podNowDesc').textContent=e.desc;
+    audio.src=e.url;
+    if(play){
+      var pr=audio.play();
+      if(pr&&pr.catch) pr.catch(function(err){ if(!err||err.name!=='AbortError') showPodError(); });
+    }
+    renderPodList();
+    try{
+      if('mediaSession' in navigator&&window.MediaMetadata){
+        navigator.mediaSession.metadata=new MediaMetadata({
+          title:e.title, artist:'The Starting Five Daily', album:'The Starting Five Daily',
+          artwork:podCover?[{src:podCover,sizes:'1400x1400',type:'image/jpeg'}]:[]
+        });
+        navigator.mediaSession.setActionHandler('seekbackward',function(){ audio.currentTime=Math.max(0,audio.currentTime-15); });
+        navigator.mediaSession.setActionHandler('seekforward',function(){ audio.currentTime=audio.currentTime+30; });
+      }
+    }catch(err){}
+  }
+
+  audio.addEventListener('error',function(){ if(audio.getAttribute('src')) showPodError(); });
+  $('podBack').addEventListener('click',function(){ audio.currentTime=Math.max(0,audio.currentTime-15); });
+  $('podFwd').addEventListener('click',function(){ audio.currentTime=audio.currentTime+30; });
+  $('podList').addEventListener('click',function(e){
+    var b=e.target.closest('[data-ep]'); if(!b) return;
+    selectEpisode(parseInt(b.getAttribute('data-ep'),10),true);
+  });
+  $('podMore').addEventListener('click',function(){ podShowAll=true; renderPodList(); });
+  podApple.addEventListener('toggle',function(){
+    if(podApple.open&&!podFrame.getAttribute('src')) podFrame.setAttribute('src',podFrame.getAttribute('data-src'));
+  });
+
+  function enterPodcast(){
+    if(podStarted) return;
+    podStarted=true;
+    fetchText(FEED_URL,10000).then(parseFeed).then(function(list){
+      if(!list.length) throw new Error('empty feed');
+      episodes=list;
+      $('podLoading').hidden=true;
+      $('podNow').hidden=false;
+      selectEpisode(0,false);
+    }).catch(function(){
+      $('podLoading').textContent='Couldn\'t load the episode list, so here is Apple\'s player instead.';
+      podApple.open=true;
+    });
+  }
+
   /* ---------- Hash Router: one visible view at a time, Back/Forward aware ---------- */
   var SECTIONS={podcast:1,videos:1,headlines:1,standings:1,'my-teams':1};
   var TITLES={
@@ -1489,7 +1628,6 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   };
   var viewEls=document.querySelectorAll('[data-view]');
   var navEl=$('mainNav');
-  var podFrame=$('podFrame');
 
   function parseRoute(){
     var h=(location.hash||'').replace(/^#\/?/,'');
@@ -1527,7 +1665,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     document.title=title;
 
     // Heavy embeds load only when their page is first opened.
-    if(r.view==='podcast'&&!podFrame.getAttribute('src')){ podFrame.setAttribute('src',podFrame.getAttribute('data-src')); }
+    if(r.view==='podcast'){ enterPodcast(); }
     if(r.view==='videos'){ enterVideos(); }
 
     scrollTopNow();
