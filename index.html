@@ -5,14 +5,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#1c1c21">
+<meta name="description" content="Bean Sports — one front page for the Lions, Pistons, Ohio State, Dayton, Gamecocks and Alter Knights, with live scores, highlights and a daily podcast.">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="Bean Sports">
 <link rel="icon" type="image/svg+xml" href="icons/bean-sports-icon.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>Bean Sports — Lions, Pistons, Ohio State, Dayton, Gamecocks, Alter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Barlow:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script>
+/* Apply the saved theme before first paint so there is no light/dark flash. */
+try{var t=localStorage.getItem('beanSportsTheme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}
+</script>
 <style>
 :root{
   --red:#d6002a; --black:#121214; --brand-bg:#1c1c21; --nav:#1b1b1e; --nav2:#2b2b2f;
@@ -28,16 +35,19 @@
   --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{margin:0;font-family:"Barlow",system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:clip}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;background:var(--black)}
+body{margin:0;font-family:"Barlow",system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:clip;min-height:100vh;min-height:100dvh}
 a{color:inherit;text-decoration:none} a:hover{text-decoration:underline}
 button{font:inherit;cursor:pointer}
+a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
 h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em;line-height:.95;margin:0;text-transform:uppercase}
-.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+h1[tabindex="-1"]:focus{outline:none}
+.wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 
 /* Masthead */
 .masthead{background:var(--black);color:#fff;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
-.masthead-inner{display:flex;align-items:center;gap:18px;padding:10px 0 12px;flex-wrap:wrap}
+.masthead-inner{display:flex;align-items:center;gap:18px;padding-top:10px;padding-bottom:12px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:11px;line-height:1;flex-shrink:0}
 .logo:hover{text-decoration:none}
 .logo-mark{width:44px;height:44px;border-radius:10px;border:1px solid #30303a;box-shadow:0 2px 10px rgba(0,0,0,.45);display:block;flex-shrink:0}
@@ -54,12 +64,13 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .live-dot.ok{background:#129c49}
 .live-dot.pulse{animation:pulse 1.6s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.45;transform:scale(.85)}}
+@media (prefers-reduced-motion:reduce){.live-dot.pulse{animation:none}}
 .mast-btn{background:#232329;color:#fff;border:1px solid #3a3a44;border-radius:999px;padding:4px 10px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .mast-btn:hover{border-color:#fff}
 
 /* Game-day countdown strip */
 .countdown-bar{background:#191a20;color:#e6e7ee;border-bottom:1px solid #2b2c35;font-size:12.5px}
-.countdown-inner{display:flex;align-items:center;gap:12px;padding:7px 0;flex-wrap:wrap}
+.countdown-inner{display:flex;align-items:center;gap:12px;padding-top:7px;padding-bottom:7px;flex-wrap:wrap}
 .cd-badge{background:var(--red);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:3px 8px;border-radius:4px;white-space:nowrap}
 .cd-text{font-weight:600}
 .cd-text b{color:#fff}
@@ -91,11 +102,10 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .team-row .tscore{margin-left:auto;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:24px;line-height:1;color:var(--text)}
 .sb-note{font-size:12px;color:var(--muted);margin-top:7px;border-top:1px dashed var(--line);padding-top:6px;line-height:1.4;flex:1}
 .sb-actions{display:flex;gap:6px;margin-top:9px;padding-top:8px;border-top:1px solid var(--line)}
-.preview-btn{flex:1;justify-content:center;font-style:normal;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--red);border:0;border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
+.preview-btn{flex:1;justify-content:center;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--red);border:0;border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
 .preview-btn:hover{background:#a80022}
-.preview-btn:focus-visible{outline:2px solid var(--text);outline-offset:2px}
-.dash-btn{flex:1;justify-content:center;font-style:normal;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center}
-.dash-btn:hover{border-color:var(--red);color:var(--red)}
+.dash-btn{flex:1;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center}
+.dash-btn:hover{border-color:var(--red);color:var(--red);text-decoration:none}
 
 /* Preview drawer */
 .preview-panel{display:none;background:var(--black);color:#fff;border-bottom:2px solid var(--red)}
@@ -105,26 +115,41 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .preview-inner label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
 .preview-inner h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:26px;line-height:1.15;margin:8px 0 8px;font-weight:800}
 .preview-inner p{margin:0;color:#c9cad2;font-size:14.5px;line-height:1.6}
+.pv-top{display:flex;align-items:center;gap:10px}
 .pv-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .pv-meta span{border:1px solid #3a3a42;border-radius:999px;padding:6px 11px;font-size:12px;font-weight:700;letter-spacing:.04em}
-.pv-keys{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.pv-keys{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .pv-keys li{display:flex;gap:10px;font-size:14px;line-height:1.5;color:#e8e8ec}
 .pv-keys .kn{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:20px;color:var(--red);line-height:1;min-width:16px}
 .pv-close{margin-left:auto;background:none;border:1px solid #3a3a42;color:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
 .pv-close:hover{border-color:#fff}
 .pv-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .pv-actions a,.pv-actions button{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:8px 13px;border:1px solid #3a3a42;background:none;color:#fff}
-.pv-actions a:first-child{background:#fff;color:#111;border-color:#fff}
+.pv-actions .primary{background:#fff;color:#111;border-color:#fff}
+.pv-actions a:hover{text-decoration:none;border-color:#fff}
 
-/* Main Nav */
+/* Main Nav (tabs) */
 .mainnav{position:sticky;top:0;z-index:50;background:var(--nav);color:#fff;box-shadow:0 2px 10px rgba(0,0,0,.25)}
-.mainnav-inner{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none}
+.mainnav-inner{display:flex;align-items:center;gap:2px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
 .mainnav-inner::-webkit-scrollbar{display:none}
-.mainnav a{white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:13px 14px;color:#e8e8ec}
+.mainnav a{white-space:nowrap;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:13px 14px;color:#e8e8ec;flex-shrink:0}
 .mainnav a:hover{background:var(--nav2);text-decoration:none}
 .mainnav a.active{background:var(--red);color:#fff}
 .mainnav a.my{color:#ffd166}
 .mainnav a.my.active{color:#fff}
+.mainnav .nav-sep{width:1px;align-self:stretch;margin:9px 6px;background:#3a3a44;flex-shrink:0}
+
+/* Views */
+.view{padding-bottom:8px}
+.page-head{margin:22px 0 16px}
+.page-head h1{font-size:44px;line-height:.95}
+.page-head h1 i{color:var(--red);font-style:normal}
+.page-head p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.55;max-width:680px}
+.section-head{display:flex;align-items:center;gap:12px;margin:24px 0 12px}
+.section-head h2{font-size:28px}
+.section-head h2 i{color:var(--red);font-style:normal}
+.section-head .rule{height:3px;background:var(--text);flex:1}
+.section-head a{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red);white-space:nowrap}
 
 /* Hero */
 .hero{padding:16px 0 0}
@@ -142,47 +167,96 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .hero-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 .hero-links a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid #3a3a42;padding:7px 11px;border-radius:999px}
 .hero-links a:first-child{background:#fff;color:#111;border-color:#fff}
+.hero-links a:hover{text-decoration:none;border-color:#fff}
 .hero-side{display:flex;flex-direction:column;gap:12px}
-.mini-story{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
-.mini-story label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.mini-story{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);transition:border-color .15s}
+.mini-story:hover{border-color:var(--red);text-decoration:none}
+.mini-story label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
 .mini-story h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:17px;line-height:1.25;margin:6px 0 6px;font-weight:700}
 .mini-story p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
-.mini-story[data-dash]{cursor:pointer;transition:border-color .15s}
-.mini-story[data-dash]:hover{border-color:var(--red)}
+.mini-story.take{padding:18px;cursor:default}
+.mini-story.take:hover{border-color:var(--line)}
 
 /* Team Strip */
 .team-strip{margin:18px 0 6px;background:var(--brand-bg);color:#eef0f7;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;border:1px solid #2e2f3c}
 .strip-mark{width:44px;height:44px;border-radius:10px;border:1px solid #343442;display:block;flex-shrink:0}
-.team-strip p{margin:0;color:#c9cdd9;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;line-height:1.7}
+.team-strip p{margin:0;color:#c9cdd9;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;line-height:1.9}
 .team-strip p span{color:#7cbc54}
-.strip-team{background:none;border:0;color:inherit;font:inherit;letter-spacing:inherit;text-transform:inherit;font-weight:inherit;padding:2px 4px;border-radius:4px}
+.strip-team{padding:2px 4px;border-radius:4px;margin-right:8px}
 .strip-team:hover{color:#fff;text-decoration:underline}
 .strip-hub{margin-left:auto;font-size:11.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#ffd166;border:1px solid #3c435c;border-radius:999px;padding:6px 12px;white-space:nowrap}
 .strip-hub:hover{border-color:#ffd166;text-decoration:none}
 
-/* Podcast Hub */
-.podcast-hub{margin-top:20px;background:var(--black);border:1px solid #2b2c35;border-radius:14px;overflow:hidden;color:#fff}
+/* Explore launcher */
+.explore-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:900px){.explore-grid{grid-template-columns:1fr 1fr}}
+.launch-card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--red);border-radius:12px;padding:16px;box-shadow:var(--shadow);color:var(--text);min-height:168px;transition:border-color .15s,transform .15s}
+.launch-card:hover{border-color:var(--red);text-decoration:none;transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.launch-card{transition:none}.launch-card:hover{transform:none}}
+.launch-ic{width:42px;height:42px;border-radius:10px;background:var(--black);color:#fff;display:grid;place-items:center;margin-bottom:6px}
+.launch-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.launch-card h3{font-size:24px}
+.launch-card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
+.launch-go{margin-top:auto;padding-top:8px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red)}
+
+/* Podcast */
+.podcast-hub{background:var(--black);border:1px solid #2b2c35;border-radius:14px;overflow:hidden;color:#fff}
 .pod-head{display:flex;align-items:center;gap:12px;padding:16px 18px 12px;flex-wrap:wrap}
 .pod-head h2{font-size:28px;color:#fff}
 .pod-head h2 i{color:#ff3355;font-style:normal}
 .pod-badge{background:var(--red);color:#fff;font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;padding:3px 8px;border-radius:4px}
-.pod-cta{margin-left:auto;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#fff;color:#111;border-radius:999px;padding:7px 13px;white-space:nowrap}
+.pod-cta{margin-left:auto;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;background:#fff;color:#111;border-radius:999px;padding:8px 14px;white-space:nowrap}
 .pod-cta:hover{text-decoration:none;background:#f1f1f3}
 .pod-body{padding:0 18px 18px}
 .pod-sub{margin:0 0 12px;font-size:13.5px;color:#c9cad2;line-height:1.5}
-.pod-frame{width:100%;height:175px;border:0;border-radius:10px;overflow:hidden;background:#0b2242;display:block}
+.pod-frame{display:block;width:100%;height:175px;min-height:175px;max-height:175px;border:0;border-radius:10px;overflow:hidden;background:#0b2242}
+.pod-more{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+@media(max-width:640px){.pod-more{grid-template-columns:1fr}}
 
-/* Layout & Feed */
-.layout{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:20px 0 8px;align-items:start}
+/* Video Center */
+.vc-player{background:var(--black);border-radius:14px;padding:14px;color:#fff;scroll-margin-top:60px}
+.vh-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
+.vh-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vh-now{padding:12px 2px 2px}
+.vh-now label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
+.vh-now h2{font-family:"Barlow",sans-serif;text-transform:none;font-size:21px;line-height:1.25;margin:5px 0 4px;font-weight:700}
+.vh-now p{margin:0;color:#aeb0ba;font-size:13.5px;line-height:1.5}
+.vh-now a{color:#fff;font-weight:700;text-decoration:underline}
+.vh-local-warn{display:none;margin:0 0 12px;padding:9px 12px;background:#261a1d;border:1px solid #6b2434;border-radius:8px;font-size:12.5px;color:#ffd0d8;line-height:1.45}
+.hl-filters{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 12px}
+.hl-filters button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
+.hl-filters button.active{background:var(--black);color:#fff;border-color:var(--black)}
+.hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media(max-width:900px){.hl-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hl-grid{grid-template-columns:1fr}}
+.hl-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);text-align:left;padding:0;width:100%;color:var(--text);display:flex;flex-direction:column}
+.hl-card:hover{border-color:var(--red);text-decoration:none}
+.hl-card.is-playing{border-color:var(--red);box-shadow:0 0 0 2px var(--red)}
+.hl-thumb{position:relative;display:block;aspect-ratio:16/9;background:#000;overflow:hidden}
+.hl-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.hl-thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
+.hl-play{position:absolute;left:10px;bottom:10px;z-index:2;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:13px;padding-left:2px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.hl-kind{position:absolute;right:10px;top:10px;z-index:2;background:rgba(0,0,0,.72);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
+.hl-src{position:absolute;left:10px;top:10px;z-index:2;background:#fff;color:#111;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
+.hl-body{display:block;padding:11px 13px 13px;flex:1}
+.hl-team{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.hl-title{display:block;font-size:16px;line-height:1.3;margin:4px 0 4px;font-weight:700}
+.hl-meta{display:block;font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.45}
+.net-row{margin-top:26px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.net-row h2{font-size:18px;letter-spacing:.05em}
+.net-row p{margin:6px 0 10px;font-size:12.5px;color:var(--muted);line-height:1.45}
+.net-links{display:flex;gap:6px;flex-wrap:wrap}
+.net-links a{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
+.net-links a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+
+/* Layout, Feed & Rail */
+.layout{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:4px 0 8px;align-items:start}
 @media(max-width:980px){.layout{grid-template-columns:1fr}}
-.section-head{display:flex;align-items:center;gap:12px;margin:22px 0 12px}
-.section-head h2{font-size:28px}
-.section-head h2 i{color:var(--red);font-style:normal}
-.section-head .rule{height:3px;background:var(--text);flex:1}
-.section-head a{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start}
+@media(max-width:820px){.two-col{grid-template-columns:1fr}}
 .feed{display:flex;flex-direction:column}
 .article{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
-@media(max-width:560px){.article{grid-template-columns:86px 1fr}.hero-body h1{font-size:34px}}
+@media(max-width:560px){.article{grid-template-columns:86px 1fr}.hero-body h1,.page-head h1{font-size:34px}}
 .thumb{min-height:86px;border-radius:10px;display:flex;align-items:flex-end;padding:8px;color:#fff;font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;line-height:1.1}
 .article label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
 .article h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:19px;line-height:1.2;margin:4px 0 5px;font-weight:700}
@@ -190,28 +264,13 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .byline{font-size:12px;color:var(--muted);margin-top:7px;font-weight:600}
 .byline b{color:var(--text)}
 .dash-link{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);padding-bottom:2px;display:inline-block;margin-top:8px}
-
-/* Teams grid */
-.teams-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:640px){.teams-grid{grid-template-columns:1fr}}
-.team-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
-.team-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;color:#fff}
-.team-card-head .abbr{width:38px;height:38px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:12px}
-.team-card-head h3{font-size:20px;color:#fff}
-.team-card-head span{display:block;font-family:"Barlow",sans-serif;text-transform:none;font-size:12px;opacity:.9;font-weight:600}
-.team-card-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
-.team-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--muted)}
-.next{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;display:flex;justify-content:space-between;gap:10px}
-.next b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
-.team-links{display:flex;gap:12px;margin-top:auto;padding-top:11px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap}
-.team-links a{border-bottom:2px solid var(--red);padding-bottom:2px}
-
-/* Rail */
-.rail{position:sticky;top:52px;display:flex;flex-direction:column;gap:16px}
+.dash-link:hover{text-decoration:none}
+.rail{position:sticky;top:60px;display:flex;flex-direction:column;gap:16px}
 @media(max-width:980px){.rail{position:static}}
 .rail-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.rail-card.promo{background:var(--black);color:#fff;border-color:#000}
 .rail-head{background:var(--black);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center}
-.rail-head h3{font-size:18px;color:#fff}
+.rail-head h2,.rail-head h3{font-size:18px;color:#fff}
 .rail-head span{font-size:11px;font-weight:800;letter-spacing:.08em;color:#ff8aa0;text-transform:uppercase}
 .headlines{list-style:none;margin:0;padding:6px 0}
 .headlines li{display:flex;gap:11px;padding:10px 14px;border-bottom:1px solid var(--line)}
@@ -223,85 +282,30 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .standings th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
 .standings td{padding:7px 12px;border-bottom:1px solid var(--line)}
 .standings tr.bean td{font-weight:800}
+.standings a:hover{color:var(--red)}
 .watchlist{padding:10px 14px 14px;display:flex;flex-direction:column;gap:9px}
 .watch-item{display:flex;gap:10px;align-items:center;font-size:13.5px}
 .watch-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
 .watch-item time{margin-left:auto;font-weight:700;font-size:12px;color:var(--muted);white-space:nowrap}
 
-/* Video Hub */
-.video-hub{margin-top:22px;background:var(--black);border-radius:14px;overflow:hidden;color:#fff}
-.vh-head{display:flex;align-items:center;gap:12px;padding:16px 18px 0;flex-wrap:wrap}
-.vh-head h2{font-size:30px;color:#fff}
-.vh-head h2 i{color:#ff3355;font-style:normal}
-.vh-head p{margin:0 0 0 auto;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#aeb0ba}
-.vh-local-warn{display:none;margin:10px 18px 0;padding:9px 12px;background:#261a1d;border:1px solid #6b2434;border-radius:8px;font-size:12.5px;color:#ffd0d8;line-height:1.45}
-.vh-grid{display:grid;grid-template-columns:1.9fr 1fr;gap:0;padding:14px 18px 18px}
-@media(max-width:900px){.vh-grid{grid-template-columns:1fr}}
-.vh-player{min-width:0}
-.vh-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:10px;overflow:hidden}
-.vh-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-.vh-now{padding:12px 2px 0}
-.vh-now label{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#ff8aa0}
-.vh-now h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:21px;line-height:1.25;margin:5px 0 4px;font-weight:700}
-.vh-now p{margin:0;color:#aeb0ba;font-size:13.5px;line-height:1.5}
-.vh-now a{color:#fff;font-weight:700;text-decoration:underline}
-.vh-list{display:flex;flex-direction:column;gap:6px;padding-left:16px;max-height:520px;overflow-y:auto;scrollbar-width:thin}
-@media(max-width:900px){.vh-list{padding-left:0;margin-top:14px;max-height:none}}
-.vh-item{display:flex;gap:11px;align-items:center;text-align:left;background:#1d1d21;border:1px solid #2c2c33;border-radius:10px;padding:8px;color:#fff;width:100%}
-.vh-item:hover{border-color:#4a4a55}
-.vh-item.active{border-color:var(--red);background:#26262c}
-.vh-thumb{position:relative;width:104px;flex:0 0 104px;aspect-ratio:16/9;border-radius:6px;overflow:hidden;background:#000}
-.vh-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.vh-thumb .play{position:absolute;inset:0;display:grid;place-items:center;background:rgba(0,0,0,.28)}
-.vh-thumb .play span{width:26px;height:26px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:11px;padding-left:2px}
-.vh-item .vt{font-size:13.5px;font-weight:700;line-height:1.3}
-.vh-item .vm{font-size:11px;color:#aeb0ba;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-top:3px}
-.vh-item .vsrc{color:#ffd166}
-.src-badge{position:absolute;left:6px;top:6px;z-index:2;background:#fff;color:#111;font-size:9.5px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:3px 6px;border-radius:4px;box-shadow:0 1px 6px rgba(0,0,0,.35)}
-.src-dir{padding:0 18px 18px}
-.src-dir-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin:4px 0 10px}
-.src-dir-head h3{font-size:20px;color:#fff}
-.src-dir-head p{margin:0;font-size:12.5px;color:#aeb0ba;line-height:1.5}
-.src-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-@media(max-width:900px){.src-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.src-grid{grid-template-columns:1fr}}
-.src-card{display:block;background:#1d1d21;border:1px solid #2c2c33;border-radius:10px;padding:13px 14px;color:#fff}
-.src-card:hover{border-color:var(--red);text-decoration:none}
-.src-card .src-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.src-card .src-name{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:19px;letter-spacing:.04em;text-transform:uppercase}
-.src-card .src-go{font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#ff8aa0;white-space:nowrap}
-.src-card p{margin:6px 0 0;font-size:13px;line-height:1.5;color:#c9cad2}
-.src-card small{display:block;margin-top:7px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#aeb0ba}
+/* Team cards / hub */
+.hub-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+@media(max-width:900px){.hub-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:560px){.hub-grid{grid-template-columns:1fr}}
+.team-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.team-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;color:#fff}
+.team-card-head .abbr{width:38px;height:38px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:12px}
+.team-card-head h3{font-size:20px;color:#fff}
+.team-card-head span{display:block;font-family:"Barlow",sans-serif;text-transform:none;font-size:12px;opacity:.9;font-weight:600}
+.team-card-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
+.team-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--muted)}
+.next{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;display:flex;justify-content:space-between;gap:10px}
+.next b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.team-links{display:flex;gap:12px;margin-top:auto;padding-top:11px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap}
+.team-links a,.team-links button{border:0;background:none;color:inherit;padding:0 0 2px;font:inherit;letter-spacing:inherit;text-transform:inherit;border-bottom:2px solid var(--red)}
+.team-links a:hover,.team-links button:hover{text-decoration:none;color:var(--red)}
 
-/* Highlights Grid */
-.hl-filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
-.hl-filters button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 11px;border-radius:999px}
-.hl-filters button.active{background:var(--black);color:#fff;border-color:var(--black)}
-.vh-srcbar{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 12px;align-items:center}
-.vh-srcbar span.lbl{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red);margin-right:2px}
-.vh-srcbar button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:5px 10px;border-radius:999px}
-.vh-srcbar button.active{background:var(--red);color:#fff;border-color:var(--red)}
-.hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-@media(max-width:900px){.hl-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.hl-grid{grid-template-columns:1fr}}
-.hl-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);text-align:left;padding:0;width:100%;color:var(--text);display:flex;flex-direction:column}
-.hl-card:hover{border-color:var(--red);text-decoration:none}
-.hl-thumb{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
-.hl-thumb img{width:100%;height:100%;object-fit:cover;display:block}
-.hl-thumb:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.55))}
-.hl-watermark{position:absolute;right:12px;bottom:-14px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:84px;line-height:1;color:rgba(255,255,255,.18);letter-spacing:.02em;pointer-events:none;z-index:1}
-.hl-ext-brand{position:absolute;left:12px;bottom:48px;z-index:2;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:#fff;letter-spacing:.04em;text-transform:uppercase;text-shadow:0 2px 8px rgba(0,0,0,.4)}
-.hl-play{position:absolute;left:10px;bottom:10px;z-index:2;width:34px;height:34px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-size:13px;padding-left:2px;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.hl-kind{position:absolute;right:10px;top:10px;z-index:2;background:rgba(0,0,0,.72);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
-.hl-src{position:absolute;left:10px;top:10px;z-index:2;background:#fff;color:#111;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
-.hl-body{padding:11px 13px 13px;flex:1;display:flex;flex-direction:column}
-.hl-body label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
-.hl-body h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:16px;line-height:1.3;margin:4px 0 4px;font-weight:700}
-.hl-body p{margin:0;font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.45}
-.hl-ext{display:inline-block;margin-top:auto;padding-top:8px;font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--red)}
-
-/* Views & Dashboards */
-.view[hidden]{display:none!important}
+/* Team dashboards */
 .dash-head{border-radius:14px;color:#fff;padding:22px;margin-top:16px;position:relative;overflow:hidden}
 .dash-head:after{content:attr(data-abbr);position:absolute;right:6px;bottom:-34px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:150px;line-height:1;color:rgba(255,255,255,.14)}
 .dash-head-top{display:flex;gap:16px;align-items:center;flex-wrap:wrap;position:relative;z-index:1}
@@ -314,12 +318,12 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .backrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .backrow button,.backrow a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 13px}
 .backrow button:hover,.backrow a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
-.dash-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px;border-bottom:2px solid var(--text);padding-bottom:0}
-.dash-tabs a{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px}
-.dash-tabs a:hover{background:var(--card);text-decoration:none;color:var(--red)}
+.dash-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px;border-bottom:2px solid var(--text)}
+.dash-tabs button{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;background:none;border:0;color:var(--text)}
+.dash-tabs button:hover{background:var(--card);color:var(--red)}
 .dash-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:12px 0 8px;align-items:start}
 @media(max-width:980px){.dash-grid{grid-template-columns:1fr}}
-.dash-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px}
+.dash-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;scroll-margin-top:64px}
 .dash-card-head{background:var(--black);color:#fff;padding:11px 14px;display:flex;justify-content:space-between;align-items:center;gap:10px}
 .dash-card-head h3{font-size:18px;color:#fff}
 .dash-card-head span{font-size:11px;font-weight:800;letter-spacing:.08em;color:#ff8aa0;text-transform:uppercase}
@@ -329,6 +333,7 @@ h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em
 .dash-headlines b{display:block;font-size:15.5px;line-height:1.35;font-weight:700}
 .dash-headlines p{margin:3px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
 .dash-headlines small{display:block;color:var(--red);font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.dash-table-wrap{overflow-x:auto}
 table.dash-table{width:100%;border-collapse:collapse;font-size:13.5px}
 table.dash-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
 table.dash-table td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top}
@@ -344,9 +349,8 @@ table.dash-table tr.bean td{font-weight:800}
 .quick-links{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px 14px}
 .quick-links a{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
 .quick-links a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
-.hub-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-top:14px}
-@media(max-width:900px){.hub-grid{grid-template-columns:1fr 1fr}}
-@media(max-width:560px){.hub-grid{grid-template-columns:1fr}}
+.next-body{padding:13px 14px 15px}
+.next-body .pv-actions button{border-color:var(--line);color:var(--text)}
 
 /* Footer */
 footer{background:var(--black);color:#aeb0ba;margin-top:28px;padding:26px 0 calc(34px + env(safe-area-inset-bottom,0px))}
@@ -360,34 +364,38 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 /* Mobile polish (iPhone / narrow screens) */
 @media (max-width:680px){
   .wrap{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
-  .masthead-inner{gap:10px;padding:10px 0 12px;flex-direction:column;align-items:flex-start}
+  .masthead-inner{gap:10px;padding-top:10px;padding-bottom:12px;flex-direction:column;align-items:flex-start}
   .mast-meta{margin-left:0;text-align:left;width:100%}
   .mast-meta .edition{font-size:11.5px;line-height:1.4;margin-top:2px}
   .mast-controls{justify-content:flex-start;margin-top:8px;gap:6px}
-  .countdown-inner{gap:8px;padding:8px 0}
+  .countdown-inner{gap:8px;padding-top:8px;padding-bottom:8px}
   .cd-text{font-size:12px;flex:1 1 200px}
   .cd-timer{margin-left:0;font-size:15px}
   .sb-head{gap:8px}
-  .sb-tools{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px}
+  .sb-tools{margin-left:0;width:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;-webkit-overflow-scrolling:touch}
   .sb-tools::-webkit-scrollbar{display:none}
-  .sb-filters{flex-wrap:nowrap}
+  .sb-filters{flex-wrap:nowrap;flex:0 0 auto}
   .sb-filters button,.sb-sort{white-space:nowrap;flex-shrink:0}
   .pod-head{padding:14px 14px 10px}
   .pod-cta{margin-left:0}
   .pod-body{padding:0 14px 14px}
-  .pod-frame{height:175px}
+  .vc-player{padding:10px}
+  .dash-head{padding:18px}
+  .dash-head h1{font-size:36px}
+  .team-strip{padding:12px 14px}
+  .strip-hub{margin-left:0}
 }
 </style>
 </head>
 <body>
 <header class="masthead">
   <div class="wrap masthead-inner">
-    <a href="#" class="logo" data-home aria-label="Bean Sports home">
+    <a href="#home" class="logo" aria-label="Bean Sports home">
       <img class="logo-mark" src="icons/bean-sports-icon.svg" alt="" width="44" height="44">
       <span class="logo-wordmark"><span class="logo-bean">BEAN</span><span class="logo-sports">SPORTS</span></span>
     </a>
     <div class="mast-meta">
-      <div class="date" id="mastDate">Monday, November 23, 2026</div>
+      <div class="date" id="mastDate">Today</div>
       <div class="edition">Bean's Edition • <b>Lexington, SC</b> • Lions • Pistons • Buckeyes • Flyers • Gamecocks • Knights</div>
       <div class="mast-controls">
         <span class="live-pill" id="livePill"><span class="live-dot" id="liveDot"></span> <span id="liveLabel">CONNECTING LIVE…</span></span>
@@ -411,13 +419,13 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     <div class="sb-head">
       <h2>SCOREBOARD <span>/// MY TEAMS</span></h2>
       <div class="sb-tools">
-        <div class="sb-filters" id="sbFilters">
-          <button class="active" data-filter="all">All</button>
-          <button data-filter="nfl">NFL</button>
-          <button data-filter="nba">NBA</button>
-          <button data-filter="ncaaf">College FB</button>
-          <button data-filter="ncaam">College BB</button>
-          <button data-filter="hs">High School</button>
+        <div class="sb-filters" id="sbFilters" role="group" aria-label="Filter scoreboard by league">
+          <button type="button" class="active" data-filter="all">All</button>
+          <button type="button" data-filter="nfl">NFL</button>
+          <button type="button" data-filter="nba">NBA</button>
+          <button type="button" data-filter="ncaaf">College FB</button>
+          <button type="button" data-filter="ncaam">College BB</button>
+          <button type="button" data-filter="hs">High School</button>
         </div>
         <button type="button" class="sb-sort" id="sbSortBtn" title="Switch scoreboard order">Sort: Bean's Rank</button>
       </div>
@@ -430,42 +438,45 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   <div class="wrap">
     <div class="preview-inner">
       <div>
-        <div style="display:flex;align-items:center;gap:10px"><label id="pvLeague">Game Preview</label><button type="button" class="pv-close" id="pvClose">Close ✕</button></div>
+        <div class="pv-top"><label id="pvLeague">Game Preview</label><button type="button" class="pv-close" id="pvClose">Close ✕</button></div>
         <h3 id="pvTitle">Matchup</h3>
         <p id="pvSummary"></p>
         <div class="pv-meta" id="pvMeta"></div>
         <div class="pv-actions">
-          <a href="#videos">▶ Watch Highlights</a>
+          <button type="button" class="primary" id="pvWatch">▶ Watch This Team's Highlights</button>
           <a href="#my-teams" id="pvTeamLink">Team Dashboard →</a>
-          <button type="button" id="pvWatch">Watch This Team's Video</button>
         </div>
       </div>
       <div>
         <label>Keys to the Game</label>
-        <ol class="pv-keys" id="pvKeys" style="margin-top:12px"></ol>
+        <ol class="pv-keys" id="pvKeys"></ol>
       </div>
     </div>
   </div>
 </section>
 
-<nav class="mainnav" aria-label="Sports sections">
+<nav class="mainnav" aria-label="Bean Sports sections">
   <div class="wrap mainnav-inner" id="mainNav">
-    <a href="#" class="active" data-home data-nav="home">Home</a>
-    <a href="#team-lions" data-dash="lions" data-nav="lions">NFL • Lions</a>
-    <a href="#team-pistons" data-dash="pistons" data-nav="pistons">NBA • Pistons</a>
-    <a href="#team-osu" data-dash="osu" data-nav="osu">Ohio State</a>
-    <a href="#team-dayton" data-dash="dayton" data-nav="dayton">Dayton</a>
-    <a href="#team-gamecocks" data-dash="gamecocks" data-nav="gamecocks">Gamecocks</a>
-    <a href="#team-alter" data-dash="alter" data-nav="alter">Alter Knights</a>
+    <a href="#home" data-nav="home">Home</a>
     <a href="#podcast" class="my" data-nav="podcast">🎙️ Podcast</a>
     <a href="#videos" class="my" data-nav="videos">▶ Videos &amp; Highlights</a>
     <a href="#headlines" class="my" data-nav="headlines">★ Top Headlines</a>
-    <a href="#my-teams" class="my" data-hub data-nav="hub">★ My Teams — Dashboards</a>
-    <a href="#standings" data-nav="standings">Standings</a>
+    <a href="#standings" class="my" data-nav="standings">Standings</a>
+    <a href="#my-teams" class="my" data-nav="my-teams">★ My Teams</a>
+    <span class="nav-sep" aria-hidden="true"></span>
+    <a href="#team-lions" data-nav="lions">NFL • Lions</a>
+    <a href="#team-pistons" data-nav="pistons">NBA • Pistons</a>
+    <a href="#team-osu" data-nav="osu">Ohio State</a>
+    <a href="#team-dayton" data-nav="dayton">Dayton</a>
+    <a href="#team-gamecocks" data-nav="gamecocks">Gamecocks</a>
+    <a href="#team-alter" data-nav="alter">Alter Knights</a>
   </div>
 </nav>
 
-<div class="wrap view" id="homeView">
+<main id="main">
+
+<!-- ============ HOME ============ -->
+<div class="wrap view" id="view-home" data-view="home">
   <section class="hero" aria-label="Top story">
     <div class="hero-grid">
       <article class="hero-main">
@@ -474,9 +485,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
           <h2>Ford Field, rivalry week, and a six-team slate that runs straight through Bean's house — Detroit to Dayton to Columbia.</h2>
         </div>
         <div class="hero-body">
-          <h1>Bean's Week: <span>Lions First,</span> Everybody Else Right Behind</h1>
-          <p>Built the way Bean actually watches sports: Lions on top, Pistons next, then Ohio State, Dayton, the Gamecocks, and Alter. Live scores and schedules update automatically when online, with one scoreboard, one headline feed, and full dashboards for every team that matters.</p>
-          <div class="hero-links"><a href="#podcast">🎙️ Listen to Podcast</a><a href="#videos">▶ Watch Highlights</a><a href="#my-teams" data-hub>See My Teams ↓</a><a href="#headlines">Top Headlines</a></div>
+          <h1 tabindex="-1">Bean's Week: <span>Lions First,</span> Everybody Else Right Behind</h1>
+          <p>Built the way Bean actually watches sports: Lions on top, Pistons next, then Ohio State, Dayton, the Gamecocks, and Alter. Live scores and schedules update automatically when online, with full dashboards for every team that matters.</p>
+          <div class="hero-links"><a href="#podcast">🎙️ Listen to Podcast</a><a href="#videos">▶ Watch Highlights</a><a href="#my-teams">See My Teams</a><a href="#headlines">Top Headlines</a></div>
         </div>
       </article>
       <div class="hero-side" id="heroSide"></div>
@@ -485,129 +496,163 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   <div class="team-strip" aria-label="Bean Sports quick strip">
     <img class="strip-mark" src="icons/bean-sports-icon.svg" alt="Bean Sports" width="44" height="44">
-    <p><span>01</span> <button type="button" class="strip-team" data-dash="lions">Lions</button> &nbsp; <span>02</span> <button type="button" class="strip-team" data-dash="pistons">Pistons</button> &nbsp; <span>03</span> <button type="button" class="strip-team" data-dash="osu">Ohio State</button> &nbsp; <span>04</span> <button type="button" class="strip-team" data-dash="dayton">Dayton</button> &nbsp; <span>05</span> <button type="button" class="strip-team" data-dash="gamecocks">Gamecocks</button> &nbsp; <span>06</span> <button type="button" class="strip-team" data-dash="alter">Alter</button></p>
-    <a class="strip-hub" href="#my-teams" data-hub>All Dashboards →</a>
+    <p><span>01</span> <a class="strip-team" href="#team-lions">Lions</a><span>02</span> <a class="strip-team" href="#team-pistons">Pistons</a><span>03</span> <a class="strip-team" href="#team-osu">Ohio State</a><span>04</span> <a class="strip-team" href="#team-dayton">Dayton</a><span>05</span> <a class="strip-team" href="#team-gamecocks">Gamecocks</a><span>06</span> <a class="strip-team" href="#team-alter">Alter</a></p>
+    <a class="strip-hub" href="#my-teams">All Dashboards →</a>
   </div>
 
-  <section class="podcast-hub" id="podcast" aria-label="The Starting Five Daily podcast">
+  <div class="section-head"><h2>Explore <i>Bean Sports</i></h2><div class="rule"></div></div>
+  <div class="explore-grid">
+    <a class="launch-card" href="#podcast">
+      <span class="launch-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></svg></span>
+      <h3>Podcast</h3><p>The Starting Five Daily — listen right here or in Apple Podcasts.</p><span class="launch-go">Listen →</span>
+    </a>
+    <a class="launch-card" href="#videos">
+      <span class="launch-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z"/></svg></span>
+      <h3>Videos &amp; Highlights</h3><p>Game highlights for all six teams, playing in-page.</p><span class="launch-go">Watch →</span>
+    </a>
+    <a class="launch-card" href="#headlines">
+      <span class="launch-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 10h16M4 15h10M4 20h7"/></svg></span>
+      <h3>Top Headlines</h3><p>The six-team headline feed and the numbered Top Headlines list.</p><span class="launch-go">Read →</span>
+    </a>
+    <a class="launch-card" href="#standings">
+      <span class="launch-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>
+      <h3>Standings</h3><p>Records for every team plus this week's watch list.</p><span class="launch-go">Check →</span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ PODCAST ============ -->
+<div class="wrap view" id="view-podcast" data-view="podcast" hidden>
+  <div class="page-head">
+    <h1 tabindex="-1">The Starting <i>Five</i> Daily</h1>
+    <p>Bean's podcast. Listen to the latest episodes right inside Bean Sports, or jump straight into the Apple Podcasts app.</p>
+  </div>
+  <section class="podcast-hub" aria-label="The Starting Five Daily podcast player">
     <div class="pod-head">
       <span class="pod-badge">Bean's Podcast</span>
-      <h2>The Starting <i>Five</i> Daily</h2>
-      <a class="pod-cta" href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener">Open in Apple Podcasts ↗</a>
+      <h2>Latest Episodes</h2>
+      <a class="pod-cta" href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open in Apple Podcasts ↗</a>
     </div>
     <div class="pod-body">
-      <p class="pod-sub">Listen to the latest episodes right inside Bean Sports or jump straight into the Apple Podcasts app.</p>
-      <iframe class="pod-frame" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" src="https://embed.podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521?theme=dark" title="The Starting Five Daily on Apple Podcasts" loading="lazy"></iframe>
+      <iframe class="pod-frame" id="podFrame" height="175" data-src="https://embed.podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521?theme=dark" allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write" sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation" title="The Starting Five Daily on Apple Podcasts"></iframe>
     </div>
   </section>
-
-  <section class="video-hub" id="videos" aria-label="Videos and highlights">
-    <div class="vh-head">
-      <h2>Videos <i>&amp;</i> Highlights</h2>
-      <p>Plays in-page on YouTube • 6 more sources linked below</p>
-    </div>
-    <div class="vh-local-warn" id="vhLocalWarn">
-      Tip: You opened this page as a local <code>file://</code> URL, so YouTube may block in-page embeds. Host this file on GitHub Pages or Cloudflare Pages (free) for seamless in-page playback—or click <b>Watch on YouTube ↗</b> below any video.
-    </div>
-    <div class="vh-grid">
-      <div class="vh-player">
-        <div class="vh-frame"><iframe id="vhFrame" src="https://www.youtube-nocookie.com/embed/dpzaBrsCo9U?rel=0" title="Bean Sports video player" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
-        <div class="vh-now">
-          <label id="vhNowLabel">Now Playing • Detroit Lions • NFL • YouTube</label>
-          <h3 id="vhNowTitle">Lions vs. Buccaneers — Full Game Highlights</h3>
-          <p><span id="vhNowMeta">Week 11 • Nov 22, 2026 • Detroit won 31–21 for its sixth straight win.</span> &nbsp;<a id="vhNowLink" href="https://www.youtube.com/watch?v=dpzaBrsCo9U" target="_blank" rel="noopener">Watch on YouTube ↗</a></p>
-        </div>
-      </div>
-      <div class="vh-list" id="vhList" role="listbox" aria-label="Video playlist"></div>
-    </div>
-    <div class="src-dir" aria-label="Highlight sources directory">
-      <div class="src-dir-head"><h3>6 More Sources — Watch on Their Sites</h3><p>The in-page player above plays on YouTube. These six sources open on their own sites instead — tap one to watch highlights there.</p></div>
-      <div class="src-grid" id="srcDirGrid"></div>
-    </div>
-  </section>
-
-  <div class="section-head"><h2>Latest <i>Highlights</i></h2><div class="rule"></div><a href="#videos">Video Center ↑</a></div>
-  <div class="hl-filters" id="hlFilters">
-    <button class="active" data-team="all">All Teams</button>
-    <button data-team="lions">Lions</button>
-    <button data-team="pistons">Pistons</button>
-    <button data-team="osu">Ohio State</button>
-    <button data-team="dayton">Dayton</button>
-    <button data-team="gamecocks">Gamecocks</button>
-    <button data-team="alter">Alter</button>
+  <div class="pod-more">
+    <a class="launch-card" href="#videos"><h3>Videos &amp; Highlights</h3><p>Watch the games the show talks about.</p><span class="launch-go">Watch →</span></a>
+    <a class="launch-card" href="#headlines"><h3>Top Headlines</h3><p>Catch up on the six-team headline feed.</p><span class="launch-go">Read →</span></a>
   </div>
-  <div class="vh-srcbar" id="srcFilters" aria-label="Filter highlights by where they play">
-    <span class="lbl">Plays / Opens On:</span>
-    <button class="active" data-source="all">All Sources (7)</button>
-    <button data-source="youtube">YouTube — Plays Here</button>
-    <button data-source="espn">ESPN ↗</button>
-    <button data-source="nfl">NFL / Lions.com ↗</button>
-    <button data-source="nba">NBC Sports ↗</button>
-    <button data-source="sportsnet">Sportsnet ↗</button>
-    <button data-source="fox">FOX Sports / BTN ↗</button>
-    <button data-source="other">MaxPreps ↗</button>
+</div>
+
+<!-- ============ VIDEOS ============ -->
+<div class="wrap view" id="view-videos" data-view="videos" hidden>
+  <div class="page-head">
+    <h1 tabindex="-1">Videos <i>&amp;</i> Highlights</h1>
+    <p>Tap any highlight and it plays right here. Use the team pills to narrow the list.</p>
+  </div>
+  <div class="vh-local-warn" id="vhLocalWarn">
+    Tip: you opened this page as a local <code>file://</code> URL, so YouTube may block in-page embeds. Host the file on GitHub Pages for seamless playback, or use <b>Watch on YouTube ↗</b> below the player.
+  </div>
+  <section class="vc-player" id="vcPlayer" aria-label="Video player">
+    <div class="vh-frame"><iframe id="vhFrame" title="Bean Sports video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe></div>
+    <div class="vh-now">
+      <label id="vhNowLabel">Now Playing</label>
+      <h2 id="vhNowTitle">Pick a highlight</h2>
+      <p><span id="vhNowMeta"></span> &nbsp;<a id="vhNowLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></p>
+    </div>
+  </section>
+  <div class="hl-filters" id="hlFilters" role="group" aria-label="Filter highlights by team">
+    <button type="button" class="active" data-team="all" aria-pressed="true">All</button>
+    <button type="button" data-team="lions" aria-pressed="false">Lions</button>
+    <button type="button" data-team="pistons" aria-pressed="false">Pistons</button>
+    <button type="button" data-team="osu" aria-pressed="false">Ohio State</button>
+    <button type="button" data-team="dayton" aria-pressed="false">Dayton</button>
+    <button type="button" data-team="gamecocks" aria-pressed="false">Gamecocks</button>
+    <button type="button" data-team="alter" aria-pressed="false">Alter</button>
   </div>
   <div class="hl-grid" id="hlGrid"></div>
+  <section class="net-row" aria-labelledby="netHead">
+    <h2 id="netHead">More Sports Networks</h2>
+    <p>These sites don't allow in-page players, so each one opens on its own site in a new tab.</p>
+    <div class="net-links" id="netLinks"></div>
+  </section>
+</div>
 
+<!-- ============ TOP HEADLINES ============ -->
+<div class="wrap view" id="view-headlines" data-view="headlines" hidden>
+  <div class="page-head">
+    <h1 tabindex="-1">Top <i>Headlines</i></h1>
+    <p>One story for each of Bean's six teams, in Bean's order — plus the numbered Top Headlines list.</p>
+  </div>
   <div class="layout">
-    <main>
-      <div class="section-head"><h2>Headline <i>Feed</i></h2><div class="rule"></div><a href="#headlines">All Headlines →</a></div>
+    <section aria-label="Headline feed">
+      <div class="section-head" style="margin-top:0"><h2>Headline <i>Feed</i></h2><div class="rule"></div></div>
       <div class="feed" id="headlineFeed"></div>
-
-      <div class="section-head" id="my-teams"><h2>My <i>Teams</i></h2><div class="rule"></div><a href="#my-teams" data-hub>All Dashboards →</a></div>
-      <div class="teams-grid" id="teamsGrid"></div>
-
       <div class="section-head"><h2>Bean's <i>Take</i></h2><div class="rule"></div></div>
-      <article class="mini-story" style="padding:18px"><label>Why this page exists</label><h3 style="font-size:20px;margin:8px 0">A national homepage makes you hunt. This one starts with your teams.</h3><p style="color:var(--muted);line-height:1.6;margin:0">ESPN's layout works — scoreboard on top, headlines in the middle, Top Headlines on the rail. Bean Sports keeps that exact rhythm, but the teams are fixed: Lions, Pistons, Ohio State, Dayton, Gamecocks, and Alter. Open the page and you're already home.</p></article>
-    </main>
-
-    <aside class="rail" id="headlines" aria-label="Top headlines and standings">
-      <section class="rail-card"><div class="rail-head"><h3>Top Headlines</h3><span>Bean's Teams</span></div><ol class="headlines" id="railHeadlines"></ol></section>
-      <section class="rail-card" id="standings"><div class="rail-head"><h3>Standings Snapshot</h3><span id="standingsBadge">Watch List</span></div><div id="railStandings"></div><p class="dash-note" id="standingsNote">Records update automatically from ESPN when online; Alter Knights reflects final 2026 season mark.</p></section>
-      <section class="rail-card"><div class="rail-head"><h3>Watch List</h3><span>This Week</span></div><div class="watchlist" id="railWatchlist"></div></section>
-      <section class="rail-card" style="background:var(--black);color:#fff;border-color:#000"><div style="padding:16px"><div style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#ff5d7e;text-transform:uppercase">Bean Sports • For One Fan</div><h3 style="color:#fff;font-size:24px;margin:8px 0 6px;line-height:1">Six teams.<br>One front page.</h3><p style="margin:0;color:#c9cad2;font-size:13.5px;line-height:1.6">Lions. Pistons. Ohio State. Dayton. Gamecocks. Alter. In that order, every day.</p></div></section>
+      <article class="mini-story take"><label>Why this page exists</label><h3 style="font-size:20px;margin:8px 0">A national homepage makes you hunt. This one starts with your teams.</h3><p style="line-height:1.6">ESPN's layout works — scoreboard on top, headlines in the middle, Top Headlines on the rail. Bean Sports keeps that exact rhythm, but the teams are fixed: Lions, Pistons, Ohio State, Dayton, Gamecocks, and Alter. Open the page and you're already home.</p></article>
+    </section>
+    <aside class="rail" aria-label="Top headlines">
+      <section class="rail-card"><div class="rail-head"><h2>Top Headlines</h2><span>Bean's Teams</span></div><ol class="headlines" id="railHeadlines"></ol></section>
+      <section class="rail-card promo"><div style="padding:16px"><div style="font-size:11px;font-weight:800;letter-spacing:.12em;color:#ff5d7e;text-transform:uppercase">Bean Sports • For One Fan</div><h3 style="color:#fff;font-size:24px;margin:8px 0 6px;line-height:1">Six teams.<br>One front page.</h3><p style="margin:0;color:#c9cad2;font-size:13.5px;line-height:1.6">Lions. Pistons. Ohio State. Dayton. Gamecocks. Alter. In that order, every day.</p></div></section>
     </aside>
   </div>
 </div>
 
-<div class="wrap view" id="hubView" hidden>
-  <div class="backrow"><button type="button" data-home>← Back to Front Page</button></div>
-  <div class="section-head" style="margin-top:14px"><h2>My Teams <i>Dashboards</i></h2><div class="rule"></div></div>
-  <p style="margin:0 0 4px;color:var(--muted);font-size:14.5px;line-height:1.6;max-width:720px">Pick a team to open its full dashboard — latest headlines, standings watch, team details, roster, schedule, quick links, and highlights.</p>
+<!-- ============ STANDINGS ============ -->
+<div class="wrap view" id="view-standings" data-view="standings" hidden>
+  <div class="page-head">
+    <h1 tabindex="-1">Stand<i>ings</i></h1>
+    <p>Where Bean's six teams sit right now, and what to watch this week. Tap a team for its dashboard.</p>
+  </div>
+  <div class="two-col">
+    <section class="rail-card" aria-label="Standings snapshot"><div class="rail-head"><h2>Standings Snapshot</h2><span id="standingsBadge">Watch List</span></div><div id="railStandings"></div><p class="dash-note">Records update automatically from ESPN when online; Alter Knights reflects the final 2026 season mark.</p></section>
+    <section class="rail-card" aria-label="This week's watch list"><div class="rail-head"><h2>This Week's Watch List</h2><span>Next Games</span></div><div class="watchlist" id="railWatchlist"></div></section>
+  </div>
+</div>
+
+<!-- ============ MY TEAMS ============ -->
+<div class="wrap view" id="view-my-teams" data-view="my-teams" hidden>
+  <div class="page-head">
+    <h1 tabindex="-1">My Teams <i>Dashboards</i></h1>
+    <p>Pick a team to open its full dashboard — latest headlines, schedule, roster, standings watch, team details, quick links and highlights.</p>
+  </div>
   <div class="hub-grid" id="hubGrid"></div>
 </div>
 
-<div class="wrap view" id="dashView" hidden>
-  <div class="backrow"><button type="button" data-home>← Front Page</button><button type="button" data-hub>★ All My Teams</button><a href="#videos" id="dashVideoTop">▶ Team Highlights</a></div>
+<!-- ============ TEAM DASHBOARD (#team-<key>) ============ -->
+<div class="wrap view" id="view-team" data-view="team" hidden>
+  <div class="backrow"><a href="#home">← Front Page</a><a href="#my-teams">★ All My Teams</a><button type="button" id="dashVideoTop">▶ Team Highlights</button></div>
   <header class="dash-head" id="dashHead">
     <div class="dash-head-top">
       <span class="abbr" id="dashAbbr">DET</span>
-      <div><h1 id="dashName">Team</h1><div class="sub" id="dashSub"></div></div>
+      <div><h1 id="dashName" tabindex="-1">Team</h1><div class="sub" id="dashSub"></div></div>
     </div>
     <div class="dash-pills" id="dashPills"></div>
   </header>
   <nav class="dash-tabs" aria-label="Team dashboard sections">
-    <a href="#dash-headlines">Headlines</a><a href="#dash-schedule">Schedule</a><a href="#dash-roster">Roster</a><a href="#dash-standings">Standings</a><a href="#dash-details">Team Details</a><a href="#videos" id="dashVideoTab">▶ Videos</a>
+    <button type="button" data-scroll="dash-headlines">Headlines</button><button type="button" data-scroll="dash-schedule">Schedule</button><button type="button" data-scroll="dash-roster">Roster</button><button type="button" data-scroll="dash-standings">Standings</button><button type="button" data-scroll="dash-details">Team Details</button><button type="button" id="dashVideoTab">▶ Videos</button>
   </nav>
   <div class="dash-grid">
-    <main>
+    <div>
       <section class="dash-card" id="dash-headlines"><div class="dash-card-head"><h3>Latest Headlines</h3><span>Top 5</span></div><ol class="dash-headlines" id="dashHeadlines"></ol></section>
-      <section class="dash-card" id="dash-schedule"><div class="dash-card-head"><h3>Schedule &amp; Results</h3><span id="dashSchedNote">2026 Season</span></div><table class="dash-table" id="dashSchedule"></table><p class="dash-note" id="dashSchedFooter">Times in Eastern Time. Live schedule updates automatically when connected.</p></section>
-      <section class="dash-card" id="dash-roster"><div class="dash-card-head"><h3>Roster</h3><span>Key Players</span></div><table class="dash-table" id="dashRoster"></table><p class="dash-note">The core rotation and depth-chart leaders Bean watches every game.</p></section>
-    </main>
+      <section class="dash-card" id="dash-schedule"><div class="dash-card-head"><h3>Schedule &amp; Results</h3><span id="dashSchedNote">2026 Season</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashSchedule"></table></div><p class="dash-note">Times in Eastern Time. Live schedule updates automatically when connected.</p></section>
+      <section class="dash-card" id="dash-roster"><div class="dash-card-head"><h3>Roster</h3><span>Key Players</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashRoster"></table></div><p class="dash-note">The core rotation and depth-chart leaders Bean watches every game.</p></section>
+    </div>
     <aside>
       <section class="dash-card" id="dash-details"><div class="dash-card-head"><h3>Team Details</h3><span>Info</span></div><dl class="facts" id="dashFacts"></dl><p class="dash-about" id="dashAbout"></p></section>
       <section class="dash-card"><div class="dash-card-head"><h3>Quick Links</h3><span>Official &amp; Live</span></div><div class="quick-links" id="dashLinks"></div></section>
-      <section class="dash-card" id="dash-standings"><div class="dash-card-head"><h3>Standings Watch</h3><span id="dashStandName">Division</span></div><table class="dash-table" id="dashStandings"></table><p class="dash-note">Bean's standings watch — where this team sits and who it's chasing.</p></section>
-      <section class="dash-card"><div class="dash-card-head"><h3>Next Up</h3><span>Don't Miss It</span></div><div style="padding:13px 14px 15px"><div id="dashNext" style="font-size:15px;font-weight:700;line-height:1.45"></div><div class="pv-actions" style="margin-top:12px"><button type="button" id="dashPreviewBtn" style="border-color:var(--line);color:var(--text)">▶ Game Preview</button><button type="button" id="dashPlayBtn" style="border-color:var(--line);color:var(--text)">▶ Watch Highlights</button></div></div></section>
+      <section class="dash-card" id="dash-standings"><div class="dash-card-head"><h3>Standings Watch</h3><span id="dashStandName">Division</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashStandings"></table></div><p class="dash-note">Bean's standings watch — where this team sits and who it's chasing.</p></section>
+      <section class="dash-card"><div class="dash-card-head"><h3>Next Up</h3><span>Don't Miss It</span></div><div class="next-body"><div id="dashNext" style="font-size:15px;font-weight:700;line-height:1.45"></div><div class="pv-actions" style="margin-top:12px"><button type="button" id="dashPreviewBtn">▶ Game Preview</button><button type="button" id="dashPlayBtn">▶ Watch Highlights</button></div></div></section>
     </aside>
   </div>
 </div>
 
-<footer><div class="wrap"><div><div class="footer-brand"><img class="footer-mark" src="icons/bean-sports-icon.svg" alt="" width="32" height="32"><b>BEAN SPORTS</b></div><p>An ESPN-style front page rebuilt around Bean's teams — Detroit Lions, Detroit Pistons, Ohio State Football, Dayton Flyers, South Carolina Gamecocks, and Alter Knights. Powered by a single-source data engine with live ESPN score/schedule syncing.</p></div><nav><a href="#podcast">Podcast</a><a href="#team-lions" data-dash="lions">Lions</a><a href="#team-pistons" data-dash="pistons">Pistons</a><a href="#team-osu" data-dash="osu">Ohio State</a><a href="#team-dayton" data-dash="dayton">Dayton</a><a href="#team-gamecocks" data-dash="gamecocks">Gamecocks</a><a href="#team-alter" data-dash="alter">Alter</a><a href="#my-teams" data-hub>My Teams</a></nav></div></footer>
+</main>
+
+<footer><div class="wrap"><div><div class="footer-brand"><img class="footer-mark" src="icons/bean-sports-icon.svg" alt="" width="32" height="32"><b>BEAN SPORTS</b></div><p>An ESPN-style front page rebuilt around Bean's teams — Detroit Lions, Detroit Pistons, Ohio State Football, Dayton Flyers, South Carolina Gamecocks, and Alter Knights. Powered by a single-source data engine with live ESPN score/schedule syncing.</p></div><nav aria-label="Footer"><a href="#podcast">Podcast</a><a href="#videos">Videos</a><a href="#headlines">Headlines</a><a href="#standings">Standings</a><a href="#my-teams">My Teams</a><a href="#team-lions">Lions</a><a href="#team-pistons">Pistons</a><a href="#team-osu">Ohio State</a><a href="#team-dayton">Dayton</a><a href="#team-gamecocks">Gamecocks</a><a href="#team-alter">Alter</a></nav></div></footer>
 
 <script>
 (function(){
+'use strict';
   /* =========================================================================
      SINGLE SOURCE OF TRUTH: Edit team info, schedules, and videos here only.
      Live ESPN data automatically enriches the 5 pro/college teams when online.
@@ -1015,27 +1060,37 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   ];
 
   var EXTERNAL=[
-    {team:'lions',source:'sportsnet',sourceLabel:'Sportsnet',url:'[invalid URL]',kind:'Game Highlights • 3:09',title:'NFL Highlights: Lions 31, Buccaneers 21 — Sportsnet Cut',meta:'Nov 22, 2026 • Goff threw for 2 TDs, Gibbs added 2 on the ground.',bestFor:'Lions • NFL roundup'},
-    {team:'pistons',source:'nba',sourceLabel:'NBC Sports',url:'[invalid URL]',kind:'Game Highlights',title:'Highlights: Pistons snap Spurs’ 12-game win streak, 105–93',meta:'Nov 17, 2026 • Coast 2 Coast Tuesday on NBC Sports — Detroit’s depth ends the streak.',bestFor:'Detroit Pistons'},
-    {team:'gamecocks',source:'espn',sourceLabel:'ESPN',url:'[invalid URL]',kind:'Full Highlights • 1:18',title:'Georgia vs. South Carolina: Full Highlights — on ESPN',meta:'Nov 21, 2026 • ESPN’s own highlight cut + full game story from Columbia.',bestFor:'Gamecocks • Dayton • National'},
-    {team:'lions',source:'nfl',sourceLabel:'NFL / Lions.com',url:'[invalid URL]',kind:'Official Team Highlights',title:'Lions vs. Buccaneers: Full Highlights — on DetroitLions.com',meta:'Official team site • Every highlight, plus Gibbs & Goff best-plays reels.',bestFor:'Detroit Lions'},
-    {team:'osu',source:'fox',sourceLabel:'FOX Sports / BTN',url:'[invalid URL]',kind:'Video Board',title:'Ohio State at Nebraska — FOX & Big Ten Network Video Board',meta:'Nov 21, 2026 • FOX College Football and BTN clips, sights & sounds, postgame.',bestFor:'Ohio State • Big Ten'},
+    {team:'lions',source:'sportsnet',sourceLabel:'Sportsnet',url:'https://www.sportsnet.ca/nfl/video/nfl-highlights-lions-31-buccaneers-21/',kind:'Game Highlights • 3:09',title:'NFL Highlights: Lions 31, Buccaneers 21 — Sportsnet Cut',meta:'Nov 22, 2026 • Goff threw for 2 TDs, Gibbs added 2 on the ground.',bestFor:'Lions • NFL roundup'},
+    {team:'pistons',source:'nba',sourceLabel:'NBC Sports',url:'https://www.nbcsports.com/watch/nba/nba-2026-27-highlights-detroit-pistons-105-san-antonio-spurs-93',kind:'Game Highlights',title:'Highlights: Pistons snap Spurs’ 12-game win streak, 105–93',meta:'Nov 17, 2026 • Coast 2 Coast Tuesday on NBC Sports — Detroit’s depth ends the streak.',bestFor:'Detroit Pistons'},
+    {team:'gamecocks',source:'espn',sourceLabel:'ESPN',url:'https://www.espn.ph/college-football/story/_/id/50558713/georgia-clinches-sec-title-game-berth-win-south-carolina',kind:'Full Highlights • 1:18',title:'Georgia vs. South Carolina: Full Highlights — on ESPN',meta:'Nov 21, 2026 • ESPN’s own highlight cut + full game story from Columbia.',bestFor:'Gamecocks • Dayton • National'},
+    {team:'lions',source:'nfl',sourceLabel:'NFL / Lions.com',url:'https://www.detroitlions.com/video/lions-vs-buccaneers-full-highlights-x0977',kind:'Official Team Highlights',title:'Lions vs. Buccaneers: Full Highlights — on DetroitLions.com',meta:'Official team site • Every highlight, plus Gibbs & Goff best-plays reels.',bestFor:'Detroit Lions'},
+    {team:'osu',source:'fox',sourceLabel:'FOX Sports / BTN',url:'https://www.huskermax.com/video-highlights-2026-nebraska-football-vs-ohio-state/',kind:'Video Board',title:'Ohio State at Nebraska — FOX & Big Ten Network Video Board',meta:'Nov 21, 2026 • FOX College Football and BTN clips, sights & sounds, postgame.',bestFor:'Ohio State • Big Ten'},
     {team:'alter',source:'other',sourceLabel:'MaxPreps',url:'https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/25-26/media/videos/',kind:'Team Video Hub',title:'Alter Knights Videos — on MaxPreps',meta:'Highlights & full replays from Kettering • Stats presented by Hudl.',bestFor:'Alter Knights • High School'}
   ];
 
+
   /* ---------- Utilities ---------- */
+  function $(id){ return document.getElementById(id); }
   function escapeHtml(s){
     return String(s==null?'':s).replace(/[&<>"']/g,function(c){
       return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
     });
   }
-  function ytWatch(id){return '[invalid URL]'+id;}
-  function ytThumb(id){return '[invalid URL]'+id+'/hqdefault.jpg';}
-  function ytEmbed(id,autoplay){return '[invalid URL]'+id+'?rel=0'+(autoplay?'&autoplay=1':'');}
-  function firstForTeam(team){for(var i=0;i<VIDEOS.length;i++){if(VIDEOS[i].team===team)return VIDEOS[i];}return null;}
+  function ytWatch(id){ return 'https://www.youtube.com/watch?v='+id; }
+  function ytThumb(id){ return 'https://i.ytimg.com/vi/'+id+'/hqdefault.jpg'; }
+  // playsinline=1 keeps playback inside the page on iPhone instead of jumping to fullscreen.
+  function ytEmbed(id,autoplay){ return 'https://www.youtube.com/embed/'+id+'?rel=0&modestbranding=1&playsinline=1&autoplay='+(autoplay?1:0); }
+  function firstForTeam(team){
+    if(!team||team==='all') return VIDEOS[0]||null;
+    for(var i=0;i<VIDEOS.length;i++){ if(VIDEOS[i].team===team) return VIDEOS[i]; }
+    return null;
+  }
+  function scrollTopNow(){
+    try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(e){ window.scrollTo(0,0); }
+  }
 
   /* ---------- Theme Toggle ---------- */
-  var themeBtn=document.getElementById('themeToggle');
+  var themeBtn=$('themeToggle');
   function applyTheme(t){
     if(t==='dark'||t==='light'){ document.documentElement.setAttribute('data-theme',t); }
     else { document.documentElement.removeAttribute('data-theme'); }
@@ -1053,21 +1108,17 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   /* ---------- Masthead Date & Local File Notice ---------- */
   (function(){
-    var d=new Date();
-    var el=document.getElementById('mastDate');
+    var d=new Date(), el=$('mastDate');
     if(el&&!isNaN(d.getTime())){
       el.textContent=d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
     }
-    if(location.protocol==='file:'){
-      var w=document.getElementById('vhLocalWarn');
-      if(w) w.style.display='block';
-    }
+    if(location.protocol==='file:'){ $('vhLocalWarn').style.display='block'; }
   })();
 
   /* ---------- State ---------- */
   var sbFilter='all', sbSortMode='rank';
-  var hlTeamFilter='all', hlSourceFilter='all';
-  var openPreviewKey=null, currentTeam=null;
+  var vidTeam='all', currentVideo=null, pendingPlay=false, videosBuilt=false;
+  var openPreviewKey=null, currentTeam=null, firstRoute=true;
 
   /* ---------- Renderers ---------- */
   function getSortedTeamIds(){
@@ -1086,82 +1137,78 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   }
 
   function renderScoreboard(){
-    var track=document.getElementById('sbTrack');
-    track.innerHTML='';
+    var track=$('sbTrack');
+    var html='';
     getSortedTeamIds().forEach(function(key){
-      var t=TEAMS[key], g=[invalid URL];
+      var t=TEAMS[key], g=t.game;
       if(sbFilter!=='all'&&t.leagueKey!==sbFilter) return;
-      var card=document.createElement('article');
-      card.className='sb-card'+(g.status==='live'?' is-live':'');
       var statusCls=g.status==='live'?'live':(g.status==='final'?'final':'');
       var scoreMode=(g.teamScore!==null&&g.oppScore!==null);
-      card.innerHTML=
+      var open=openPreviewKey===key;
+      html+=
+        '<article class="sb-card'+(g.status==='live'?' is-live':'')+'">'+
         '<div class="sb-card-top"><span>'+escapeHtml(t.league)+'</span><span class="sb-status '+statusCls+'">'+escapeHtml(g.statusLabel)+'</span></div>'+
-        '<div class="team-row"><span class="abbr" style="background:'+t.color+'">'+escapeHtml(t.abbr)+'</span><div><div class="tname">'+escapeHtml([invalid URL])+'</div><div class="trec">'+escapeHtml(t.record)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.teamScore)+'</div>':'<div class="ttime">'+g.timeLines+'</div>')+'</div>'+
-        '<div class="team-row"><span class="abbr" style="background:'+g.oppColor+'">'+escapeHtml(g.oppAbbr)+'</span><div><div class="tname">'+escapeHtml(g.opponent)+'</div><div class="trec">'+escapeHtml(g.oppSub)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.oppScore)+'</div>':'<div class="ttime">'+escapeHtml([invalid URL])+'</div>')+'</div>'+
+        '<div class="team-row"><span class="abbr" style="background:'+t.color+'">'+escapeHtml(t.abbr)+'</span><div><div class="tname">'+escapeHtml(t.name)+'</div><div class="trec">'+escapeHtml(t.record)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.teamScore)+'</div>':'<div class="ttime">'+g.timeLines+'</div>')+'</div>'+
+        '<div class="team-row"><span class="abbr" style="background:'+g.oppColor+'">'+escapeHtml(g.oppAbbr)+'</span><div><div class="tname">'+escapeHtml(g.opponent)+'</div><div class="trec">'+escapeHtml(g.oppSub)+'</div></div>'+(scoreMode?'<div class="tscore">'+escapeHtml(g.oppScore)+'</div>':'<div class="ttime">'+escapeHtml(g.tv)+'</div>')+'</div>'+
         '<div class="sb-note">'+escapeHtml(g.note)+'</div>'+
-        '<div class="sb-actions"><button type="button" class="preview-btn" data-preview="'+key+'" aria-expanded="'+(openPreviewKey===key?'true':'false')+'">'+(openPreviewKey===key?'✕ Close':'▶ Preview')+'</button><button type="button" class="dash-btn" data-dash="'+key+'">Dashboard →</button></div>';
-      track.appendChild(card);
+        '<div class="sb-actions"><button type="button" class="preview-btn" data-preview="'+key+'" aria-expanded="'+(open?'true':'false')+'">'+(open?'✕ Close':'▶ Preview')+'</button><a class="dash-btn" href="#team-'+key+'">Dashboard →</a></div>'+
+        '</article>';
     });
+    track.innerHTML=html||'<p class="dash-note">No Bean teams in this league.</p>';
   }
 
-  function renderHomeSections(){
-    var heroSide=document.getElementById('heroSide');
-    heroSide.innerHTML=['osu','dayton','gamecocks'].map(function(k){
-      var t=TEAMS[k], hs=t.heroSide;
-      return '<article class="mini-story" data-dash="'+k+'" tabindex="0" role="link" aria-label="Open '+escapeHtml([invalid URL])+' dashboard"><label>'+escapeHtml(hs.label)+'</label><h3>'+escapeHtml(hs.title)+'</h3><p>'+escapeHtml(hs.text)+'</p></article>';
-    }).join('');
-
-    var feed=document.getElementById('headlineFeed');
-    feed.innerHTML=TEAM_ORDER.map(function(k){
-      var t=TEAMS[k], s=t.story;
-      return '<article class="article" id="feed-'+k+'"><div class="thumb" style="background:'+t.grad+'">'+escapeHtml([invalid URL]).replace(' ','<br>')+'</div><div><label>'+escapeHtml(s.kicker)+'</label><h3>'+escapeHtml(s.title)+'</h3><p>'+escapeHtml(s.body)+'</p><div class="byline"><b>Bean Sports Staff</b> • '+escapeHtml(s.byline)+'</div><div><a class="dash-link" href="#team-'+k+'" data-dash="'+k+'">Open '+escapeHtml(t.shortName)+' Dashboard →</a></div></div></article>';
-    }).join('');
-
-    var cardHtml=TEAM_ORDER.map(function(k){
-      var t=TEAMS[k], g=[invalid URL];
-      return '<article class="team-card"><div class="team-card-head" style="background:'+t.color+'"><span class="abbr">'+escapeHtml(t.abbr)+'</span><div><h3>'+escapeHtml([invalid URL])+'</h3><span>'+escapeHtml(t.sub)+'</span></div></div><div class="team-card-body"><p>'+escapeHtml(t.about)+'</p><div class="next"><span><b>'+(g.status==='final'?'Latest':'Next Up')+'</b><br>vs. '+escapeHtml(g.opponent)+'</span><span style="text-align:right">'+escapeHtml(g.timeShort)+'<br>'+escapeHtml([invalid URL])+'</span></div><div class="team-links"><a href="#team-'+k+'" data-dash="'+k+'">Team Dashboard →</a><a href="#videos" data-play="'+k+'">▶ Highlights</a><a href="'+t.quickLinks[0][1]+'" target="_blank" rel="noopener">Box / Info ↗</a></div></div></article>';
-    }).join('');
-    document.getElementById('teamsGrid').innerHTML=cardHtml;
-    document.getElementById('hubGrid').innerHTML=cardHtml;
-
-    var railHl=document.getElementById('railHeadlines');
-    railHl.innerHTML=TEAM_ORDER.map(function(k,idx){
+  function standRows(keys){
+    return keys.map(function(k){
       var t=TEAMS[k];
-      return '<li><span class="num">'+(idx+1)+'</span><div><a href="#team-'+k+'" data-dash="'+k+'">'+escapeHtml(t.story.railTitle)+'</a><small>'+escapeHtml(t.shortLeague)+' • '+escapeHtml(t.shortName)+'</small></div></li>';
-    }).join('')+'<li><span class="num">7</span><div><a href="#my-teams" data-hub>All six of Bean\'s teams, one front page — open full hub</a><small>My Teams</small></div></li>';
-
-    document.getElementById('railStandings').innerHTML=
-      '<table class="standings"><tr><th colspan="2">Pro Teams</th><th>Record / Status</th></tr>'+
-      '<tr class="bean"><td>DET</td><td>Detroit Lions</td><td>'+escapeHtml(TEAMS.lions.record)+'</td></tr>'+
-      '<tr class="bean"><td>DET</td><td>Detroit Pistons</td><td>'+escapeHtml(TEAMS.pistons.record)+'</td></tr></table>'+
-      '<table class="standings" style="border-top:1px solid var(--line)"><tr><th colspan="2">College &amp; High School</th><th>Record / Status</th></tr>'+
-      '<tr class="bean"><td>OSU</td><td>Ohio State</td><td>'+escapeHtml(TEAMS.osu.record)+'</td></tr>'+
-      '<tr class="bean"><td>DAY</td><td>Dayton Flyers</td><td>'+escapeHtml(TEAMS.dayton.record)+'</td></tr>'+
-      '<tr class="bean"><td>SC</td><td>South Carolina</td><td>'+escapeHtml(TEAMS.gamecocks.record)+'</td></tr>'+
-      '<tr class="bean"><td>ALT</td><td>Alter Knights</td><td>'+escapeHtml(TEAMS.alter.record)+'</td></tr></table>';
-
-    document.getElementById('railWatchlist').innerHTML=TEAM_ORDER.map(function(k){
-      var t=TEAMS[k], g=[invalid URL];
-      return '<div class="watch-item"><span class="dot" style="background:'+t.color+'"></span><span><b>'+escapeHtml(t.shortName)+'</b> vs. '+escapeHtml(g.opponent)+'</span><time>'+escapeHtml(g.timeShort)+'</time></div>';
+      return '<tr class="bean"><td>'+escapeHtml(t.abbr)+'</td><td><a href="#team-'+k+'">'+escapeHtml(t.name)+'</a></td><td>'+escapeHtml(t.record)+'</td></tr>';
     }).join('');
   }
 
-  /* ---------- Countdown Strip ---------- */
+  function renderSections(){
+    $('heroSide').innerHTML=['osu','dayton','gamecocks'].map(function(k){
+      var t=TEAMS[k], hs=t.heroSide;
+      return '<a class="mini-story" href="#team-'+k+'" aria-label="Open '+escapeHtml(t.name)+' dashboard"><label>'+escapeHtml(hs.label)+'</label><h3>'+escapeHtml(hs.title)+'</h3><p>'+escapeHtml(hs.text)+'</p></a>';
+    }).join('');
+
+    $('headlineFeed').innerHTML=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], s=t.story;
+      return '<article class="article"><div class="thumb" style="background:'+t.grad+'">'+escapeHtml(t.name).replace(' ','<br>')+'</div><div><label>'+escapeHtml(s.kicker)+'</label><h3>'+escapeHtml(s.title)+'</h3><p>'+escapeHtml(s.body)+'</p><div class="byline"><b>Bean Sports Staff</b> • '+escapeHtml(s.byline)+'</div><div><a class="dash-link" href="#team-'+k+'">Open '+escapeHtml(t.shortName)+' Dashboard →</a></div></div></article>';
+    }).join('');
+
+    $('hubGrid').innerHTML=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], g=t.game;
+      return '<article class="team-card"><div class="team-card-head" style="background:'+t.color+'"><span class="abbr">'+escapeHtml(t.abbr)+'</span><div><h3>'+escapeHtml(t.name)+'</h3><span>'+escapeHtml(t.sub)+'</span></div></div><div class="team-card-body"><p>'+escapeHtml(t.about)+'</p><div class="next"><span><b>'+(g.status==='final'?'Latest':'Next Up')+'</b><br>vs. '+escapeHtml(g.opponent)+'</span><span style="text-align:right">'+escapeHtml(g.timeShort)+'<br>'+escapeHtml(g.tv)+'</span></div><div class="team-links"><a href="#team-'+k+'">Team Dashboard →</a><button type="button" data-play="'+k+'">▶ Highlights</button><a href="'+t.quickLinks[0][1]+'" target="_blank" rel="noopener noreferrer">Box / Info ↗</a></div></div></article>';
+    }).join('');
+
+    $('railHeadlines').innerHTML=TEAM_ORDER.map(function(k,idx){
+      var t=TEAMS[k];
+      return '<li><span class="num">'+(idx+1)+'</span><div><a href="#team-'+k+'">'+escapeHtml(t.story.railTitle)+'</a><small>'+escapeHtml(t.shortLeague)+' • '+escapeHtml(t.shortName)+'</small></div></li>';
+    }).join('')+'<li><span class="num">7</span><div><a href="#my-teams">All six of Bean\'s teams, one front page — open full hub</a><small>My Teams</small></div></li>';
+
+    $('railStandings').innerHTML=
+      '<table class="standings"><tr><th colspan="2">Pro Teams</th><th>Record / Status</th></tr>'+standRows(['lions','pistons'])+'</table>'+
+      '<table class="standings" style="border-top:1px solid var(--line)"><tr><th colspan="2">College &amp; High School</th><th>Record / Status</th></tr>'+standRows(['osu','dayton','gamecocks','alter'])+'</table>';
+
+    $('railWatchlist').innerHTML=TEAM_ORDER.map(function(k){
+      var t=TEAMS[k], g=t.game;
+      return '<div class="watch-item"><span class="dot" style="background:'+t.color+'"></span><span><a href="#team-'+k+'"><b>'+escapeHtml(t.shortName)+'</b></a> vs. '+escapeHtml(g.opponent)+'</span><time>'+escapeHtml(g.timeShort)+'</time></div>';
+    }).join('');
+  }
+
+  /* ---------- Game-Day Countdown Bar ---------- */
   function updateCountdown(){
-    var now=[invalid URL](), liveTeam=null, nextTeam=null, nextMs=Infinity;
+    var now=Date.now(), liveTeam=null, nextTeam=null, nextMs=Infinity;
     TEAM_ORDER.forEach(function(k){
-      var t=TEAMS[k], g=[invalid URL];
+      var t=TEAMS[k], g=t.game;
       if(g.status==='live'&&!liveTeam){ liveTeam=t; }
       if(g.dateISO){
         var ts=Date.parse(g.dateISO);
         if(!isNaN(ts)&&ts>now&&ts-now<nextMs){ nextMs=ts-now; nextTeam=t; }
       }
     });
-    var cdText=document.getElementById('cdText');
-    var cdTimer=document.getElementById('cdTimer');
+    var cdText=$('cdText'), cdTimer=$('cdTimer');
     if(liveTeam){
-      cdText.innerHTML='<b>LIVE NOW:</b> '+escapeHtml([invalid URL])+' vs. '+escapeHtml(liveTeam.game.opponent)+' ('+escapeHtml(liveTeam.game.statusLabel)+')';
+      cdText.innerHTML='<b>LIVE NOW:</b> '+escapeHtml(liveTeam.name)+' vs. '+escapeHtml(liveTeam.game.opponent)+' ('+escapeHtml(liveTeam.game.statusLabel)+')';
       cdTimer.textContent='ON AIR';
       return;
     }
@@ -1172,80 +1219,94 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }
     var diff=Math.max(0,Math.floor(nextMs/1000));
     var d=Math.floor(diff/86400), h=Math.floor((diff%86400)/3600), m=Math.floor((diff%3600)/60);
-    cdText.innerHTML='<b>'+escapeHtml([invalid URL])+'</b> vs. '+escapeHtml(nextTeam.game.opponent)+' • '+escapeHtml(nextTeam.game.timeShort)+' ('+escapeHtml([invalid URL])+')';
+    cdText.innerHTML='<b>'+escapeHtml(nextTeam.name)+'</b> vs. '+escapeHtml(nextTeam.game.opponent)+' • '+escapeHtml(nextTeam.game.timeShort)+' ('+escapeHtml(nextTeam.game.tv)+')';
     cdTimer.textContent=(d>0?d+'d ':'')+h+'h '+m+'m';
   }
 
-  /* ---------- Video Hub & Highlights ---------- */
-  var frame=document.getElementById('vhFrame');
-  var nowLabel=document.getElementById('vhNowLabel');
-  var nowTitle=document.getElementById('vhNowTitle');
-  var nowMeta=document.getElementById('vhNowMeta');
-  var nowLink=document.getElementById('vhNowLink');
-  var listEl=document.getElementById('vhList');
-  var gridEl=document.getElementById('hlGrid');
+  /* ---------- Video Center ---------- */
+  var frame=$('vhFrame'), gridEl=$('hlGrid');
 
-  function playVideo(v,scroll){
-    if(!v||!frame) return;
-    var t=TEAMS[[invalid URL]];
-    frame.src=ytEmbed([invalid URL],true);
-    nowLabel.textContent='Now Playing • '+[invalid URL]+' • '+t.shortLeague+' • '+v.sourceLabel;
-    nowTitle.textContent=v.title;
-    nowMeta.textContent=v.meta;
-    nowLink.href=ytWatch([invalid URL]);
-    nowLink.textContent='Watch on '+v.sourceLabel+' ↗';
-    listEl.querySelectorAll('.vh-item').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-vid')===[invalid URL]);});
-    gridEl.querySelectorAll('.hl-card').forEach(function(c){c.style.outline=(c.getAttribute('data-vid')===[invalid URL])?'2px solid var(--red)':'';});
-    if(scroll){document.getElementById('videos').scrollIntoView({behavior:'smooth',block:'start'});}
-  }
-
-  function renderVideos(){
-    listEl.innerHTML=''; gridEl.innerHTML='';
-    VIDEOS.forEach(function(v,i){
-      var t=TEAMS[[invalid URL]];
-      var b=document.createElement('button');
-      b.type='button'; b.className='vh-item'+(i===0?' active':''); b.setAttribute('data-vid',[invalid URL]); b.setAttribute('role','option');
-      b.innerHTML='<span class="vh-thumb"><img src="'+ytThumb([invalid URL])+'" alt="" loading="lazy"><span class="src-badge">'+escapeHtml(v.sourceLabel)+'</span><span class="play"><span>▶</span></span></span><span><span class="vt">'+escapeHtml(v.title)+'</span><span class="vm" style="display:block">'+escapeHtml([invalid URL])+' • '+escapeHtml(v.kind)+' • <span class="vsrc">'+escapeHtml(v.sourceLabel)+'</span></span></span>';
-      b.addEventListener('click',function(){playVideo(v,false);});
-      listEl.appendChild(b);
-
+  function buildVideos(){
+    if(videosBuilt) return;
+    videosBuilt=true;
+    gridEl.innerHTML='';
+    VIDEOS.forEach(function(v){
+      var t=TEAMS[v.team];
       var card=document.createElement('button');
-      card.type='button'; card.className='hl-card'; card.setAttribute('data-vid',[invalid URL]); card.setAttribute('data-team',[invalid URL]); card.setAttribute('data-source',v.source);
-      card.innerHTML='<span class="hl-thumb" style="display:block"><img src="'+ytThumb([invalid URL])+'" alt="'+escapeHtml(v.title)+'" loading="lazy"><span class="hl-src">'+escapeHtml(v.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(v.kind)+'</span><span class="hl-play">▶</span></span><span class="hl-body" style="display:block"><label>'+escapeHtml([invalid URL])+' • '+escapeHtml(t.shortLeague)+' • '+escapeHtml(v.sourceLabel)+'</label><h3>'+escapeHtml(v.title)+'</h3><p>'+escapeHtml(v.meta)+'</p></span>';
-      card.addEventListener('click',function(){playVideo(v,true);});
+      card.type='button'; card.className='hl-card';
+      card.setAttribute('data-vid',v.id); card.setAttribute('data-team',v.team);
+      card.innerHTML='<span class="hl-thumb"><img src="'+ytThumb(v.id)+'" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="hl-src">'+escapeHtml(v.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(v.kind)+'</span><span class="hl-play">▶</span></span><span class="hl-body"><span class="hl-team">'+escapeHtml(t.name)+' • '+escapeHtml(t.shortLeague)+'</span><span class="hl-title">'+escapeHtml(v.title)+'</span><span class="hl-meta">'+escapeHtml(v.meta)+'</span></span>';
+      card.addEventListener('click',function(){ playVideo(v,true,true); });
       gridEl.appendChild(card);
     });
 
-    var dirEl=document.getElementById('srcDirGrid');
-    dirEl.innerHTML='';
-    EXTERNAL.forEach(function(x){
-      var t=TEAMS[[invalid URL]];
-      var card=document.createElement('a');
-      card.className='hl-card'; card.href=x.url; [invalid URL]='_blank'; card.rel='noopener'; card.setAttribute('data-team',[invalid URL]); card.setAttribute('data-source',x.source);
-      card.innerHTML='<span class="hl-thumb" style="display:block;background:'+t.grad+'"><span class="hl-watermark">'+escapeHtml(t.abbr)+'</span><span class="hl-ext-brand">'+escapeHtml(t.shortName)+'</span><span class="hl-src">'+escapeHtml(x.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(x.kind)+'</span><span class="hl-play">↗</span></span><span class="hl-body" style="display:block"><label>'+escapeHtml([invalid URL])+' • '+escapeHtml(t.shortLeague)+' • '+escapeHtml(x.sourceLabel)+'</label><h3>'+escapeHtml(x.title)+'</h3><p>'+escapeHtml(x.meta)+'</p><span class="hl-ext">Opens on '+escapeHtml(x.sourceLabel)+' ↗</span></span>';
-      gridEl.appendChild(card);
-
-      var sc=document.createElement('a');
-      sc.className='src-card'; sc.href=x.url; [invalid URL]='_blank'; sc.rel='noopener';
-      sc.innerHTML='<span class="src-top"><span class="src-name">'+escapeHtml(x.sourceLabel)+'</span><span class="src-go">Open ↗</span></span><p>'+escapeHtml(x.meta)+'</p><small>Best for: '+escapeHtml(x.bestFor)+'</small>';
-      dirEl.appendChild(sc);
-    });
+    // "More Sports Networks": third-party sites that block iframe embeds, so they open in a new tab.
+    var NET_ORDER=['espn','sportsnet','nba','nfl','fox','other'];
+    var NET_LABEL={espn:'ESPN',sportsnet:'Sportsnet',nba:'NBC Sports',nfl:'DetroitLions.com',fox:'FOX Sports / BTN',other:'MaxPreps'};
+    $('netLinks').innerHTML=NET_ORDER.map(function(src){
+      for(var i=0;i<EXTERNAL.length;i++){
+        var x=EXTERNAL[i];
+        if(x.source===src){
+          return '<a href="'+escapeHtml(x.url)+'" target="_blank" rel="noopener noreferrer" title="'+escapeHtml(x.title)+'">'+escapeHtml(NET_LABEL[src])+' ↗</a>';
+        }
+      }
+      return '';
+    }).join('');
   }
 
-  function applyHlFilters(){
+  function applyVideoFilter(){
+    document.querySelectorAll('#hlFilters button').forEach(function(b){
+      var on=b.getAttribute('data-team')===vidTeam;
+      b.classList.toggle('active',on); b.setAttribute('aria-pressed',on?'true':'false');
+    });
     gridEl.querySelectorAll('.hl-card').forEach(function(c){
-      var okT=(hlTeamFilter==='all'||c.getAttribute('data-team')===hlTeamFilter);
-      var okS=(hlSourceFilter==='all'||c.getAttribute('data-source')===hlSourceFilter);
-      c.style.display=(okT&&okS)?'':'none';
+      c.hidden=!(vidTeam==='all'||c.getAttribute('data-team')===vidTeam);
     });
   }
 
-  /* ---------- Preview Drawer ---------- */
-  var panel=document.getElementById('previewPanel');
-  var pvLeague=document.getElementById('pvLeague'), pvTitle=document.getElementById('pvTitle'),
-      pvSummary=document.getElementById('pvSummary'), pvMeta=document.getElementById('pvMeta'),
-      pvKeys=document.getElementById('pvKeys'), pvWatch=document.getElementById('pvWatch');
+  function playVideo(v,autoplay,scroll){
+    if(!v) return;
+    var t=TEAMS[v.team];
+    currentVideo=v;
+    frame.src=ytEmbed(v.id,autoplay);
+    $('vhNowLabel').textContent='Now Playing • '+t.name+' • '+t.shortLeague+' • '+v.sourceLabel;
+    $('vhNowTitle').textContent=v.title;
+    $('vhNowMeta').textContent=v.meta;
+    var link=$('vhNowLink');
+    link.href=ytWatch(v.id);
+    link.textContent='Watch on '+v.sourceLabel+' ↗';
+    gridEl.querySelectorAll('.hl-card').forEach(function(c){
+      c.classList.toggle('is-playing',c.getAttribute('data-vid')===v.id);
+    });
+    if(scroll){ $('vcPlayer').scrollIntoView({behavior:'smooth',block:'start'}); }
+  }
 
+  // Jump to the Video Center, filtered to one team, and play that team's top highlight.
+  function goVideos(team){
+    vidTeam=team||'all';
+    pendingPlay=true;
+    if(location.hash==='#videos'){ route(); } else { location.hash='#videos'; }
+  }
+
+  function enterVideos(){
+    buildVideos();
+    applyVideoFilter();
+    if(pendingPlay){
+      pendingPlay=false;
+      playVideo(firstForTeam(vidTeam),true,false);
+    } else if(!currentVideo){
+      playVideo(firstForTeam(vidTeam),false,false);
+    }
+  }
+
+  $('hlFilters').addEventListener('click',function(e){
+    var btn=e.target.closest('button'); if(!btn) return;
+    vidTeam=btn.getAttribute('data-team');
+    applyVideoFilter();
+  });
+
+  /* ---------- Game Preview Drawer ---------- */
+  var panel=$('previewPanel');
   function closePreview(){
     panel.classList.remove('open');
     openPreviewKey=null;
@@ -1255,187 +1316,185 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var t=TEAMS[key]; if(!t) return;
     if(openPreviewKey===key){ closePreview(); return; }
     openPreviewKey=key;
-    var g=[invalid URL];
-    pvLeague.textContent='Game Preview • '+t.league;
-    pvTitle.textContent=[invalid URL]+' vs. '+g.opponent;
-    pvSummary.textContent=t.preview.summary;
-    pvMeta.innerHTML=[g.timeShort, t.venue, 'TV: '+[invalid URL]].map(function(m){return '<span>'+escapeHtml(m)+'</span>';}).join('');
-    pvKeys.innerHTML=[invalid URL](function(k,i){return '<li><span class="kn">'+(i+1)+'</span><span>'+escapeHtml(k)+'</span></li>';}).join('');
+    var g=t.game;
+    $('pvLeague').textContent='Game Preview • '+t.league;
+    $('pvTitle').textContent=t.name+' vs. '+g.opponent;
+    $('pvSummary').textContent=t.preview.summary;
+    $('pvMeta').innerHTML=[g.timeShort, t.venue, 'TV: '+g.tv].map(function(m){ return '<span>'+escapeHtml(m)+'</span>'; }).join('');
+    $('pvKeys').innerHTML=t.preview.keys.map(function(k,i){ return '<li><span class="kn">'+(i+1)+'</span><span>'+escapeHtml(k)+'</span></li>'; }).join('');
+    $('pvTeamLink').setAttribute('href','#team-'+key);
+    $('pvWatch').textContent='▶ Watch '+t.shortName+' Highlights';
     panel.classList.add('open');
     renderScoreboard();
     panel.scrollIntoView({behavior:'smooth',block:'nearest'});
   }
-  document.getElementById('pvClose').addEventListener('click',closePreview);
+  $('pvClose').addEventListener('click',closePreview);
   document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&openPreviewKey) closePreview(); });
-  pvWatch.addEventListener('click',function(){
-    if(!openPreviewKey) return;
-    var v=firstForTeam(openPreviewKey);
-    if(v){ goHome('#videos',true); setTimeout(function(){playVideo(v,true);},60); }
-  });
+  $('pvWatch').addEventListener('click',function(){ if(openPreviewKey) goVideos(openPreviewKey); });
 
-  /* ---------- Views & Proper Browser History Routing ---------- */
-  var homeView=document.getElementById('homeView'), hubView=document.getElementById('hubView'), dashView=document.getElementById('dashView');
-
-  function syncNav(activeKey){
-    document.querySelectorAll('#mainNav a').forEach(function(a){
-      a.classList.toggle('active', a.getAttribute('data-nav')===activeKey);
-    });
-  }
-  function showView(which){
-    homeView.hidden=which!=='home';
-    hubView.hidden=which!=='hub';
-    dashView.hidden=which!=='dash';
-    if(which!=='home'){ closePreview(); window.scrollTo({top:0,behavior:'smooth'}); }
-  }
+  /* ---------- Team Dashboard ---------- */
   function renderDash(key){
     var t=TEAMS[key]; if(!t) return;
     currentTeam=key;
-    var g=[invalid URL];
-    var head=document.getElementById('dashHead');
+    var g=t.game;
+    var head=$('dashHead');
     head.style.background=t.color; head.setAttribute('data-abbr',t.abbr);
-    document.getElementById('dashAbbr').textContent=t.abbr;
-    document.getElementById('dashName').textContent=[invalid URL];
-    document.getElementById('dashSub').textContent=t.sub+' • '+t.rank;
+    $('dashAbbr').textContent=t.abbr;
+    $('dashName').textContent=t.name;
+    $('dashSub').textContent=t.sub+' • '+t.rank;
     var pills=t.pills.slice();
     if(t.record&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
-    document.getElementById('dashPills').innerHTML=[invalid URL](function(p,i){return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>';}).join('');
-    document.getElementById('dashHeadlines').innerHTML=t.[invalid URL](function(h){return '<li><small>'+escapeHtml(h[0])+'</small><b>'+escapeHtml(h[1])+'</b><p>'+escapeHtml(h[2])+'</p></li>';}).join('');
-    document.getElementById('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+[invalid URL](function(r){
+    $('dashPills').innerHTML=pills.map(function(p,i){ return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>'; }).join('');
+    $('dashHeadlines').innerHTML=t.headlines.map(function(h){ return '<li><small>'+escapeHtml(h[0])+'</small><b>'+escapeHtml(h[1])+'</b><p>'+escapeHtml(h[2])+'</p></li>'; }).join('');
+    $('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+t.schedule.map(function(r){
       var cls=r[3]==='w'?'res-w':(r[3]==='l'?'res-l':'');
       return '<tr><td style="white-space:nowrap;font-weight:700">'+escapeHtml(r[0])+'</td><td style="font-weight:600">'+escapeHtml(r[1])+'</td><td class="'+cls+'">'+escapeHtml(r[2])+'</td></tr>';
     }).join('');
-    document.getElementById('dashRoster').innerHTML='<tr><th>Player</th><th>Pos</th><th>What to Watch</th></tr>'+[invalid URL](function(r){return '<tr><td style="font-weight:700">'+escapeHtml(r[0])+'</td><td style="white-space:nowrap">'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>';}).join('');
-    var facts=[['League',t.league],['Home',t.venue],['Head Coach',[invalid URL]],['Record',t.record],['Identity',t.identity],["Bean's Rank",t.rank]];
-    document.getElementById('dashFacts').innerHTML=[invalid URL](function(f){return '<div><dt>'+escapeHtml(f[0])+'</dt><dd>'+escapeHtml(f[1])+'</dd></div>';}).join('');
-    document.getElementById('dashAbout').textContent=t.about;
-    document.getElementById('dashLinks').innerHTML=[invalid URL](function(l){return '<a href="'+l[1]+'" target="_blank" rel="noopener">'+escapeHtml(l[0])+' ↗</a>';}).join('');
-    document.getElementById('dashStandName').textContent=t.standings.title;
-    document.getElementById('dashStandings').innerHTML='<tr><th></th><th>Team</th><th>Watch Note</th></tr>'+[invalid URL](function(r){return '<tr'+(r[3]?' class="bean"':'')+'><td style="font-weight:800">'+escapeHtml(r[0])+'</td><td>'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>';}).join('');
-    document.getElementById('dashNext').innerHTML='<b>vs. '+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(g.timeShort)+' • '+escapeHtml(t.venue)+'<br>TV: '+escapeHtml([invalid URL]);
-    syncNav(key);
-    showView('dash');
+    $('dashRoster').innerHTML='<tr><th>Player</th><th>Pos</th><th>What to Watch</th></tr>'+t.roster.map(function(r){ return '<tr><td style="font-weight:700">'+escapeHtml(r[0])+'</td><td style="white-space:nowrap">'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>'; }).join('');
+    var facts=[['League',t.league],['Home',t.venue],['Head Coach',t.coach],['Record',t.record],['Identity',t.identity],["Bean's Rank",t.rank]];
+    $('dashFacts').innerHTML=facts.map(function(f){ return '<div><dt>'+escapeHtml(f[0])+'</dt><dd>'+escapeHtml(f[1])+'</dd></div>'; }).join('');
+    $('dashAbout').textContent=t.about;
+    $('dashLinks').innerHTML=t.quickLinks.map(function(l){ return '<a href="'+l[1]+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(l[0])+' ↗</a>'; }).join('');
+    $('dashStandName').textContent=t.standings.title;
+    $('dashStandings').innerHTML='<tr><th></th><th>Team</th><th>Watch Note</th></tr>'+t.standings.rows.map(function(r){ return '<tr'+(r[3]?' class="bean"':'')+'><td style="font-weight:800">'+escapeHtml(r[0])+'</td><td>'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>'; }).join('');
+    $('dashNext').innerHTML='<b>vs. '+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(g.timeShort)+' • '+escapeHtml(t.venue)+'<br>TV: '+escapeHtml(g.tv);
   }
-  function pushHash(h){
-    try{ if(location.hash!==h) history.pushState(null,'',h); }catch(e){}
+  function dashPlay(){ if(currentTeam) goVideos(currentTeam); }
+  $('dashVideoTop').addEventListener('click',dashPlay);
+  $('dashVideoTab').addEventListener('click',dashPlay);
+  $('dashPlayBtn').addEventListener('click',dashPlay);
+  $('dashPreviewBtn').addEventListener('click',function(){
+    if(!currentTeam) return;
+    if(openPreviewKey===currentTeam){ scrollTopNow(); return; }
+    scrollTopNow();
+    openPreview(currentTeam);
+  });
+
+  /* ---------- Hash Router: one visible view at a time, Back/Forward aware ---------- */
+  var SECTIONS={podcast:1,videos:1,headlines:1,standings:1,'my-teams':1};
+  var TITLES={
+    home:'Bean Sports — Lions, Pistons, Ohio State, Dayton, Gamecocks, Alter',
+    podcast:'Podcast — Bean Sports',
+    videos:'Videos & Highlights — Bean Sports',
+    headlines:'Top Headlines — Bean Sports',
+    standings:'Standings — Bean Sports',
+    'my-teams':'My Teams — Bean Sports'
+  };
+  var viewEls=document.querySelectorAll('[data-view]');
+  var navEl=$('mainNav');
+  var podFrame=$('podFrame');
+
+  function parseRoute(){
+    var h=(location.hash||'').replace(/^#\/?/,'');
+    if(!h||h==='home') return {view:'home',nav:'home'};
+    if(h.indexOf('team-')===0&&TEAMS[h.slice(5)]) return {view:'team',team:h.slice(5),nav:h.slice(5)};
+    if(SECTIONS[h]) return {view:h,nav:h};
+    return null;
   }
-  function openDash(key,skipHistory){
-    renderDash(key);
-    if(!skipHistory) pushHash('#team-'+key);
-  }
-  function openHub(skipHistory){
-    syncNav('hub'); showView('hub');
-    if(!skipHistory) pushHash('#my-teams');
-  }
-  function goHome(anchor,skipHistory){
-    syncNav(anchor?anchor.replace('#',''):'home');
-    showView('home');
-    if(!skipHistory) pushHash(anchor||'#');
-    if(anchor&&anchor!=='#'){
-      setTimeout(function(){var el=document.querySelector(anchor); if(el) el.scrollIntoView({behavior:'smooth',block:'start'});},60);
+
+  function syncNav(key){
+    navEl.querySelectorAll('a').forEach(function(a){
+      var on=a.getAttribute('data-nav')===key;
+      a.classList.toggle('active',on);
+      if(on) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current');
+    });
+    var act=navEl.querySelector('a.active');
+    if(act){
+      var left=act.getBoundingClientRect().left-navEl.getBoundingClientRect().left+navEl.scrollLeft;
+      navEl.scrollLeft=Math.max(0,left-(navEl.clientWidth-act.offsetWidth)/2);
     }
   }
-  function routeFromHash(){
-    var raw=location.hash||'';
-    if(raw.indexOf('#team-')===0){
-      var k=raw.replace('#team-','');
-      if(TEAMS[k]){ openDash(k,true); return; }
+
+  function route(){
+    var r=parseRoute();
+    if(!r){ // unknown hash → front page
+      try{ history.replaceState(null,'','#home'); }catch(e){}
+      r={view:'home',nav:'home'};
     }
-    if(raw==='#my-teams'){ openHub(true); return; }
-    goHome(raw&&raw!=='#'?raw:null,true);
+    if(openPreviewKey) closePreview();
+    for(var i=0;i<viewEls.length;i++){ viewEls[i].hidden=(viewEls[i].getAttribute('data-view')!==r.view); }
+    syncNav(r.nav);
+
+    var title=TITLES[r.view];
+    if(r.view==='team'){ renderDash(r.team); title=TEAMS[r.team].name+' — Bean Sports'; }
+    document.title=title;
+
+    // Heavy embeds load only when their page is first opened.
+    if(r.view==='podcast'&&!podFrame.getAttribute('src')){ podFrame.setAttribute('src',podFrame.getAttribute('data-src')); }
+    if(r.view==='videos'){ enterVideos(); }
+
+    scrollTopNow();
+    if(!firstRoute){
+      var h1=document.querySelector('[data-view="'+r.view+'"] h1');
+      if(h1){ try{ h1.focus({preventScroll:true}); }catch(e){} }
+    }
+    firstRoute=false;
   }
-  window.addEventListener('popstate',routeFromHash);
-  window.addEventListener('hashchange',routeFromHash);
+
+  if('scrollRestoration' in history){ history.scrollRestoration='manual'; }
+  window.addEventListener('hashchange',route);
 
   /* ---------- Event Wiring ---------- */
-  document.getElementById('sbFilters').addEventListener('click',function(e){
+  $('sbFilters').addEventListener('click',function(e){
     var btn=e.target.closest('button'); if(!btn) return;
-    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
+    this.querySelectorAll('button').forEach(function(b){ b.classList.remove('active'); });
     btn.classList.add('active');
     sbFilter=btn.getAttribute('data-filter');
     renderScoreboard();
   });
-  document.getElementById('sbSortBtn').addEventListener('click',function(){
+  $('sbSortBtn').addEventListener('click',function(){
     sbSortMode=(sbSortMode==='rank')?'soonest':'rank';
     this.textContent=(sbSortMode==='rank')?"Sort: Bean's Rank":'Sort: Soonest Game';
     renderScoreboard();
   });
-  document.getElementById('hlFilters').addEventListener('click',function(e){
-    var btn=e.target.closest('button'); if(!btn) return;
-    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
-    btn.classList.add('active');
-    hlTeamFilter=btn.getAttribute('data-team');
-    applyHlFilters();
-  });
-  document.getElementById('srcFilters').addEventListener('click',function(e){
-    var btn=e.target.closest('button'); if(!btn) return;
-    this.querySelectorAll('button').forEach(function(b){b.classList.remove('active');});
-    btn.classList.add('active');
-    hlSourceFilter=btn.getAttribute('data-source');
-    applyHlFilters();
-  });
 
   document.addEventListener('click',function(e){
-    var pv=e.target.closest('[data-preview]');
-    if(pv){ e.preventDefault(); openPreview(pv.getAttribute('data-preview')); return; }
-    var dash=e.target.closest('[data-dash]');
-    if(dash){ e.preventDefault(); openDash(dash.getAttribute('data-dash')); return; }
-    var hub=e.target.closest('[data-hub]');
-    if(hub){ e.preventDefault(); openHub(); return; }
-    var home=e.target.closest('[data-home]');
-    if(home){ e.preventDefault(); goHome(); return; }
-    var play=e.target.closest('[data-play]');
-    if(play){
-      e.preventDefault();
-      var v=firstForTeam(play.getAttribute('data-play'));
-      goHome('#videos');
-      if(v) setTimeout(function(){playVideo(v,true);},80);
+    var el=e.target;
+    var pv=el.closest('[data-preview]');
+    if(pv){ openPreview(pv.getAttribute('data-preview')); return; }
+    var play=el.closest('[data-play]');
+    if(play){ goVideos(play.getAttribute('data-play')); return; }
+    var sc=el.closest('[data-scroll]');
+    if(sc){
+      var target=$(sc.getAttribute('data-scroll'));
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
       return;
     }
-    var sec=e.target.closest('a[href="#podcast"],a[href="#videos"],a[href="#headlines"],a[href="#standings"]');
-    if(sec){
-      e.preventDefault();
-      goHome(sec.getAttribute('href'));
+    // Clicking the tab you are already on still jumps to the top instantly.
+    var a=el.closest('a[href^="#"]');
+    if(a){
+      var href=a.getAttribute('href');
+      if(href===(location.hash||'#home')){ e.preventDefault(); scrollTopNow(); }
     }
   });
-  document.addEventListener('keydown',function(e){
-    var card=e.target.closest('.mini-story[data-dash]');
-    if(card&&(e.key==='Enter'||e.key===' ')){ e.preventDefault(); openDash(card.getAttribute('data-dash')); }
-  });
-
-  document.getElementById('pvTeamLink').addEventListener('click',function(e){
-    e.preventDefault(); if(openPreviewKey) openDash(openPreviewKey);
-  });
-  document.getElementById('dashPreviewBtn').addEventListener('click',function(){
-    if(!currentTeam) return; var k=currentTeam; goHome(); setTimeout(function(){openPreview(k);},90);
-  });
-  function dashPlay(){
-    if(!currentTeam) return;
-    var v=firstForTeam(currentTeam);
-    goHome('#videos');
-    if(v) setTimeout(function(){playVideo(v,true);},80);
-  }
-  document.getElementById('dashPlayBtn').addEventListener('click',dashPlay);
-  document.getElementById('dashVideoTop').addEventListener('click',function(e){e.preventDefault(); dashPlay();});
-  document.getElementById('dashVideoTab').addEventListener('click',function(e){e.preventDefault(); dashPlay();});
 
   /* ---------- Live ESPN Sync (Graceful Fallback) ---------- */
   function formatGameDate(iso){
     var d=new Date(iso);
     if(isNaN(d.getTime())) return {short:'TBD',lines:'TBD'};
-    var day=d.toLocaleDateString('en-US',{weekday:'short'}).toUpperCase();
-    var time=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short'});
+    var day=d.toLocaleDateString('en-US',{weekday:'short',timeZone:'America/New_York'}).toUpperCase();
+    var time=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short',timeZone:'America/New_York'});
     return {short:day+' '+time.replace(':00 ',' '),lines:day+'<br>'+time};
   }
+
+  function fetchJSON(url,ms){
+    var ctl=window.AbortController?new AbortController():null, timer=null;
+    if(ctl) timer=setTimeout(function(){ ctl.abort(); },ms);
+    return fetch(url,{cache:'no-store',signal:ctl?ctl.signal:undefined}).then(function(r){
+      clearTimeout(timer);
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    },function(err){ clearTimeout(timer); throw err; });
+  }
+
+  function scoreOf(c){ return c.score&&c.score.displayValue!=null?c.score.displayValue:(c.score||'0'); }
 
   function fetchTeamLive(key){
     var t=TEAMS[key];
     if(!t.espn) return Promise.resolve(false);
-    var url='[invalid URL]'+[invalid URL]+'/'+t.espn.league+'/teams/'+t.espn.teamId;
-    return fetch(url,{cache:'no-store'}).then(function(r){
-      if(!r.ok) throw new Error('HTTP '+r.status);
-      return r.json();
-    }).then(function(data){
-      var tm=data&&[invalid URL]; if(!tm) return false;
+    var url='https://site.api.espn.com/apis/site/v2/sports/'+t.espn.sport+'/'+t.espn.league+'/teams/'+t.espn.teamId;
+    return fetchJSON(url,9000).then(function(data){
+      var tm=data&&data.team; if(!tm) return false;
       if(tm.record&&tm.record.items&&tm.record.items[0]&&tm.record.items[0].summary){
         t.record=tm.record.items[0].summary;
       }
@@ -1447,30 +1506,30 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         var comp=ev.competitions[0];
         var me=null, opp=null;
         (comp.competitors||[]).forEach(function(c){
-          if(String([invalid URL])===String(t.espn.teamId)) me=c; else opp=c;
+          if(String(c.team&&c.team.id)===String(t.espn.teamId)) me=c; else opp=c;
         });
-        if(me&&opp&&[invalid URL]){
+        if(me&&opp&&opp.team){
           var st=comp.status&&comp.status.type||{};
           t.game.opponent=opp.team.displayName||opp.team.shortDisplayName||t.game.opponent;
           t.game.oppAbbr=opp.team.abbreviation||t.game.oppAbbr;
           if(opp.team.color) t.game.oppColor='#'+opp.team.color.replace('#','');
           t.game.oppSub=(me.homeAway==='home'?'At '+t.venue.split('•')[0].trim():'Away');
-          t.game.dateISO=[invalid URL]||t.game.dateISO;
-          var fmt=formatGameDate([invalid URL].dateISO);
+          t.game.dateISO=ev.date||t.game.dateISO;
+          var fmt=formatGameDate(t.game.dateISO);
           t.game.timeShort=fmt.short;
           t.game.timeLines=fmt.lines;
-          var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||[invalid URL];
-          [invalid URL]=bcast;
+          var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||t.game.tv;
+          t.game.tv=bcast;
           if(st.state==='in'){
-            [invalid URL].status='live';
+            t.game.status='live';
             t.game.statusLabel=st.shortDetail||'LIVE';
-            t.game.teamScore=me.score&&me.score.displayValue!=null?me.score.displayValue:(me.score||'0');
-            t.game.oppScore=opp.score&&opp.score.displayValue!=null?opp.score.displayValue:(opp.score||'0');
+            t.game.teamScore=scoreOf(me);
+            t.game.oppScore=scoreOf(opp);
           } else if(st.state==='post'){
             t.game.status='final';
             t.game.statusLabel=st.shortDetail||'Final';
-            t.game.teamScore=me.score&&me.score.displayValue!=null?me.score.displayValue:(me.score||'0');
-            t.game.oppScore=opp.score&&opp.score.displayValue!=null?opp.score.displayValue:(opp.score||'0');
+            t.game.teamScore=scoreOf(me);
+            t.game.oppScore=scoreOf(opp);
           } else {
             t.game.status='upcoming';
             t.game.statusLabel=st.shortDetail||'Upcoming';
@@ -1482,41 +1541,43 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }).catch(function(){ return false; });
   }
 
+  var syncing=false;
   function syncLive(){
-    var dot=document.getElementById('liveDot'), lbl=document.getElementById('liveLabel');
+    if(syncing) return;
+    syncing=true;
+    var dot=$('liveDot'), lbl=$('liveLabel');
     lbl.textContent='SYNCING…';
     Promise.all(TEAM_ORDER.map(fetchTeamLive)).then(function(results){
+      syncing=false;
       var okCount=results.filter(Boolean).length;
       if(okCount>0){
         dot.className='live-dot ok pulse';
         var nowStr=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
         lbl.textContent='LIVE ESPN • '+nowStr;
-        document.getElementById('standingsBadge').textContent='Live Records';
+        $('standingsBadge').textContent='Live Records';
       } else {
         dot.className='live-dot';
         lbl.textContent='SNAPSHOT MODE';
       }
       renderScoreboard();
-      renderHomeSections();
+      renderSections();
       updateCountdown();
-      if(currentTeam&&!dashView.hidden) renderDash(currentTeam);
+      if(currentTeam&&!$('view-team').hidden) renderDash(currentTeam);
     });
   }
-
-  document.getElementById('refreshBtn').addEventListener('click',syncLive);
+  $('refreshBtn').addEventListener('click',syncLive);
 
   /* ---------- Initial Boot ---------- */
   renderScoreboard();
-  renderHomeSections();
-  renderVideos();
+  renderSections();
   updateCountdown();
-  routeFromHash();
+  route();
   syncLive();
-  setInterval(updateCountdown, 30000);
+  setInterval(updateCountdown,30000);
   setInterval(function(){
-    var anyLive=TEAM_ORDER.some(function(k){return TEAMS[k].game.status==='live';});
+    var anyLive=TEAM_ORDER.some(function(k){ return TEAMS[k].game.status==='live'; });
     if(anyLive) syncLive();
-  }, 60000);
+  },60000);
 })();
 </script>
 </body>
