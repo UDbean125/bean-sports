@@ -398,6 +398,12 @@ table.dash-table tr.bean td{font-weight:800}
 .quick-links a{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
 .quick-links a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
 .next-body{padding:13px 14px 15px}
+.game-day{margin-top:12px}
+.game-day h2{margin:0;font:inherit;font-weight:800}
+#dashNext{font-size:16px;line-height:1.5}
+.game-day .pv-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+#dashGameCoverage[hidden],#dashPreviewBtn[hidden]{display:none}
+#dashGameCoverage{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:6px;color:var(--text);font-weight:700}
 .next-body .pv-actions button{border-color:var(--line);color:var(--text)}
 
 /* Footer */
@@ -698,6 +704,17 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   <nav class="dash-tabs" aria-label="Team dashboard sections">
     <button type="button" data-scroll="dash-headlines">Headlines</button><button type="button" data-scroll="dash-schedule">Schedule</button><button type="button" data-scroll="dash-roster">Roster</button><button type="button" data-scroll="dash-standings">Standings</button><button type="button" data-scroll="dash-details">Team Details</button><button type="button" id="dashVideoTab">▶ Videos</button>
   </nav>
+  <section class="dash-card game-day" aria-labelledby="dashGameTitle">
+    <div class="dash-card-head"><h2 id="dashGameTitle">Next Game</h2></div>
+    <div class="next-body">
+      <div id="dashNext"></div>
+      <div class="pv-actions">
+        <a id="dashGameCoverage" hidden></a>
+        <button type="button" id="dashPreviewBtn">Game Preview</button>
+        <button type="button" id="dashPlayBtn">Watch Highlights</button>
+      </div>
+    </div>
+  </section>
   <div class="dash-grid">
     <div>
       <section class="dash-card" id="dash-headlines"><div class="dash-card-head"><h3>Latest Headlines</h3><span>Top 5</span></div><ol class="dash-headlines" id="dashHeadlines"></ol></section>
@@ -708,7 +725,6 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       <section class="dash-card" id="dash-details"><div class="dash-card-head"><h3>Team Details</h3><span>Info</span></div><dl class="facts" id="dashFacts"></dl><p class="dash-about" id="dashAbout"></p></section>
       <section class="dash-card"><div class="dash-card-head"><h3>Quick Links</h3><span>Official &amp; Live</span></div><div class="quick-links" id="dashLinks"></div></section>
       <section class="dash-card" id="dash-standings"><div class="dash-card-head"><h3>Standings Watch</h3><span id="dashStandName">Division</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashStandings"></table></div><p class="dash-note">Bean's standings watch — where this team sits and who it's chasing.</p></section>
-      <section class="dash-card"><div class="dash-card-head"><h3>Next Up</h3><span>Don't Miss It</span></div><div class="next-body"><div id="dashNext" style="font-size:15px;font-weight:700;line-height:1.45"></div><div class="pv-actions" style="margin-top:12px"><button type="button" id="dashPreviewBtn">▶ Game Preview</button><button type="button" id="dashPlayBtn">▶ Watch Highlights</button></div></div></section>
     </aside>
   </div>
 </div>
@@ -944,7 +960,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         status:'upcoming', statusLabel:'Upcoming',
         opponent:'Memphis Tigers', oppAbbr:'MEM', oppColor:'#003087', oppSub:'Nationwide Arena, Columbus',
         dateISO:'2026-11-29T13:00:00-05:00', timeShort:'SUN 1:00 PM', timeLines:'SUN<br>1:00 PM ET',
-        tv:'ESPN', note:'Neutral-site game in Columbus. The Flyers return to UD Arena on December 2.',
+        tv:'', note:'Neutral-site game in Columbus. The Flyers return to UD Arena on December 2.',
         teamScore:null, oppScore:null
       },
       heroSide:{label:'Dayton Flyers',title:'UD Arena is a home-court weapon',text:'Few places in college basketball feel like Dayton at home. The Flyers feed off that crowd from the opening tip.'},
@@ -1535,7 +1551,30 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     $('dashLinks').innerHTML=t.quickLinks.map(function(l){ return '<a href="'+l[1]+'" target="_blank" rel="noopener noreferrer">'+escapeHtml(l[0])+' ↗</a>'; }).join('');
     $('dashStandName').textContent=t.standings.title;
     $('dashStandings').innerHTML='<tr><th></th><th>Team</th><th>Watch Note</th></tr>'+t.standings.rows.map(function(r){ return '<tr'+(r[3]?' class="bean"':'')+'><td style="font-weight:800">'+escapeHtml(r[0])+'</td><td>'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>'; }).join('');
-    $('dashNext').innerHTML='<b>vs. '+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(g.timeShort)+' • '+escapeHtml(t.venue)+'<br>TV: '+escapeHtml(g.tv);
+    var gameDate=Date.parse(g.dateISO);
+    var upcoming=g.status==='upcoming' && gameDate>Date.now();
+    var live=g.status==='live';
+    var seasonWrap=key==='alter' && g.status==='final';
+    $('dashGameTitle').textContent=seasonWrap?'Season Results':live?'Live Game':upcoming?'Next Game':'Game Schedule';
+    $('dashPreviewBtn').hidden=!upcoming&&!live;
+    var coverage=$('dashGameCoverage');
+    var officialDayton='https://daytonflyers.com/sports/mens-basketball/schedule';
+    coverage.hidden=!guide;
+    coverage.href=key==='dayton'&&(upcoming||live)?officialDayton:guide?guide[1]:'#dash-schedule';
+    coverage.textContent=key==='dayton'&&(upcoming||live)?'Official Watch & Listen':guide?guide[0]:'';
+    if(seasonWrap){
+      $('dashNext').textContent=t.record+' · Final playoff result: '+g.teamScore+'–'+g.oppScore+' vs. '+g.opponent;
+    } else if(upcoming||live){
+      var dateOptions={timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric'};
+      var dateLabel=Number.isFinite(gameDate)?new Intl.DateTimeFormat('en-US',dateOptions).format(gameDate):'Date TBD';
+      var timeLabel=Number.isFinite(gameDate)&&g.timeValid!==false
+        ?new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(gameDate)
+        :'Time TBD';
+      var broadcast=g.tv?'TV: '+g.tv:'Broadcast details pending';
+      $('dashNext').innerHTML='<b>'+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(dateLabel+' · '+timeLabel)+'<br>'+escapeHtml(broadcast);
+    } else {
+      $('dashNext').textContent='No upcoming game is currently listed. Check the team schedule for updates.';
+    }
   }
   function dashPlay(){ if(currentTeam) goVideos(currentTeam); }
   $('dashVideoTop').addEventListener('click',dashPlay);
@@ -1798,11 +1837,13 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
           t.game.oppAbbr=opp.team.abbreviation||t.game.oppAbbr;
           if(opp.team.color) t.game.oppColor='#'+opp.team.color.replace('#','');
           t.game.oppSub=(me.homeAway==='home'?'At '+t.venue.split('•')[0].trim():'Away');
-          t.game.dateISO=ev.date||t.game.dateISO;
+          var sameGame=Date.parse(t.game.dateISO)===Date.parse(ev.date);
+          t.game.dateISO=ev.date||null;
+          t.game.timeValid=comp.timeValid;
           var fmt=formatGameDate(t.game.dateISO);
           t.game.timeShort=fmt.short;
           t.game.timeLines=fmt.lines;
-          var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||t.game.tv;
+          var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||(sameGame?t.game.tv:'');
           t.game.tv=bcast;
           if(st.state==='in'){
             t.game.status='live';
