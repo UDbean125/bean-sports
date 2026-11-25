@@ -18,11 +18,12 @@ body{margin:0;background:#f4f4f6;color:#1d1d24;font:1rem/1.55 system-ui,sans-ser
 <main>
 <h1>Alter Knights Football Schedule &amp; Results</h1>
 <nav aria-label="Alter Knights guide" class="guide-links">
-  <a href="#schedule">Game results</a>
-  <a href="#coverage">Playoff sources</a>
+  <a href="?view=schedule">Game results</a>
+  <a href="?view=coverage">Playoff sources</a>
   <a href="/#team-alter">Alter Knights dashboard</a>
 </nav>
 <p>Archbishop Alter finished the 2026 season <strong>7–5 overall</strong>, including <strong>6–4 in the regular season</strong>. The Knights beat Indian Hill in their playoff opener before falling to Archbishop McNicholas on November 6.</p>
+<section data-page="schedule">
 <h2 id="schedule">2026 varsity results</h2>
 <p class="note">Scores are shown with Alter’s points first. Results checked November 25, 2026.</p>
 <div class="table" tabindex="0" role="region" aria-label="Alter Knights 2026 football results"><table><thead><tr><th scope="col">Date</th><th scope="col">Opponent</th><th scope="col">Alter result</th></tr></thead><tbody>
@@ -39,9 +40,34 @@ body{margin:0;background:#f4f4f6;color:#1d1d24;font:1rem/1.55 system-ui,sans-ser
 <tr><td>Oct 30</td><td>at Indian Hill (playoffs)</td><td>W 21–7</td></tr>
 <tr><td>Nov 6</td><td>at Archbishop McNicholas (playoffs)</td><td>L 0–10</td></tr>
 </tbody></table></div>
+</section>
+<section data-page="coverage">
 <h2 id="coverage">Season and playoff sources</h2>
 <p>See the <a href="https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/schedule/">MaxPreps schedule and box scores</a> and the <a href="https://www.ohsaa.org/sports/football/tournaments">OHSAA playoff brackets and coverage</a>.</p>
+</section>
 <footer><a href="/dayton-flyers/basketball/">Dayton Flyers basketball TV guide</a></footer>
 </main>
+<script>
+const pages = Array.from(document.querySelectorAll('[data-page]'));
+const url = new URL(location.href);
+const requested = url.searchParams.get('view') || url.hash.slice(1);
+const selected = pages.find(page => page.dataset.page === requested);
+for (const page of pages) page.hidden = page !== selected;
+if (selected) {
+  const title = selected.querySelector('h2');
+  const heading = document.querySelector('h1');
+  const team = "Alter Knights Football";
+  heading.textContent = team + ' · ' + title.textContent;
+  title.hidden = true;
+  document.title = heading.textContent + ' | Bean Sports';
+  document.querySelector('main > p').hidden = true;
+  const nav = document.querySelector('.guide-links');
+  const overview = document.createElement('a');
+  overview.href = location.pathname;
+  overview.textContent = 'Guide overview';
+  nav.prepend(overview);
+  nav.querySelector('[href="?view=' + selected.dataset.page + '"]').setAttribute('aria-current','page');
+}
+</script>
 </body>
 </html>
