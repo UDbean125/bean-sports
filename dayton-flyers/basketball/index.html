@@ -18,11 +18,12 @@ body{margin:0;background:#f4f4f6;color:#1d1d24;font:1rem/1.55 system-ui,sans-ser
 <main>
 <h1>Dayton Flyers Men’s Basketball TV &amp; Streaming Guide</h1>
 <nav aria-label="Dayton Flyers guide" class="guide-links">
-  <a href="#schedule">TV schedule</a>
-  <a href="#coverage">Watch or listen</a>
+  <a href="?view=schedule">TV schedule</a>
+  <a href="?view=coverage">Watch or listen</a>
   <a href="/#team-dayton">Dayton Flyers dashboard</a>
 </nav>
 <p>Dayton’s November 29 matchup with Memphis is at Nationwide Arena in Columbus. The Flyers return to UD Arena December 2 against Loyola Maryland.</p>
+<section data-page="schedule">
 <h2 id="schedule">Tipoff times and TV channels</h2>
 <p class="note">Eastern Time. Schedule checked November 25, 2026. Broadcast listings can change.</p>
 <div class="table" tabindex="0" role="region" aria-label="Dayton basketball broadcast schedule"><table><thead><tr><th scope="col">Date</th><th scope="col">Opponent</th><th scope="col">Tipoff</th><th scope="col">Venue</th><th scope="col">TV</th></tr></thead><tbody>
@@ -33,9 +34,34 @@ body{margin:0;background:#f4f4f6;color:#1d1d24;font:1rem/1.55 system-ui,sans-ser
 <tr><td>Dec 15</td><td>UTRGV</td><td>7:00 p.m.</td><td>UD Arena, Dayton</td><td>ESPN+</td></tr>
 <tr><td>Dec 19</td><td>at Liberty</td><td>6:00 p.m.</td><td>Liberty Arena, Lynchburg</td><td>ESPN+</td></tr>
 </tbody></table></div>
+</section>
+<section data-page="coverage">
 <h2 id="coverage">Watch or listen</h2>
 <p>Use the <a href="https://daytonflyers.com/sports/mens-basketball/schedule">official Dayton schedule</a> and select <strong>Watch</strong> or <strong>Listen</strong> beside the game. Dayton lists WHIO Radio for the games above. The <a href="https://daytonflyers.com/coverage">Dayton Athletics live events page</a> also collects available streams and live stats.</p>
+</section>
 <footer><a href="/alter-knights/football/">Alter Knights football results</a></footer>
 </main>
+<script>
+const pages = Array.from(document.querySelectorAll('[data-page]'));
+const url = new URL(location.href);
+const requested = url.searchParams.get('view') || url.hash.slice(1);
+const selected = pages.find(page => page.dataset.page === requested);
+for (const page of pages) page.hidden = page !== selected;
+if (selected) {
+  const title = selected.querySelector('h2');
+  const heading = document.querySelector('h1');
+  const team = "Dayton Flyers Basketball";
+  heading.textContent = team + ' · ' + title.textContent;
+  title.hidden = true;
+  document.title = heading.textContent + ' | Bean Sports';
+  document.querySelector('main > p').hidden = true;
+  const nav = document.querySelector('.guide-links');
+  const overview = document.createElement('a');
+  overview.href = location.pathname;
+  overview.textContent = 'Guide overview';
+  nav.prepend(overview);
+  nav.querySelector('[href="?view=' + selected.dataset.page + '"]').setAttribute('aria-current','page');
+}
+</script>
 </body>
 </html>
