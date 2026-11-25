@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#1c1c21">
+<link rel="canonical" href="https://bean-sports.hen-solutions.com/">
 <meta name="description" content="Bean Sports — one front page for the Lions, Pistons, Ohio State, Dayton, Gamecocks and Alter Knights, with live scores, highlights and a daily podcast.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
@@ -106,6 +107,19 @@ h1[tabindex="-1"]:focus{outline:none}
 .preview-btn:hover{background:#a80022}
 .dash-btn{flex:1;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center}
 .dash-btn:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+
+.guide-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;padding:12px 0}
+.guide-links a{display:inline-flex;min-height:44px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:var(--card);color:var(--text);font-weight:700}
+.guide-links a:hover,.guide-links a:focus-visible{border-color:var(--red);text-decoration:underline}
+@media(max-width:600px){
+  .sb-tools{margin-left:0}
+  .sb-track{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible;gap:8px}
+  .sb-card{min-width:0;padding:8px 10px}
+  .sb-actions{margin-top:5px;padding-top:5px}
+  .sb-actions>*{min-height:44px}
+  .sb-note{display:none}
+  .guide-links{display:grid;grid-template-columns:minmax(0,1fr)}
+}
 
 /* Preview drawer */
 .preview-panel{display:none;background:var(--black);color:#fff;border-bottom:2px solid var(--red)}
@@ -431,7 +445,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       <div class="date" id="mastDate">Today</div>
       <div class="edition">Bean's Edition • <b>Lexington, SC</b> • Lions • Pistons • Buckeyes • Flyers • Gamecocks • Knights</div>
       <div class="mast-controls">
-        <span class="live-pill" id="livePill"><span class="live-dot" id="liveDot"></span> <span id="liveLabel">CONNECTING LIVE…</span></span>
+        <span class="live-pill" id="livePill"><span class="live-dot" id="liveDot"></span> <span id="liveLabel" role="status">CONNECTING TO ESPN…</span></span>
         <button type="button" class="mast-btn" id="refreshBtn" title="Refresh live scores and schedules">↻ Refresh</button>
         <button type="button" class="mast-btn" id="themeToggle" title="Toggle light or dark mode">◐ Theme</button>
       </div>
@@ -450,7 +464,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 <section class="scoreboard" aria-label="My teams scoreboard">
   <div class="wrap">
     <div class="sb-head">
-      <h2>SCOREBOARD <span>/// MY TEAMS</span></h2>
+      <h2>SCOREBOARD <span>/// TODAY &amp; NEXT UP</span></h2>
       <div class="sb-tools">
         <div class="sb-filters" id="sbFilters" role="group" aria-label="Filter scoreboard by league">
           <button type="button" class="active" data-filter="all">All</button>
@@ -460,7 +474,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
           <button type="button" data-filter="ncaam">College BB</button>
           <button type="button" data-filter="hs">High School</button>
         </div>
-        <button type="button" class="sb-sort" id="sbSortBtn" title="Switch scoreboard order">Sort: Bean's Rank</button>
+        <button type="button" class="sb-sort" id="sbSortBtn" title="Switch scoreboard order">Sort: Next Game</button>
       </div>
     </div>
     <div class="sb-track" id="sbTrack"></div>
@@ -510,6 +524,10 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
 <!-- ============ HOME ============ -->
 <div class="wrap view" id="view-home" data-view="home">
+  <nav class="guide-links" aria-label="Game-day guides">
+    <a href="/dayton-flyers/basketball/">Dayton Flyers TV &amp; Streaming Guide</a>
+    <a href="/alter-knights/football/">Alter Knights Football Schedule &amp; Results</a>
+  </nav>
   <section class="hero" aria-label="Top story">
     <div class="hero-grid">
       <article class="hero-main">
@@ -915,6 +933,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       record:'At UD Arena',
       espn:{sport:'basketball',league:'mens-college-basketball',teamId:'2168'},
       quickLinks:[
+        ['TV & Streaming Guide','/dayton-flyers/basketball/'],
         ['ESPN Team Page','https://www.espn.com/mens-college-basketball/team/_/id/2168/dayton-flyers'],
         ['Schedule','https://www.espn.com/mens-college-basketball/team/schedule/_/id/2168'],
         ['Roster','https://daytonflyers.com/sports/mens-basketball/roster'],
@@ -922,14 +941,14 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       ],
       game:{
         status:'upcoming', statusLabel:'Upcoming',
-        opponent:'Xavier Musketeers', oppAbbr:'XAV', oppColor:'#041e42', oppSub:'Crosstown feel',
-        dateISO:'2026-11-25T19:00:00-05:00', timeShort:'WED 7:00 PM', timeLines:'WED<br>7:00 PM ET',
-        tv:'ESPN2', note:'UD Arena crowd factor — Flyers defend home floor first.',
+        opponent:'Memphis Tigers', oppAbbr:'MEM', oppColor:'#003087', oppSub:'Nationwide Arena, Columbus',
+        dateISO:'2026-11-29T13:00:00-05:00', timeShort:'SUN 1:00 PM', timeLines:'SUN<br>1:00 PM ET',
+        tv:'ESPN', note:'Neutral-site game in Columbus. The Flyers return to UD Arena on December 2.',
         teamScore:null, oppScore:null
       },
       heroSide:{label:'Dayton Flyers',title:'UD Arena is a home-court weapon',text:'Few places in college basketball feel like Dayton at home. The Flyers feed off that crowd from the opening tip.'},
       preview:{
-        summary:'A crosstown feel at UD Arena, where Dayton defends its floor like few programs in America. The Flyer Faithful will be loud from the opening tip — the question is whether Dayton’s defense turns that energy into a wire-to-wire home win.',
+        summary:'Dayton plays Memphis at Nationwide Arena in Columbus on November 29. Tipoff is at 1:00 p.m. Eastern on ESPN.',
         keys:[
           'Feed off the crowd early — UD Arena is a real home-court weapon.',
           'Defend the arc and finish possessions on the glass.',
@@ -943,11 +962,11 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         byline:'A-10 Coverage',
         railTitle:'UD Arena gives Dayton a real A-10 edge at home'
       },
-      pills:['Next: vs. Xavier — 7:00 PM ET','UD Arena','TV: ESPN2'],
+      pills:['Next: vs. Memphis — Nov 29, 1:00 PM ET','Nationwide Arena','TV: ESPN'],
       about:'University of Dayton — Bean’s school. UD Arena sells out, the Flyer Faithful bring it from the opening tip, and Dayton turns home games into an event. In the A-10, protecting that floor is everything.',
       headlines:[
         ['Top Story','Dayton defends its floor like few programs in America','A sold-out UD Arena and a defense that feeds off it — the Flyers’ home edge is the program’s backbone.'],
-        ['Game Preview','Xavier brings a crosstown feel to UD Arena','A rivalry atmosphere on ESPN2 — Dayton’s defense has to turn crowd energy into a wire-to-wire win.'],
+        ['Game Preview','Dayton meets Memphis in Columbus','The neutral-site game tips at 1:00 p.m. Eastern on ESPN.'],
         ['Highlights','Every single bucket vs. NJIT','The full scoring reel from the NJIT win is in the Video Center — every made basket, one cut.'],
         ['From the Arena','Cincinnati at Dayton: a heavyweight non-conference night','Official highlights from the UD Arena showdown are queued in the Video Center.'],
         ['A-10 Watch','Home wins are the season in the Atlantic 10','Protect the floor, steal a few on the road — that’s the Flyers’ path to March.']
@@ -955,7 +974,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       schedule:[
         ['Recent','vs. NJIT','W — Every bucket in Video Center','w'],
         ['Recent','vs. Cincinnati Bearcats','UD Arena showdown • Highlights in Video Center',''],
-        ['Wed • 7:00 PM ET','vs. Xavier Musketeers','Next Up • UD Arena • ESPN2',''],
+        ['Nov 29 • 1:00 PM ET','vs. Memphis Tigers','Nationwide Arena • ESPN',''],
+        ['Dec 2 • 7:00 PM ET','vs. Loyola (Md.)','UD Arena • Spectrum News 1',''],
         ['Upcoming','Atlantic 10 play','Conference grind begins — protect home floor','']
       ],
       roster:[
@@ -966,7 +986,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         ['Zaide Lowery','G','Experienced perimeter scorer and defender'],
         ['Jaron McKie','G','Sophomore guard playmaking']
       ],
-      standings:{title:'Atlantic 10',rows:[['DAY','Dayton','Home-floor kings — Bean #4',1],['VCU','VCU','A-10 chase',0],['SLU','Saint Louis','A-10 chase',0],['XAV','Xavier','Crosstown test — next at UD Arena',0]]}
+      standings:{title:'Atlantic 10',rows:[['DAY','Dayton','Home-floor kings — Bean #4',1],['VCU','VCU','A-10 chase',0],['SLU','Saint Louis','A-10 chase',0]]}
     },
 
     gamecocks:{
@@ -1039,25 +1059,26 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       sub:'High School Football • Kettering, Ohio', rank:"Bean's #6 Team — Where It Started",
       venue:'Kettering, Ohio', coach:'Ed Domsitz',
       identity:'Friday nights, Kettering pride',
-      record:'8–2 Regular Season',
+      record:'7–5 Overall',
       espn:null,
       quickLinks:[
+        ['2026 Schedule & Results','/alter-knights/football/'],
         ['MaxPreps Hub','https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/'],
         ['MaxPreps Videos','https://www.maxpreps.com/oh/dayton/archbishop-alter-knights/football/25-26/media/videos/']
       ],
       game:{
         status:'final', statusLabel:'Season Wrap',
         opponent:'McNicholas Rockets', oppAbbr:'MCN', oppColor:'#2d4d2a', oppSub:'OHSAA Playoffs',
-        dateISO:null, timeShort:'8–2 Final', timeLines:'SEASON<br>WRAP',
-        tv:'MaxPreps', note:'8–2 regular season (W 28–21 vs. Fairmont); playoff run ended at McNicholas.',
-        teamScore:null, oppScore:null
+        dateISO:null, timeShort:'7–5 Final', timeLines:'SEASON<br>WRAP',
+        tv:'MaxPreps', note:'6–4 regular season (W 26–41 vs. Fairmont); playoff run ended at McNicholas.',
+        teamScore:0, oppScore:10
       },
       preview:{
-        summary:'Where Bean’s sports list started. Alter closed the regular season 8–2 — wins over Fairmont in the Battle of Kettering, Fenwick, Carroll and Chaminade Julienne — before the playoff run ended at McNicholas.',
+        summary:'Where Bean’s sports list started. Alter closed the regular season 6–4 — wins over Fairmont in the Battle of Kettering, Fenwick, Carroll and Chaminade Julienne — before the playoff run ended at McNicholas.',
         keys:[
-          'Battle of Kettering bragging rights (28–21 over Fairmont) set the season tone.',
+          'Battle of Kettering bragging rights (26–41 over Fairmont) set the season tone.',
           'Explosive offense: Alter hung 47, 44, 50 and 49 on opponents this fall.',
-          'Defense travels: the Knights allowed 7 points or fewer five times.'
+          'Defense travels: the Knights allowed 7 points or fewer in four games including playoffs.'
         ]
       },
       story:{
@@ -1067,29 +1088,30 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         byline:'High School Coverage',
         railTitle:'Friday nights belong to Alter — Knights season recap'
       },
-      pills:['Regular season: 8–2','Battle of Kettering: W 28–21','Playoffs: at McNicholas'],
-      about:'Where it all started. Every fan’s list has a first team — for Bean, Alter is it. The Knights closed the regular season 8–2 behind a balanced, explosive offense and a defense that allowed 7 points or fewer five times.',
+      pills:['Regular season: 6–4','Battle of Kettering: W 26–41','Playoffs: at McNicholas'],
+      about:'Where it all started. Every fan’s list has a first team — for Bean, Alter is it. The Knights closed the regular season 6–4 behind a balanced, explosive offense and a defense that allowed 7 points or fewer three times in the regular season.',
       headlines:[
         ['Top Story','Friday nights belong to Alter','Kettering pride under the lights — the Knights close out Bean’s front page the way they close out the lineup: always on it.'],
-        ['Battle of Kettering','Owens Jr. leads Alter past Fairmont, 28–21','Rod Owens Jr. ran for 137 yards and 2 TDs and threw for another — hear from him in the Video Center.'],
+        ['Battle of Kettering','Owens Jr. leads Alter past Fairmont, 26–41','Rod Owens Jr. ran for 137 yards and 2 TDs and threw for another — hear from him in the Video Center.'],
         ['Offense','A balanced attack that hangs 40+ in a hurry','47, 44, 50 and 49 — the Knights scored in bunches all fall.'],
-        ['Defense','Seven points or fewer, five times','The Alter defense traveled all season — the backbone of an 8–2 regular season.'],
+        ['Defense','Seven points or fewer in four games','The Alter defense traveled all season — including the playoff win over Indian Hill.'],
         ['Playoffs','Postseason run ends at McNicholas','A strong fall closes in the playoffs — and the standard for next season is set.']
       ],
       schedule:[
-        ['Regular Season','vs. Fairmont Firebirds','W 28–21 — Battle of Kettering','w'],
+        ['Regular Season','at Fairmont Firebirds','W 26–41 — Battle of Kettering','w'],
         ['Regular Season','vs. Fenwick, Carroll & Chaminade Julienne','W — rivalry wins across the fall','w'],
-        ['Regular Season','Season mark','8–2 — five games allowing 7 points or fewer',''],
-        ['Playoffs','at McNicholas','L — postseason run ends','l']
+        ['Regular Season','Season mark','6–4 regular season',''],
+        ['Playoffs','at Indian Hill','W 21–7','w'],
+        ['Playoffs','at McNicholas','L 0–10','l']
       ],
       roster:[
-        ['Rod Owens Jr.','QB','Dual-threat leader — 137 rushing yards & 2 TDs vs. Fairmont, plus a passing TD'],
+        ['Rod Owens Jr.','QB','Quarterback'],
         ['Knights Ground Game','RB Unit','The engine of the 40-point outbursts'],
         ['Knights Receiving Corps','WR Unit','Balance that keeps defenses honest'],
-        ['Knights Defense','Defensive Unit','Allowed 7 points or fewer five times this fall'],
+        ['Knights Defense','Defensive Unit','Allowed 7 points or fewer four times including playoffs'],
         ['Ed Domsitz','Head Coach','The longtime standard on the Alter sideline']
       ],
-      standings:{title:'Season Watch',rows:[['ALT','Alter Knights','8–2 regular season — Bean #6',1],['FAIR','Fairmont','Battle of Kettering — L 21–28',0],['MCN','McNicholas','Ended Alter’s playoff run',0],['CJ','Chaminade Julienne','Rivalry win for Alter',0]]}
+      standings:{title:'Season Watch',rows:[['ALT','Alter Knights','6–4 regular season — Bean #6',1],['FAIR','Fairmont','Battle of Kettering — L 7–14',0],['MCN','McNicholas','Ended Alter’s playoff run',0],['CJ','Chaminade Julienne','Rivalry win for Alter',0]]}
     }
   };
 
@@ -1164,7 +1186,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   })();
 
   /* ---------- State ---------- */
-  var sbFilter='all', sbSortMode='rank';
+  var sbFilter='all', sbSortMode='soonest';
   var vidTeam='all', currentVideo=null, pendingPlay=false, videosBuilt=false;
   var openPreviewKey=null, currentTeam=null, firstRoute=true;
 
@@ -1172,13 +1194,16 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   function getSortedTeamIds(){
     var ids=TEAM_ORDER.slice();
     if(sbSortMode==='soonest'){
+      var now=Date.now();
       ids.sort(function(a,b){
         var ga=TEAMS[a].game, gb=TEAMS[b].game;
         if(ga.status==='live'&&gb.status!=='live') return -1;
         if(gb.status==='live'&&ga.status!=='live') return 1;
-        var ta=ga.dateISO?Date.parse(ga.dateISO):Infinity;
-        var tb=gb.dateISO?Date.parse(gb.dateISO):Infinity;
-        return ta-tb;
+        var ta=ga.status==='upcoming'?Date.parse(ga.dateISO):NaN;
+        var tb=gb.status==='upcoming'?Date.parse(gb.dateISO):NaN;
+        ta=ta>=now?ta:Infinity;
+        tb=tb>=now?tb:Infinity;
+        return ta===tb?TEAMS[a].order-TEAMS[b].order:ta-tb;
       });
     }
     return ids;
@@ -1689,7 +1714,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   });
   $('sbSortBtn').addEventListener('click',function(){
     sbSortMode=(sbSortMode==='rank')?'soonest':'rank';
-    this.textContent=(sbSortMode==='rank')?"Sort: Bean's Rank":'Sort: Soonest Game';
+    this.textContent=(sbSortMode==='rank')?"Sort: Bean's Rank":'Sort: Next Game';
     renderScoreboard();
   });
 
@@ -1786,7 +1811,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }).catch(function(){ return false; });
   }
 
-  var syncing=false;
+  var syncing=false, lastEspnUpdate=null;
   function syncLive(){
     if(syncing) return;
     syncing=true;
@@ -1797,12 +1822,13 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       var okCount=results.filter(Boolean).length;
       if(okCount>0){
         dot.className='live-dot ok pulse';
-        var nowStr=new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'});
-        lbl.textContent='LIVE ESPN • '+nowStr;
-        $('standingsBadge').textContent='Live Records';
+        lastEspnUpdate=new Date().toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+        lbl.textContent='ESPN UPDATED '+okCount+'/5 • '+lastEspnUpdate+' ET';
+        $('standingsBadge').textContent=okCount===5?'Updated Records':'Partial ESPN Update';
       } else {
         dot.className='live-dot';
-        lbl.textContent='SNAPSHOT MODE';
+        lbl.textContent=lastEspnUpdate?'REFRESH FAILED • LAST ESPN UPDATE '+lastEspnUpdate+' ET':'UNVERIFIED SNAPSHOT • ESPN UNAVAILABLE';
+        $('standingsBadge').textContent='Snapshot';
       }
       renderScoreboard();
       renderSections();
