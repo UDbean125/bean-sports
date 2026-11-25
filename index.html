@@ -439,6 +439,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   .team-strip{padding:12px 14px}
   .strip-hub{margin-left:0}
 }
+#gameCalendar[hidden],#gameZone[hidden]{display:none}
+#playerSearch{display:block;padding:.7rem;margin:.4rem 0 1rem;width:min(100%,28rem);font:inherit;border:1px solid var(--muted);border-radius:.4rem;background:var(--card);color:var(--text)}
+#playerResults li{margin:.5rem 0}
 </style>
 </head>
 <body>
@@ -475,6 +478,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       <div class="sb-tools">
         <div class="sb-filters" id="sbFilters" role="group" aria-label="Filter scoreboard by league">
           <button type="button" class="active" data-filter="all">All</button>
+          <button type="button" data-filter="following">Following</button>
           <button type="button" data-filter="nfl">NFL</button>
           <button type="button" data-filter="nba">NBA</button>
           <button type="button" data-filter="ncaaf">College FB</button>
@@ -688,6 +692,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     <h1 tabindex="-1">My Teams <i>Dashboards</i></h1>
     <p>Pick a team to open its full dashboard — latest headlines, schedule, roster, standings watch, team details, quick links and highlights.</p>
   </div>
+  <label for="playerSearch">Find a player across team rosters</label>
+  <input id="playerSearch" type="search" placeholder="Player name" autocomplete="off">
+  <div id="playerResults" aria-live="polite"></div>
   <div class="hub-grid" id="hubGrid"></div>
 </div>
 
@@ -709,6 +716,11 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     <div class="next-body">
       <div id="dashNext"></div>
       <div class="pv-actions">
+        <button type="button" id="followTeam" aria-pressed="false">Follow team</button>
+        <button type="button" id="gameCalendar" hidden>Add to calendar</button>
+        <button type="button" id="gameZone" hidden>Show local time</button>
+        <button type="button" id="teamShare">Share team</button>
+        <span id="shareResult" role="status"></span>
         <a id="dashGameCoverage" hidden></a>
         <button type="button" id="dashPreviewBtn">Game Preview</button>
         <button type="button" id="dashPlayBtn">Watch Highlights</button>
@@ -1231,7 +1243,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var html='';
     getSortedTeamIds().forEach(function(key){
       var t=TEAMS[key], g=t.game;
-      if(sbFilter!=='all'&&t.leagueKey!==sbFilter) return;
+      if(sbFilter==='following' ? !following.has(key) : sbFilter!=='all'&&t.leagueKey!==sbFilter) return;
       var statusCls=g.status==='live'?'live':(g.status==='final'?'final':'');
       var scoreMode=(g.teamScore!==null&&g.oppScore!==null);
       var open=openPreviewKey===key;
@@ -1244,6 +1256,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         '<div class="sb-actions"><button type="button" class="preview-btn" data-preview="'+key+'" aria-expanded="'+(open?'true':'false')+'">'+(open?'✕ Close':'▶ Preview')+'</button><a class="dash-btn" href="#team-'+key+'">Dashboard →</a></div>'+
         '</article>';
     });
+    if(!html && sbFilter==='following') html='<p>Follow a team from its dashboard to see its games here. <a href="#my-teams">Browse teams</a></p>';
     track.innerHTML=html||'<p class="dash-note">No Bean teams in this league.</p>';
   }
 
@@ -1519,6 +1532,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   /* ---------- Team Dashboard ---------- */
   function renderDash(key){
     var t=TEAMS[key]; if(!t) return;
+    if(currentTeam!==key) $('shareResult').textContent='';
     currentTeam=key;
     var g=t.game;
     var head=$('dashHead');
@@ -1553,6 +1567,12 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     $('dashStandings').innerHTML='<tr><th></th><th>Team</th><th>Watch Note</th></tr>'+t.standings.rows.map(function(r){ return '<tr'+(r[3]?' class="bean"':'')+'><td style="font-weight:800">'+escapeHtml(r[0])+'</td><td>'+escapeHtml(r[1])+'</td><td>'+escapeHtml(r[2])+'</td></tr>'; }).join('');
     var gameDate=Date.parse(g.dateISO);
     var upcoming=g.status==='upcoming' && gameDate>Date.now();
+    $('followTeam').setAttribute('aria-pressed',String(following.has(key)));
+    $('followTeam').textContent=following.has(key)?'Following team':'Follow team';
+    $('gameCalendar').hidden=!upcoming||g.timeValid===false;
+    $('gameZone').hidden=!upcoming||g.timeValid===false;
+    $('gameZone').textContent=localTime?'Show Eastern time':'Show local time';
+    var zone=localTime?Intl.DateTimeFormat().resolvedOptions().timeZone:'America/New_York';
     var live=g.status==='live';
     var seasonWrap=key==='alter' && g.status==='final';
     $('dashGameTitle').textContent=seasonWrap?'Season Results':live?'Live Game':upcoming?'Next Game':'Game Schedule';
@@ -1565,10 +1585,10 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     if(seasonWrap){
       $('dashNext').textContent=t.record+' · Final playoff result: '+g.teamScore+'–'+g.oppScore+' vs. '+g.opponent;
     } else if(upcoming||live){
-      var dateOptions={timeZone:'America/New_York',weekday:'short',month:'short',day:'numeric'};
+      var dateOptions={timeZone:zone,weekday:'short',month:'short',day:'numeric'};
       var dateLabel=Number.isFinite(gameDate)?new Intl.DateTimeFormat('en-US',dateOptions).format(gameDate):'Date TBD';
       var timeLabel=Number.isFinite(gameDate)&&g.timeValid!==false
-        ?new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(gameDate)
+        ?new Intl.DateTimeFormat('en-US',{timeZone:zone,hour:'numeric',minute:'2-digit',timeZoneName:'short'}).format(gameDate)
         :'Time TBD';
       var broadcast=g.tv?'TV: '+g.tv:'Broadcast details pending';
       $('dashNext').innerHTML='<b>'+escapeHtml(g.opponent)+'</b><br>'+escapeHtml(dateLabel+' · '+timeLabel)+'<br>'+escapeHtml(broadcast);
@@ -1892,6 +1912,60 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     });
   }
   $('refreshBtn').addEventListener('click',syncLive);
+
+  var following=new Set();
+  var localTime=false;
+  try{
+    var saved=JSON.parse(localStorage.getItem('beanFollowing')||'[]');
+    if(Array.isArray(saved)) following=new Set(saved.filter(function(key){return TEAM_ORDER.includes(key);}));
+    localTime=localStorage.getItem('beanLocalTime')==='true';
+  }catch(e){}
+  $('followTeam').onclick=function(){
+    if(following.has(currentTeam)) following.delete(currentTeam); else following.add(currentTeam);
+    try{localStorage.setItem('beanFollowing',JSON.stringify(Array.from(following)));}catch(e){}
+    renderDash(currentTeam);
+    renderScoreboard();
+  };
+  $('gameZone').onclick=function(){
+    localTime=!localTime;
+    try{localStorage.setItem('beanLocalTime',String(localTime));}catch(e){}
+    renderDash(currentTeam);
+  };
+  $('teamShare').onclick=async function(){
+    var link=new URL('/#team-'+currentTeam,location.origin).href;
+    var team=currentTeam;
+    try{
+      if(navigator.share){await navigator.share({title:TEAMS[team].name+' — Bean Sports',url:link});return;}
+      await navigator.clipboard.writeText(link);
+      if(currentTeam===team) $('shareResult').textContent='Team link copied.';
+    }catch(error){
+      if(error.name!=='AbortError'&&currentTeam===team) $('shareResult').textContent=link;
+    }
+  };
+  function calendarStamp(date){return date.toISOString().replace(/[-:]/g,'').replace(/\.\d{3}/,'');}
+  function calendarText(value){return value.replace(/\\/g,'\\\\').replace(/\r\n|\r|\n/g,'\\n').replace(/[,;]/g,'\\$&');}
+  $('gameCalendar').onclick=function(){
+    var t=TEAMS[currentTeam],g=t.game,start=new Date(g.dateISO);
+    if(g.status!=='upcoming'||g.timeValid===false||!(start.getTime()>Date.now()))return;
+    var stamp=calendarStamp(start);
+    var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Bean Sports//Games//EN','BEGIN:VEVENT',
+      'UID:'+currentTeam+'-'+stamp+'@bean-sports.hen-solutions.com','DTSTAMP:'+calendarStamp(new Date()),
+      'DTSTART:'+stamp,'SUMMARY:'+calendarText(t.name+' vs. '+g.opponent),'URL:'+location.origin+'/#team-'+currentTeam,
+      'END:VEVENT','END:VCALENDAR',''];
+    var url=URL.createObjectURL(new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'}));
+    var a=document.createElement('a');a.href=url;a.download=currentTeam+'-game.ics';
+    document.body.appendChild(a);a.click();a.remove();
+    setTimeout(function(){URL.revokeObjectURL(url);},30000);
+  };
+  $('playerSearch').oninput=function(){
+    var query=this.value.trim().toLowerCase(),matches=[];
+    if(query) TEAM_ORDER.forEach(function(key){
+      TEAMS[key].roster.forEach(function(player){
+        if(player[0].toLowerCase().includes(query)) matches.push('<li><a href="#team-'+key+'">'+escapeHtml(player[0])+' · '+escapeHtml(TEAMS[key].name)+'</a> · '+escapeHtml(player[1])+'</li>');
+      });
+    });
+    $('playerResults').innerHTML=query?(matches.length?'<ul>'+matches.join('')+'</ul>':'No matching players in the listed rosters.'):'';
+  };
 
   /* ---------- Initial Boot ---------- */
   renderScoreboard();
