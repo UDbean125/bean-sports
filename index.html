@@ -367,7 +367,7 @@ details.pod-apple .pod-frame{margin-top:10px}
 .backrow button,.backrow a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 13px}
 .backrow button:hover,.backrow a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
 .dash-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px;border-bottom:2px solid var(--text)}
-.dash-tabs button{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;background:none;border:0;color:var(--text)}
+.dash-tabs a,.dash-tabs button{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;background:none;border:0;color:var(--text)}
 .dash-tabs button:hover{background:var(--card);color:var(--red)}
 .dash-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:12px 0 8px;align-items:start}
 @media(max-width:980px){.dash-grid{grid-template-columns:1fr}}
@@ -442,6 +442,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 #gameCalendar[hidden],#gameZone[hidden]{display:none}
 #playerSearch{display:block;padding:.7rem;margin:.4rem 0 1rem;width:min(100%,28rem);font:inherit;border:1px solid var(--muted);border-radius:.4rem;background:var(--card);color:var(--text)}
 #playerResults li{margin:.5rem 0}
+.dash-tabs a{display:inline-flex;align-items:center;text-decoration:none}.dash-tabs a[aria-current]{text-decoration:underline}
+#view-team [hidden]{display:none!important}
+#view-team .dash-grid{display:block}
 </style>
 </head>
 <body>
@@ -492,26 +495,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   </div>
 </section>
 
-<section class="preview-panel" id="previewPanel" aria-label="Game preview" aria-live="polite">
-  <div class="wrap">
-    <div class="preview-inner">
-      <div>
-        <div class="pv-top"><label id="pvLeague">Game Preview</label><button type="button" class="pv-close" id="pvClose">Close ✕</button></div>
-        <h3 id="pvTitle">Matchup</h3>
-        <p id="pvSummary"></p>
-        <div class="pv-meta" id="pvMeta"></div>
-        <div class="pv-actions">
-          <button type="button" class="primary" id="pvWatch">▶ Watch This Team's Highlights</button>
-          <a href="#my-teams" id="pvTeamLink">Team Dashboard →</a>
-        </div>
-      </div>
-      <div>
-        <label>Keys to the Game</label>
-        <ol class="pv-keys" id="pvKeys"></ol>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <nav class="mainnav" aria-label="Bean Sports sections">
   <div class="wrap mainnav-inner" id="mainNav">
@@ -532,6 +516,34 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 </nav>
 
 <main id="main">
+<div class="view" data-view="preview" hidden><section class="preview-panel" id="previewPanel" aria-label="Game preview" aria-live="polite">
+  <div class="wrap">
+    <div class="preview-inner">
+      <div>
+        <div class="pv-top"><label id="pvLeague">Game Preview</label><button type="button" class="pv-close" id="pvClose">Team overview</button></div>
+        <h1 tabindex="-1" id="pvTitle">Matchup</h1>
+        <p id="pvSummary"></p>
+        <div class="pv-meta" id="pvMeta"></div>
+        <div class="pv-actions">
+          <button type="button" class="primary" id="pvWatch">▶ Watch This Team's Highlights</button>
+          <a href="#my-teams" id="pvTeamLink">Team Dashboard →</a>
+        </div>
+      </div>
+      <div>
+        <label>Keys to the Game</label>
+        <ol class="pv-keys" id="pvKeys"></ol>
+      </div>
+    </div>
+  </div>
+</section></div>
+<div class="wrap view" data-view="watch" hidden><div class="backrow"><a href="#videos">All highlights</a></div>  <section class="vc-player" id="vcPlayer" aria-label="Video player">
+    <div class="vh-frame"><iframe id="vhFrame" title="Bean Sports video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="vh-fallback" id="vhFallback" hidden><div class="vh-fb-body"><strong>This clip plays on YouTube only</strong><span>Its publisher doesn't allow it to play on other sites.</span><div class="vh-fb-actions"><a id="vhFbLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube ↗</a><button type="button" id="vhFbNext" hidden>Play another highlight</button></div></div></div></div>
+    <div class="vh-now">
+      <label id="vhNowLabel">Now Playing</label>
+      <h1 tabindex="-1" id="vhNowTitle">Highlight</h1>
+      <p><span id="vhNowMeta"></span> &nbsp;<a id="vhNowLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></p>
+    </div>
+  </section></div>
 
 <!-- ============ HOME ============ -->
 <div class="wrap view" id="view-home" data-view="home">
@@ -624,19 +636,12 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 <div class="wrap view" id="view-videos" data-view="videos" hidden>
   <div class="page-head">
     <h1 tabindex="-1">Videos <i>&amp;</i> Highlights</h1>
-    <p>Tap any highlight and it plays right here. Use the team pills to narrow the list.</p>
+    <p>Open a highlight to watch it on its own page. Use the team pills to narrow the list.</p>
   </div>
   <div class="vh-local-warn" id="vhLocalWarn">
     Tip: you opened this page as a local <code>file://</code> URL, so YouTube may block in-page embeds. Host the file on GitHub Pages for seamless playback, or use <b>Watch on YouTube ↗</b> below the player.
   </div>
-  <section class="vc-player" id="vcPlayer" aria-label="Video player">
-    <div class="vh-frame"><iframe id="vhFrame" title="Bean Sports video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe><div class="vh-fallback" id="vhFallback" hidden><div class="vh-fb-body"><strong>This clip plays on YouTube only</strong><span>Its publisher doesn't allow it to play on other sites.</span><div class="vh-fb-actions"><a id="vhFbLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube ↗</a><button type="button" id="vhFbNext" hidden>Play another highlight</button></div></div></div></div>
-    <div class="vh-now">
-      <label id="vhNowLabel">Now Playing</label>
-      <h2 id="vhNowTitle">Pick a highlight</h2>
-      <p><span id="vhNowMeta"></span> &nbsp;<a id="vhNowLink" href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a></p>
-    </div>
-  </section>
+
   <div class="hl-filters" id="hlFilters" role="group" aria-label="Filter highlights by team">
     <button type="button" class="active" data-team="all" aria-pressed="true">All</button>
     <button type="button" data-team="lions" aria-pressed="false">Lions</button>
@@ -700,7 +705,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
 <!-- ============ TEAM DASHBOARD (#team-<key>) ============ -->
 <div class="wrap view" id="view-team" data-view="team" hidden>
-  <div class="backrow"><a href="#home">← Front Page</a><a href="#my-teams">★ All My Teams</a><a id="dashGuide" hidden></a><button type="button" id="dashVideoTop">▶ Team Highlights</button></div>
+  <div class="backrow"><a href="#home">← Front Page</a><a href="#my-teams">★ All My Teams</a><a id="teamOverview" hidden>Team overview</a><a id="dashGuide" hidden></a><button type="button" id="dashVideoTop">▶ Team Highlights</button></div>
   <header class="dash-head" id="dashHead">
     <div class="dash-head-top">
       <span class="abbr" id="dashAbbr">DET</span>
@@ -709,7 +714,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     <div class="dash-pills" id="dashPills"></div>
   </header>
   <nav class="dash-tabs" aria-label="Team dashboard sections">
-    <button type="button" data-scroll="dash-headlines">Headlines</button><button type="button" data-scroll="dash-schedule">Schedule</button><button type="button" data-scroll="dash-roster">Roster</button><button type="button" data-scroll="dash-standings">Standings</button><button type="button" data-scroll="dash-details">Team Details</button><button type="button" id="dashVideoTab">▶ Videos</button>
+    <a data-section="headlines">Headlines</a><a data-section="schedule">Schedule</a><a data-section="roster">Roster</a><a data-section="standings">Standings</a><a data-section="details">Team Details</a><a data-section="links">Team Links</a><button type="button" id="dashVideoTab">▶ Videos</button>
   </nav>
   <section class="dash-card game-day" aria-labelledby="dashGameTitle">
     <div class="dash-card-head"><h2 id="dashGameTitle">Next Game</h2></div>
@@ -735,7 +740,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     </div>
     <aside>
       <section class="dash-card" id="dash-details"><div class="dash-card-head"><h3>Team Details</h3><span>Info</span></div><dl class="facts" id="dashFacts"></dl><p class="dash-about" id="dashAbout"></p></section>
-      <section class="dash-card"><div class="dash-card-head"><h3>Quick Links</h3><span>Official &amp; Live</span></div><div class="quick-links" id="dashLinks"></div></section>
+      <section class="dash-card" id="dash-links"><div class="dash-card-head"><h3>Quick Links</h3><span>Official &amp; Live</span></div><div class="quick-links" id="dashLinks"></div></section>
       <section class="dash-card" id="dash-standings"><div class="dash-card-head"><h3>Standings Watch</h3><span id="dashStandName">Division</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashStandings"></table></div><p class="dash-note">Bean's standings watch — where this team sits and who it's chasing.</p></section>
     </aside>
   </div>
@@ -1216,7 +1221,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   /* ---------- State ---------- */
   var sbFilter='all', sbSortMode='soonest';
-  var vidTeam='all', currentVideo=null, pendingPlay=false, videosBuilt=false;
+  var vidTeam='all', currentVideo=null, videosBuilt=false;
   var openPreviewKey=null, currentTeam=null, firstRoute=true;
 
   /* ---------- Renderers ---------- */
@@ -1351,7 +1356,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       card.type='button'; card.className='hl-card';
       card.setAttribute('data-vid',v.id); card.setAttribute('data-team',v.team);
       card.innerHTML='<span class="hl-thumb"><img src="'+ytThumb(v.id)+'" alt="" width="480" height="360" loading="lazy" decoding="async"><span class="hl-src">'+escapeHtml(v.sourceLabel)+'</span><span class="hl-kind">'+escapeHtml(v.kind)+'</span><span class="hl-play">▶</span></span><span class="hl-body"><span class="hl-team">'+escapeHtml(t.name)+' • '+escapeHtml(t.shortLeague)+'</span><span class="hl-title">'+escapeHtml(v.title)+'</span><span class="hl-meta">'+escapeHtml(v.meta)+'</span></span>';
-      card.addEventListener('click',function(){ playVideo(v,{autoplay:true,scroll:true}); });
+      card.addEventListener('click',function(){ location.hash='watch/'+v.id; });
       gridEl.appendChild(card);
     });
     applyBlocked();
@@ -1430,7 +1435,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var bad=currentVideo; if(!bad) return;
     blocked[bad.id]=1; saveBlocked(); applyBlocked();
     var alt=currentSkip?nextPlayable(bad):null;
-    if(alt) playVideo(alt,{autoplay:lastAutoplay,skip:true});
+    if(alt) location.replace('#watch/'+alt.id);
     else showFallback(bad);
   }
 
@@ -1443,7 +1448,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   function hideFallback(){ fb.hidden=true; }
   $('vhFbNext').addEventListener('click',function(){
     var alt=nextPlayable(currentVideo);
-    if(alt) playVideo(alt,{autoplay:true,skip:true});
+    if(alt) location.hash='watch/'+alt.id;
   });
 
   // opts: autoplay, scroll, skip (skip = if this clip is blocked, quietly pick the next playable one)
@@ -1474,26 +1479,19 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         frame.src=embedSrc(v.id,opts.autoplay);
       }
     }
-    if(opts.scroll){ $('vcPlayer').scrollIntoView({behavior:'smooth',block:'start'}); }
+
   }
 
   // Jump to the Video Center, filtered to one team, and play that team's top highlight.
   function goVideos(team){
     vidTeam=team||'all';
-    pendingPlay=true;
-    if(location.hash==='#videos'){ route(); } else { location.hash='#videos'; }
+    var clip=firstForTeam(vidTeam);
+    if(clip) location.hash='watch/'+clip.id;
   }
 
   function enterVideos(){
     buildVideos();
     applyVideoFilter();
-    loadYouTubeApi();
-    if(pendingPlay){
-      pendingPlay=false;
-      playVideo(firstForTeam(vidTeam),{autoplay:true,skip:true});
-    } else if(!currentVideo){
-      playVideo(firstForTeam(vidTeam),{autoplay:false,skip:true});
-    }
   }
 
   $('hlFilters').addEventListener('click',function(e){
@@ -1523,10 +1521,11 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     $('pvWatch').textContent='▶ Watch '+t.shortName+' Highlights';
     panel.classList.add('open');
     renderScoreboard();
-    panel.scrollIntoView({behavior:'smooth',block:'nearest'});
+    
   }
-  $('pvClose').addEventListener('click',closePreview);
-  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&openPreviewKey) closePreview(); });
+  function leavePreview(){ if(openPreviewKey) location.hash='team-'+openPreviewKey; }
+  $('pvClose').addEventListener('click',leavePreview);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape'&&openPreviewKey) leavePreview(); });
   $('pvWatch').addEventListener('click',function(){ if(openPreviewKey) goVideos(openPreviewKey); });
 
   /* ---------- Team Dashboard ---------- */
@@ -1538,7 +1537,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var head=$('dashHead');
     head.style.background=t.color; head.setAttribute('data-abbr',t.abbr);
     $('dashAbbr').textContent=t.abbr;
-    $('dashName').textContent=t.name;
+    var section=parseRoute().section;
+    $('dashName').textContent=t.name+(section?' · '+teamSections[section]:'');
     $('dashSub').textContent=t.sub+' • '+t.rank;
     var guide=t.quickLinks.find(function(link){ return link[1].startsWith('/'); });
     var guideLink=$('dashGuide');
@@ -1602,9 +1602,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   $('dashPlayBtn').addEventListener('click',dashPlay);
   $('dashPreviewBtn').addEventListener('click',function(){
     if(!currentTeam) return;
-    if(openPreviewKey===currentTeam){ scrollTopNow(); return; }
-    scrollTopNow();
-    openPreview(currentTeam);
+    location.hash='team-'+currentTeam+'/preview';
   });
 
   /* ---------- Podcast: native in-page player fed by the show's own RSS feed ---------- */
@@ -1724,11 +1722,20 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   var viewEls=document.querySelectorAll('[data-view]');
   var navEl=$('mainNav');
 
+  var teamSections={headlines:'Headlines',schedule:'Schedule',roster:'Roster',standings:'Standings',details:'Team Details',links:'Team Links',preview:'Game Preview'};
   function parseRoute(){
     var h=(location.hash||'').replace(/^#\/?/,'');
     if(!h||h==='home') return {view:'home',nav:'home'};
-    if(h.indexOf('team-')===0&&TEAMS[h.slice(5)]) return {view:'team',team:h.slice(5),nav:h.slice(5)};
-    if(SECTIONS[h]) return {view:h,nav:h};
+    var parts=h.split('/');
+    if(parts.length===2){
+      var key=parts[0].replace(/^team-/,'');
+      if(parts[0]==='team-'+key && TEAM_ORDER.includes(key) && Object.hasOwn(teamSections,parts[1]))
+        return {view:parts[1]==='preview'?'preview':'team',nav:key,team:key,section:parts[1]};
+      if(parts[0]==='watch' && videoById(parts[1])) return {view:'watch',nav:'videos',video:parts[1]};
+      return null;
+    }
+    if(h.indexOf('team-')===0&&TEAM_ORDER.includes(h.slice(5))) return {view:'team',team:h.slice(5),nav:h.slice(5)};
+    if(Object.hasOwn(SECTIONS,h)) return {view:h,nav:h};
     return null;
   }
 
@@ -1753,13 +1760,29 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }
     if(openPreviewKey) closePreview();
     for(var i=0;i<viewEls.length;i++){ viewEls[i].hidden=(viewEls[i].getAttribute('data-view')!==r.view); }
-    var teamPage=r.view==='team';
+    var teamPage=r.view!=='home';
     $('allTeamsScoreboard').hidden=teamPage;
     $('countdownBar').hidden=teamPage;
     syncNav(r.nav);
 
     var title=TITLES[r.view];
     if(r.view==='team'){ renderDash(r.team); title=TEAMS[r.team].name+' — Bean Sports'; }
+    if(r.view==='team'){
+      var section=r.section||'';
+      $('teamOverview').hidden=!section;
+      $('teamOverview').href='#team-'+r.team;
+      document.querySelectorAll('.dash-tabs [data-section]').forEach(function(link){
+        var dest=link.dataset.section;
+        link.href='#team-'+r.team+'/'+dest;
+        if(dest===section) link.setAttribute('aria-current','page'); else link.removeAttribute('aria-current');
+      });
+      document.querySelector('.game-day').hidden=!!section;
+      document.querySelectorAll('.dash-grid .dash-card').forEach(function(card){card.hidden=card.id!=='dash-'+section;});
+      if(section) title=teamSections[section]+' · '+title;
+    }
+    if(r.view==='preview'){openPreview(r.team);title=TEAMS[r.team].name+' Game Preview — Bean Sports';}
+    if(r.view==='watch'){buildVideos();loadYouTubeApi();playVideo(videoById(r.video),{autoplay:!firstRoute});title=videoById(r.video).title+' — Bean Sports';}
+    else if(currentVideo){if(playerReady){try{player.stopVideo();}catch(e){}}else{frame.removeAttribute('src');}currentVideo=null;}
     document.title=title;
 
     // Heavy embeds load only when their page is first opened.
@@ -1794,15 +1817,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   document.addEventListener('click',function(e){
     var el=e.target;
     var pv=el.closest('[data-preview]');
-    if(pv){ openPreview(pv.getAttribute('data-preview')); return; }
+    if(pv){ location.hash='team-'+pv.getAttribute('data-preview')+'/preview'; return; }
     var play=el.closest('[data-play]');
     if(play){ goVideos(play.getAttribute('data-play')); return; }
-    var sc=el.closest('[data-scroll]');
-    if(sc){
-      var target=$(sc.getAttribute('data-scroll'));
-      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
-      return;
-    }
     // Clicking the tab you are already on still jumps to the top instantly.
     var a=el.closest('a[href^="#"]');
     if(a){
@@ -1961,7 +1978,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var query=this.value.trim().toLowerCase(),matches=[];
     if(query) TEAM_ORDER.forEach(function(key){
       TEAMS[key].roster.forEach(function(player){
-        if(player[0].toLowerCase().includes(query)) matches.push('<li><a href="#team-'+key+'">'+escapeHtml(player[0])+' · '+escapeHtml(TEAMS[key].name)+'</a> · '+escapeHtml(player[1])+'</li>');
+        if(player[0].toLowerCase().includes(query)) matches.push('<li><a href="#team-'+key+'/roster">'+escapeHtml(player[0])+' · '+escapeHtml(TEAMS[key].name)+'</a> · '+escapeHtml(player[1])+'</li>');
       });
     });
     $('playerResults').innerHTML=query?(matches.length?'<ul>'+matches.join('')+'</ul>':'No matching players in the listed rosters.'):'';
