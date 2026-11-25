@@ -121,6 +121,7 @@ h1[tabindex="-1"]:focus{outline:none}
   .guide-links{display:grid;grid-template-columns:minmax(0,1fr)}
 }
 
+#allTeamsScoreboard[hidden],#countdownBar[hidden],#dashGuide[hidden]{display:none}
 /* Preview drawer */
 .preview-panel{display:none;background:var(--black);color:#fff;border-bottom:2px solid var(--red)}
 .preview-panel.open{display:block}
@@ -461,7 +462,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   </div>
 </div>
 
-<section class="scoreboard" aria-label="My teams scoreboard">
+<section id="allTeamsScoreboard" class="scoreboard" aria-label="My teams scoreboard">
   <div class="wrap">
     <div class="sb-head">
       <h2>SCOREBOARD <span>/// TODAY &amp; NEXT UP</span></h2>
@@ -686,7 +687,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
 <!-- ============ TEAM DASHBOARD (#team-<key>) ============ -->
 <div class="wrap view" id="view-team" data-view="team" hidden>
-  <div class="backrow"><a href="#home">← Front Page</a><a href="#my-teams">★ All My Teams</a><button type="button" id="dashVideoTop">▶ Team Highlights</button></div>
+  <div class="backrow"><a href="#home">← Front Page</a><a href="#my-teams">★ All My Teams</a><a id="dashGuide" hidden></a><button type="button" id="dashVideoTop">▶ Team Highlights</button></div>
   <header class="dash-head" id="dashHead">
     <div class="dash-head-top">
       <span class="abbr" id="dashAbbr">DET</span>
@@ -1509,8 +1510,18 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     $('dashAbbr').textContent=t.abbr;
     $('dashName').textContent=t.name;
     $('dashSub').textContent=t.sub+' • '+t.rank;
+    var guide=t.quickLinks.find(function(link){ return link[1].startsWith('/'); });
+    var guideLink=$('dashGuide');
+    guideLink.hidden=!guide;
+    if(guide){
+      guideLink.href=guide[1];
+      guideLink.textContent=guide[0];
+    } else {
+      guideLink.removeAttribute('href');
+      guideLink.textContent='';
+    }
     var pills=t.pills.slice();
-    if(t.record&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
+    if(/^\d+[-–]\d+/.test(t.record)&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
     $('dashPills').innerHTML=pills.map(function(p,i){ return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>'; }).join('');
     $('dashHeadlines').innerHTML=t.headlines.map(function(h){ return '<li><small>'+escapeHtml(h[0])+'</small><b>'+escapeHtml(h[1])+'</b><p>'+escapeHtml(h[2])+'</p></li>'; }).join('');
     $('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+t.schedule.map(function(r){
@@ -1683,6 +1694,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }
     if(openPreviewKey) closePreview();
     for(var i=0;i<viewEls.length;i++){ viewEls[i].hidden=(viewEls[i].getAttribute('data-view')!==r.view); }
+    var teamPage=r.view==='team';
+    $('allTeamsScoreboard').hidden=teamPage;
+    $('countdownBar').hidden=teamPage;
     syncNav(r.nav);
 
     var title=TITLES[r.view];
