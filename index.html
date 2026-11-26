@@ -1571,7 +1571,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       $('newsStatus').append(' ',source);
     }
     if(newsRequests.has(key)||(entry && Date.now()-entry.checked<(entry.failed?60000:newsInterval))) return;
-    var request=fetch('/api/team-news?team='+key,{signal:AbortSignal.timeout(12000)})
+    var request=fetch('https://bean-sports.vercel.app/api/team-news?team='+key,{signal:AbortSignal.timeout(12000)})
       .then(function(r){if(!r.ok) throw new Error('Feed unavailable');return r.text();})
       .then(function(xml){newsCache.set(key,{articles:readArticles(xml),checked:Date.now()});})
       .catch(function(){newsCache.set(key,{articles:entry?.articles||[],checked:Date.now(),failed:true});})
