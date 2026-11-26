@@ -445,6 +445,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 .dash-tabs a{display:inline-flex;align-items:center;text-decoration:none}.dash-tabs a[aria-current]{text-decoration:underline}
 #view-team [hidden]{display:none!important}
 #view-team .dash-grid{display:block}
+#dash-headlines h2{font-size:1.15rem;margin:0}#dashHeadlines a{text-decoration:underline;text-underline-offset:.18em;color:var(--text);font-weight:700}
 </style>
 </head>
 <body>
@@ -732,9 +733,14 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       </div>
     </div>
   </section>
+  <section class="dash-card" id="dash-headlines" aria-labelledby="newsHeading">
+    <div class="dash-card-head"><h2 id="newsHeading">Team news</h2><a id="allTeamNews">All headlines</a></div>
+    <ol class="dash-headlines" id="dashHeadlines"></ol>
+    <p class="dash-note" id="newsStatus" role="status"></p>
+  </section>
   <div class="dash-grid">
     <div>
-      <section class="dash-card" id="dash-headlines"><div class="dash-card-head"><h3>Latest Headlines</h3><span>Top 5</span></div><ol class="dash-headlines" id="dashHeadlines"></ol></section>
+
       <section class="dash-card" id="dash-schedule"><div class="dash-card-head"><h3>Schedule &amp; Results</h3><span id="dashSchedNote">2026 Season</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashSchedule"></table></div><p class="dash-note">Times in Eastern Time. Live schedule updates automatically when connected.</p></section>
       <section class="dash-card" id="dash-roster"><div class="dash-card-head"><h3>Roster</h3><span>Key Players</span></div><div class="dash-table-wrap"><table class="dash-table" id="dashRoster"></table></div><p class="dash-note">The core rotation and depth-chart leaders Bean watches every game.</p></section>
     </div>
@@ -1529,6 +1535,58 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   $('pvWatch').addEventListener('click',function(){ if(openPreviewKey) goVideos(openPreviewKey); });
 
   /* ---------- Team Dashboard ---------- */
+  var newsCache=new Map();
+  var newsRequests=new Map();
+  var newsInterval=600000;
+  function readArticles(xml){
+    var doc=new DOMParser().parseFromString(xml,'application/xml');
+    if(!doc.querySelector('rss channel')) throw new Error('Invalid news feed');
+    var articles=[],seen=new Set();
+    doc.querySelectorAll('item').forEach(function(item){
+      function field(tag){return item.querySelector(tag)?.textContent.trim()||'';}
+      var link=field('link'),title=field('title'),source=field('source');
+      if(!/^https:\/\//i.test(link)||!title||seen.has(title)) return;
+      seen.add(title);
+      if(source && title.endsWith(' - '+source)) title=title.slice(0,-source.length-3);
+      articles.push({link:link,title:title,source:source,date:Date.parse(field('pubDate'))||0});
+    });
+    return articles.sort(function(a,b){return b.date-a.date;}).slice(0,20);
+  }
+  function showNews(key,full){
+    var entry=newsCache.get(key),team=TEAMS[key];
+    $('allTeamNews').href='#team-'+key+'/headlines';
+    $('allTeamNews').hidden=full;
+    var articles=(entry?.articles||[]).slice(0,full?20:3);
+    $('dashHeadlines').innerHTML=articles.map(function(a){
+      var date=a.date?new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
+      return '<li><small>'+escapeHtml([a.source,date].filter(Boolean).join(' · '))+'</small><a href="'+escapeHtml(a.link)+'">'+escapeHtml(a.title)+'</a></li>';
+    }).join('');
+    var status=entry?(entry.failed?'News feed temporarily unavailable.':articles.length?'':'No stories returned.'):'Loading team news…';
+    $('newsStatus').textContent=status;
+    $('newsStatus').hidden=!status;
+    if(entry && (!articles.length||entry.failed)){
+      var source=document.createElement('a');
+      source.href='https://news.google.com/search?q='+encodeURIComponent(team.name+' '+team.sub);
+      source.textContent='Browse coverage on Google News';
+      $('newsStatus').append(' ',source);
+    }
+    if(newsRequests.has(key)||(entry && Date.now()-entry.checked<(entry.failed?60000:newsInterval))) return;
+    var request=fetch('/api/team-news?team='+key,{signal:AbortSignal.timeout(12000)})
+      .then(function(r){if(!r.ok) throw new Error('Feed unavailable');return r.text();})
+      .then(function(xml){newsCache.set(key,{articles:readArticles(xml),checked:Date.now()});})
+      .catch(function(){newsCache.set(key,{articles:entry?.articles||[],checked:Date.now(),failed:true});})
+      .finally(function(){
+        newsRequests.delete(key);
+        var route=parseRoute();
+        if(route?.team===key && route.view==='team' && (!route.section||route.section==='headlines')) showNews(key,route.section==='headlines');
+      });
+    newsRequests.set(key,request);
+  }
+  setInterval(function(){
+    var route=parseRoute();
+    if(!document.hidden && route?.view==='team' && (!route.section||route.section==='headlines')) showNews(route.team,route.section==='headlines');
+  },60000);
+
   function renderDash(key){
     var t=TEAMS[key]; if(!t) return;
     if(currentTeam!==key) $('shareResult').textContent='';
@@ -1553,7 +1611,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var pills=t.pills.slice();
     if(/^\d+[-–]\d+/.test(t.record)&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
     $('dashPills').innerHTML=pills.map(function(p,i){ return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>'; }).join('');
-    $('dashHeadlines').innerHTML=t.headlines.map(function(h){ return '<li><small>'+escapeHtml(h[0])+'</small><b>'+escapeHtml(h[1])+'</b><p>'+escapeHtml(h[2])+'</p></li>'; }).join('');
+    $('dash-headlines').hidden=!!section && section!=='headlines';
+    if(!$('dash-headlines').hidden) showNews(key,section==='headlines');
     $('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+t.schedule.map(function(r){
       var cls=r[3]==='w'?'res-w':(r[3]==='l'?'res-l':'');
       return '<tr><td style="white-space:nowrap;font-weight:700">'+escapeHtml(r[0])+'</td><td style="font-weight:600">'+escapeHtml(r[1])+'</td><td class="'+cls+'">'+escapeHtml(r[2])+'</td></tr>';
