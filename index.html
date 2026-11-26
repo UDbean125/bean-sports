@@ -1584,7 +1584,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     doc.querySelectorAll('item').forEach(function(item){
       function field(tag){return item.querySelector(tag)?.textContent.trim()||'';}
       var link=field('link'),title=field('title'),source=field('source');
-      if(!/^https:\/\//i.test(link)||!title||seen.has(title)) return;
+      // Bing wraps each story in an http:// redirect link; the https check happens on the unwrapped publisher URL below.
+      if(!link||!title||seen.has(title)) return;
       seen.add(title);
       if(source && title.endsWith(' - '+source)) title=title.slice(0,-source.length-3);
       var url;
