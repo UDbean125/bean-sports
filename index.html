@@ -446,6 +446,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 #view-team [hidden]{display:none!important}
 #view-team .dash-grid{display:block}
 #dash-headlines h2{font-size:1.15rem;margin:0}#dashHeadlines a{text-decoration:underline;text-underline-offset:.18em;color:var(--text);font-weight:700}
+#publisherPage iframe{width:100%;height:75vh;border:1px solid var(--line);margin-top:12px;background:white}
+#articleExcerpt:empty{display:none}
 </style>
 </head>
 <body>
@@ -733,6 +735,15 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       </div>
     </div>
   </section>
+  <article class="dash-card" id="articleReader" hidden>
+    <div class="next-body">
+      <a id="articleBack">All team headlines</a>
+      <h2 id="articleTitle"></h2>
+      <p id="articleMeta"></p><p id="articleExcerpt"></p>
+      <a id="articleOriginal" target="_blank" rel="noopener noreferrer" hidden>Open publisher in a new tab ↗</a>
+      <div id="publisherPage"></div>
+    </div>
+  </article>
   <section class="dash-card" id="dash-headlines" aria-labelledby="newsHeading">
     <div class="dash-card-head"><h2 id="newsHeading">Team news</h2><a id="allTeamNews">All headlines</a></div>
     <ol class="dash-headlines" id="dashHeadlines"></ol>
@@ -1537,7 +1548,35 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   /* ---------- Team Dashboard ---------- */
   var newsCache=new Map();
   var newsRequests=new Map();
-  var newsInterval=600000;
+  var newsInterval=60000;
+  function articleId(link){
+    var a=5381,b=52711;
+    for(var i=0;i<link.length;i++){a=Math.imul(a,33)^link.charCodeAt(i);b=Math.imul(b,31)+link.charCodeAt(i)|0;}
+    return (a>>>0).toString(36)+'-'+(b>>>0).toString(36);
+  }
+  function displayArticle(key,id){
+    var articles=newsCache.get(key)?.articles||[];
+    var story=articles.find(function(item){return item.id===id;});
+    var storageKey='beanStory:'+key+':'+id;
+    if(!story){try{story=JSON.parse(sessionStorage.getItem(storageKey));}catch(e){}}
+    $('articleBack').href='#team-'+key+'/headlines';
+    var visible=story && /^https:\/\//i.test(story.link) && articleId(story.link)===id;
+    $('articleTitle').textContent=visible?story.title:newsCache.has(key)?'Article unavailable in the current feed':'Loading article…';
+    $('articleMeta').textContent=visible?[story.source,story.date?new Date(story.date).toLocaleString():''].filter(Boolean).join(' · '):'';
+    $('articleExcerpt').textContent=visible?story.excerpt||'':'';
+    $('articleOriginal').hidden=!visible;
+    var host=$('publisherPage');
+    if(!visible){host.replaceChildren();return;}
+    try{sessionStorage.setItem(storageKey,JSON.stringify(story));}catch(e){}
+    $('articleOriginal').href=story.link;
+    if(host.firstChild?.getAttribute('src')===story.link)return;
+    var frame=document.createElement('iframe');
+    frame.title=story.title+' — publisher article';
+    frame.setAttribute('sandbox','allow-scripts allow-same-origin allow-popups');
+    frame.referrerPolicy='strict-origin-when-cross-origin';
+    frame.src=story.link;
+    host.replaceChildren(frame);
+  }
   function readArticles(xml){
     var doc=new DOMParser().parseFromString(xml,'application/xml');
     if(!doc.querySelector('rss channel')) throw new Error('Invalid news feed');
@@ -1548,7 +1587,16 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       if(!/^https:\/\//i.test(link)||!title||seen.has(title)) return;
       seen.add(title);
       if(source && title.endsWith(' - '+source)) title=title.slice(0,-source.length-3);
-      articles.push({link:link,title:title,source:source,date:Date.parse(field('pubDate'))||0});
+      var url;
+      try{
+        url=new URL(link);
+        if(url.hostname==='www.bing.com' && url.searchParams.has('url')) url=new URL(url.searchParams.get('url'));
+        if(url.protocol!=='https:')return;
+      }catch(e){return;}
+      var raw=field('description');
+      var summary=raw.includes('<')?'':raw;
+      if(!source)source=item.getElementsByTagName('News:Source')[0]?.textContent||url.hostname;
+      articles.push({id:articleId(url.href),link:url.href,title:title,source:source,excerpt:summary,date:Date.parse(field('pubDate'))||0});
     });
     return articles.sort(function(a,b){return b.date-a.date;}).slice(0,20);
   }
@@ -1559,7 +1607,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var articles=(entry?.articles||[]).slice(0,full?20:3);
     $('dashHeadlines').innerHTML=articles.map(function(a){
       var date=a.date?new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'';
-      return '<li><small>'+escapeHtml([a.source,date].filter(Boolean).join(' · '))+'</small><a href="'+escapeHtml(a.link)+'">'+escapeHtml(a.title)+'</a></li>';
+      return '<li><small>'+escapeHtml([a.source,date].filter(Boolean).join(' · '))+'</small><a href="#team-'+key+'/article/'+a.id+'">'+escapeHtml(a.title)+'</a></li>';
     }).join('');
     var status=entry?(entry.failed?'News feed temporarily unavailable.':articles.length?'':'No stories returned.'):'Loading team news…';
     $('newsStatus').textContent=status;
@@ -1570,6 +1618,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       source.textContent='Browse coverage on Google News';
       $('newsStatus').append(' ',source);
     }
+    var active=parseRoute();
+    if(active?.section==='article' && active.team===key)displayArticle(key,active.article);
     if(newsRequests.has(key)||(entry && Date.now()-entry.checked<(entry.failed?60000:newsInterval))) return;
     var request=fetch('https://bean-sports.vercel.app/api/team-news?team='+key,{signal:AbortSignal.timeout(12000)})
       .then(function(r){if(!r.ok) throw new Error('Feed unavailable');return r.text();})
@@ -1578,14 +1628,17 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       .finally(function(){
         newsRequests.delete(key);
         var route=parseRoute();
-        if(route?.team===key && route.view==='team' && (!route.section||route.section==='headlines')) showNews(key,route.section==='headlines');
+        if(route?.team===key && route.view==='team' && (!route.section||route.section==='headlines'||route.section==='article')) showNews(key,route.section==='headlines');
       });
     newsRequests.set(key,request);
   }
-  setInterval(function(){
+  function refreshVisibleNews(){
     var route=parseRoute();
-    if(!document.hidden && route?.view==='team' && (!route.section||route.section==='headlines')) showNews(route.team,route.section==='headlines');
-  },60000);
+    if(!document.hidden && route?.view==='team' && (!route.section||route.section==='headlines'||route.section==='article')) showNews(route.team,route.section==='headlines');
+  }
+  setInterval(refreshVisibleNews,15000);
+  document.addEventListener('visibilitychange',refreshVisibleNews);
+  window.addEventListener('online',refreshVisibleNews);
 
   function renderDash(key){
     var t=TEAMS[key]; if(!t) return;
@@ -1596,7 +1649,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     head.style.background=t.color; head.setAttribute('data-abbr',t.abbr);
     $('dashAbbr').textContent=t.abbr;
     var section=parseRoute().section;
-    $('dashName').textContent=t.name+(section?' · '+teamSections[section]:'');
+    $('dashName').textContent=t.name+(section?' · '+(section==='article'?'Article':teamSections[section]):'');
     $('dashSub').textContent=t.sub+' • '+t.rank;
     var guide=t.quickLinks.find(function(link){ return link[1].startsWith('/'); });
     var guideLink=$('dashGuide');
@@ -1612,7 +1665,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     if(/^\d+[-–]\d+/.test(t.record)&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
     $('dashPills').innerHTML=pills.map(function(p,i){ return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>'; }).join('');
     $('dash-headlines').hidden=!!section && section!=='headlines';
-    if(!$('dash-headlines').hidden) showNews(key,section==='headlines');
+    $('articleReader').hidden=section!=='article';
+    if(section!=='article') $('publisherPage').replaceChildren();
+    if(section==='article'||!$('dash-headlines').hidden) showNews(key,section==='headlines');
     $('dashSchedule').innerHTML='<tr><th>When</th><th>Opponent</th><th>Result / Details</th></tr>'+t.schedule.map(function(r){
       var cls=r[3]==='w'?'res-w':(r[3]==='l'?'res-l':'');
       return '<tr><td style="white-space:nowrap;font-weight:700">'+escapeHtml(r[0])+'</td><td style="font-weight:600">'+escapeHtml(r[1])+'</td><td class="'+cls+'">'+escapeHtml(r[2])+'</td></tr>';
@@ -1786,6 +1841,10 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var h=(location.hash||'').replace(/^#\/?/,'');
     if(!h||h==='home') return {view:'home',nav:'home'};
     var parts=h.split('/');
+    if(parts.length===3 && parts[0].startsWith('team-') && TEAM_ORDER.includes(parts[0].slice(5)) && parts[1]==='article' && /^[a-z0-9]+-[a-z0-9]+$/.test(parts[2])){
+      var team=parts[0].slice(5);
+      return {view:'team',team:team,nav:team,section:'article',article:parts[2]};
+    }
     if(parts.length===2){
       var key=parts[0].replace(/^team-/,'');
       if(parts[0]==='team-'+key && TEAM_ORDER.includes(key) && Object.hasOwn(teamSections,parts[1]))
@@ -1822,6 +1881,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var teamPage=r.view!=='home';
     $('allTeamsScoreboard').hidden=teamPage;
     $('countdownBar').hidden=teamPage;
+    if(r.section!=='article') $('publisherPage').replaceChildren();
     syncNav(r.nav);
 
     var title=TITLES[r.view];
@@ -1837,7 +1897,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       });
       document.querySelector('.game-day').hidden=!!section;
       document.querySelectorAll('.dash-grid .dash-card').forEach(function(card){card.hidden=card.id!=='dash-'+section;});
-      if(section) title=teamSections[section]+' · '+title;
+      if(section) title=(section==='article'?'Article':teamSections[section])+' · '+title;
     }
     if(r.view==='preview'){openPreview(r.team);title=TEAMS[r.team].name+' Game Preview — Bean Sports';}
     if(r.view==='watch'){buildVideos();loadYouTubeApi();playVideo(videoById(r.video),{autoplay:!firstRoute});title=videoById(r.video).title+' — Bean Sports';}
