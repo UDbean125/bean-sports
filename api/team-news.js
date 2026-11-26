@@ -8,6 +8,7 @@ const searches = {
 };
 
 module.exports = async function teamNews(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', 'https://bean-sports.hen-solutions.com');
   const team = req.query.team;
   if (req.method !== 'GET' || typeof team !== 'string' || !Object.hasOwn(searches, team)) {
     return res.status(400).end();
