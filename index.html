@@ -1523,7 +1523,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   /* ---------- Live highlights (YouTube search via the Bean Sports API) ---------- */
   var VIDEO_API='https://bean-sports.vercel.app/api/team-videos?team=';
-  var LIVE_MAX_PER_TEAM=6, LIVE_STALE_MS=3*60*1000;
+  var LIVE_MAX_PER_TEAM=6, LIVE_STALE_MS=60*1000;
   var live={done:false,pending:null,at:0,byTeam:{},ok:false};
 
   function agoText(ms){
@@ -1608,7 +1608,8 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   function goVideos(team){
     vidTeam=team||'all';
     function go(){ var clip=firstForTeam(vidTeam); if(clip) location.hash='watch/'+clip.id; }
-    if(live.done) go(); else liveFirst(4000).then(go);
+    var selected=vidTeam;
+    Promise.race([refreshLive(),new Promise(function(resolve){setTimeout(resolve,4000);})]).then(function(){if(vidTeam===selected) go();});
   }
 
   function enterVideos(){
@@ -1616,9 +1617,13 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     applyVideoFilter();
   }
   // Keep the list fresh while someone sits on the Videos pages.
-  setInterval(function(){
-    if(document.visibilityState==='visible'&&(location.hash==='#videos'||location.hash.indexOf('#watch/')===0)) refreshLive();
-  },60*1000);
+  function refreshVisibleVideos(){
+    var active=parseRoute();
+    if(!document.hidden && active && ['videos','watch','team'].includes(active.view)) refreshLive();
+  }
+  setInterval(refreshVisibleVideos,15000);
+  document.addEventListener('visibilitychange',refreshVisibleVideos);
+  window.addEventListener('online',refreshVisibleVideos);
 
   $('hlFilters').addEventListener('click',function(e){
     var btn=e.target.closest('button'); if(!btn) return;
@@ -2026,7 +2031,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     // Heavy embeds load only when their page is first opened.
     if(r.view==='podcast'){ enterPodcast(); }
     if(r.view==='videos'){ enterVideos(); }
-    if(r.view==='videos'||r.view==='watch'){ refreshLive(); }
+    if(['videos','watch','team'].includes(r.view)){ refreshLive(); }
 
     scrollTopNow();
     if(!firstRoute){
