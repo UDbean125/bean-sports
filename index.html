@@ -5,8 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#1c1c21">
+<link rel="manifest" href="manifest.json">
 <link rel="canonical" href="https://bean-sports.hen-solutions.com/">
 <meta name="description" content="Bean Sports — one front page for the Lions, Pistons, Ohio State, Dayton, Gamecocks and Alter Knights, with live scores, highlights and a daily podcast.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Bean Sports">
+<meta property="og:title" content="Bean Sports — Lions, Pistons, Ohio State, Dayton, Gamecocks, Alter">
+<meta property="og:description" content="One front page for the Lions, Pistons, Ohio State, Dayton, Gamecocks, and Alter Knights — with live scores, highlights, and The Starting Five Daily podcast.">
+<meta property="og:url" content="https://bean-sports.hen-solutions.com/">
+<meta property="og:image" content="icons/bean-sports-icon-1024.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:image:alt" content="Bean Sports logo">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Bean Sports — Lions, Pistons, Ohio State, Dayton, Gamecocks, Alter">
+<meta name="twitter:description" content="One front page for the Lions, Pistons, Ohio State, Dayton, Gamecocks, and Alter Knights — with live scores, highlights, and The Starting Five Daily podcast.">
+<meta name="twitter:image" content="icons/bean-sports-icon-1024.png">
+<meta name="twitter:image:alt" content="Bean Sports logo">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -23,17 +38,17 @@ try{var t=localStorage.getItem('beanSportsTheme');if(t==='dark'||t==='light')doc
 </script>
 <style>
 :root{
-  --red:#d6002a; --black:#121214; --brand-bg:#1c1c21; --nav:#1b1b1e; --nav2:#2b2b2f;
+  --red:#d6002a; --red-ink:#d6002a; --win:#0a7a33; --black:#121214; --brand-bg:#1c1c21; --nav:#1b1b1e; --nav2:#2b2b2f;
   --bg:#f1f1f3; --card:#ffffff; --card2:#f8f8f9;
   --text:#17181c; --muted:#6b6e77; --line:#e3e3e7;
   --lions:#0076b6; --pistons:#c8102e; --osu:#bb0000; --dayton:#ce1141; --sc:#73000a; --alter:#7a5a12;
   --shadow:0 1px 3px rgba(0,0,0,.08),0 6px 18px rgba(0,0,0,.05);
 }
 @media (prefers-color-scheme: dark){
-  :root:not([data-theme="light"]){ --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4); }
+  :root:not([data-theme="light"]){ --red-ink:#ff8aa0; --win:#129c49; --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4); }
 }
 :root[data-theme="dark"]{
-  --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4);
+  --red-ink:#ff8aa0; --win:#129c49; --bg:#111114; --card:#1c1c20; --card2:#232329; --text:#f2f2f3; --muted:#a6a8b0; --line:#2e2e35; --shadow:0 1px 3px rgba(0,0,0,.4);
 }
 *{box-sizing:border-box}
 [hidden]{display:none!important}
@@ -41,7 +56,21 @@ html{-webkit-text-size-adjust:100%;background:var(--black)}
 body{margin:0;font-family:"Barlow",system-ui,-apple-system,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:clip;min-height:100vh;min-height:100dvh}
 a{color:inherit;text-decoration:none} a:hover{text-decoration:underline}
 button{font:inherit;cursor:pointer}
-a:focus-visible,button:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--red-ink);outline-offset:2px}
+.masthead :is(a,button):focus-visible,
+.countdown-bar :is(a,button):focus-visible,
+.preview-panel :is(a,button):focus-visible,
+.mainnav :is(a,button):focus-visible,
+.hero-main :is(a,button):focus-visible,
+.team-strip :is(a,button):focus-visible,
+.podcast-hub :is(a,button,summary):focus-visible,
+.vc-player :is(a,button):focus-visible,
+.rail-card.promo :is(a,button):focus-visible,
+.rail-head :is(a,button):focus-visible,
+.dash-head :is(a,button):focus-visible,
+.dash-card-head :is(a,button):focus-visible,
+.mini-pod :is(a,button):focus-visible,
+footer :is(a,button):focus-visible{outline-color:#fff}
 h1,h2,h3{font-family:"Barlow Condensed","Barlow",sans-serif;letter-spacing:.01em;line-height:.95;margin:0;text-transform:uppercase}
 h1[tabindex="-1"]:focus{outline:none}
 .wrap{max-width:1280px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
@@ -81,13 +110,13 @@ h1[tabindex="-1"]:focus{outline:none}
 .scoreboard{background:var(--card);border-bottom:1px solid var(--line)}
 .sb-head{display:flex;align-items:center;gap:10px;padding:10px 0 8px;flex-wrap:wrap}
 .sb-head h2{font-size:18px;letter-spacing:.06em}
-.sb-head h2 span{color:var(--red)}
+.sb-head h2 span{color:var(--red-ink)}
 .sb-tools{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap;align-items:center}
 .sb-filters{display:flex;gap:6px;flex-wrap:wrap}
 .sb-filters button,.sb-sort{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:6px 10px;border-radius:999px}
-.sb-filters button.active{background:var(--black);color:#fff;border-color:var(--black)}
-.sb-sort{background:var(--card2);color:var(--red);border-color:var(--line)}
-.sb-sort:hover{border-color:var(--red)}
+.sb-filters button.active{background:var(--text);color:var(--card);border-color:var(--text)}
+.sb-sort{background:var(--card2);color:var(--red-ink);border-color:var(--line)}
+.sb-sort:hover{border-color:var(--red-ink)}
 .sb-track{display:flex;gap:12px;overflow-x:auto;padding:2px 0 14px;scrollbar-width:thin;-webkit-overflow-scrolling:touch}
 .sb-card{min-width:268px;flex:0 0 268px;border:1px solid var(--line);border-radius:11px;padding:11px 13px;background:var(--card);display:flex;flex-direction:column}
 .sb-card.is-live{border-color:var(--red);box-shadow:0 0 0 1px var(--red)}
@@ -106,11 +135,11 @@ h1[tabindex="-1"]:focus{outline:none}
 .preview-btn{flex:1;justify-content:center;font:inherit;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:#fff;background:var(--red);border:0;border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center;gap:5px}
 .preview-btn:hover{background:#a80022}
 .dash-btn{flex:1;justify-content:center;font-size:11px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--text);background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:6px 10px;display:inline-flex;align-items:center}
-.dash-btn:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+.dash-btn:hover{border-color:var(--red-ink);color:var(--red-ink);text-decoration:none}
 
 .guide-links{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;padding:12px 0}
 .guide-links a{display:inline-flex;min-height:44px;align-items:center;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:var(--card);color:var(--text);font-weight:700}
-.guide-links a:hover,.guide-links a:focus-visible{border-color:var(--red);text-decoration:underline}
+.guide-links a:hover,.guide-links a:focus-visible{border-color:var(--red-ink);text-decoration:underline}
 @media(max-width:600px){
   .sb-tools{margin-left:0}
   .sb-track{display:grid;grid-template-columns:minmax(0,1fr);overflow:visible;gap:8px}
@@ -158,13 +187,13 @@ h1[tabindex="-1"]:focus{outline:none}
 .view{padding-bottom:8px}
 .page-head{margin:22px 0 16px}
 .page-head h1{font-size:44px;line-height:.95}
-.page-head h1 i{color:var(--red);font-style:normal}
+.page-head h1 i{color:var(--red-ink);font-style:normal}
 .page-head p{margin:10px 0 0;color:var(--muted);font-size:15px;line-height:1.55;max-width:680px}
 .section-head{display:flex;align-items:center;gap:12px;margin:24px 0 12px}
 .section-head h2{font-size:28px}
-.section-head h2 i{color:var(--red);font-style:normal}
+.section-head h2 i{color:var(--red-ink);font-style:normal}
 .section-head .rule{height:3px;background:var(--text);flex:1}
-.section-head a{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red);white-space:nowrap}
+.section-head a{font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red-ink);white-space:nowrap}
 
 /* Hero */
 .hero{padding:16px 0 0}
@@ -185,8 +214,8 @@ h1[tabindex="-1"]:focus{outline:none}
 .hero-links a:hover{text-decoration:none;border-color:#fff}
 .hero-side{display:flex;flex-direction:column;gap:12px}
 .mini-story{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);transition:border-color .15s}
-.mini-story:hover{border-color:var(--red);text-decoration:none}
-.mini-story label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.mini-story:hover{border-color:var(--red-ink);text-decoration:none}
+.mini-story label{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
 .mini-story h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:17px;line-height:1.25;margin:6px 0 6px;font-weight:700}
 .mini-story p{margin:0;font-size:13.5px;line-height:1.5;color:var(--muted)}
 .mini-story.take{padding:18px;cursor:default}
@@ -206,13 +235,13 @@ h1[tabindex="-1"]:focus{outline:none}
 .explore-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 @media(max-width:900px){.explore-grid{grid-template-columns:1fr 1fr}}
 .launch-card{display:flex;flex-direction:column;gap:6px;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--red);border-radius:12px;padding:16px;box-shadow:var(--shadow);color:var(--text);min-height:168px;transition:border-color .15s,transform .15s}
-.launch-card:hover{border-color:var(--red);text-decoration:none;transform:translateY(-2px)}
+.launch-card:hover{border-color:var(--red-ink);text-decoration:none;transform:translateY(-2px)}
 @media (prefers-reduced-motion:reduce){.launch-card{transition:none}.launch-card:hover{transform:none}}
 .launch-ic{width:42px;height:42px;border-radius:10px;background:var(--black);color:#fff;display:grid;place-items:center;margin-bottom:6px}
 .launch-ic svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .launch-card h3{font-size:24px}
 .launch-card p{margin:0;color:var(--muted);font-size:13.5px;line-height:1.45}
-.launch-go{margin-top:auto;padding-top:8px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red)}
+.launch-go{margin-top:auto;padding-top:8px;font-size:12px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--red-ink)}
 
 /* Podcast */
 .podcast-hub{background:var(--black);border:1px solid #2b2c35;border-radius:14px;overflow:hidden;color:#fff}
@@ -232,7 +261,7 @@ h1[tabindex="-1"]:focus{outline:none}
 .pod-now p.pod-status{margin:10px 0 0;color:#ffd0d8;font-size:13px}
 .pod-status a{color:#fff;font-weight:700;text-decoration:underline}
 .pod-now audio{display:block;width:100%;height:44px;color-scheme:dark}
-.pod-skip{display:flex;gap:8px;margin-top:10px}
+.pod-skip{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
 .pod-skip button,.pod-showall{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border-radius:999px;padding:7px 13px;border:1px solid #3a3a42;background:none;color:#fff}
 .pod-skip button:hover,.pod-showall:hover{border-color:#fff}
 .pod-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
@@ -247,7 +276,7 @@ details.pod-apple{margin-top:14px;border-top:1px solid #2c2c33;padding-top:12px}
 details.pod-apple summary{cursor:pointer;color:#c9cad2;font-size:13px;font-weight:700}
 details.pod-apple .pod-frame{margin-top:10px}
 .pod-note{margin:12px 2px 0;font-size:13px;color:var(--muted);line-height:1.5}
-.pod-note a{color:var(--red);font-weight:700;text-decoration:underline}
+.pod-note a{color:var(--red-ink);font-weight:700;text-decoration:underline}
 .pod-more{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
 @media(max-width:640px){.pod-more{grid-template-columns:1fr}}
 
@@ -273,7 +302,7 @@ details.pod-apple .pod-frame{margin-top:10px}
 .vh-local-warn{display:none;margin:0 0 12px;padding:9px 12px;background:#261a1d;border:1px solid #6b2434;border-radius:8px;font-size:12.5px;color:#ffd0d8;line-height:1.45}
 .hl-filters{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 12px}
 .hl-filters button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
-.hl-filters button.active{background:var(--black);color:#fff;border-color:var(--black)}
+.hl-filters button.active{background:var(--text);color:var(--card);border-color:var(--text)}
 .hl-live{margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted,#6b6f7b)}
 .hl-live::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:#2fb344;margin-right:7px;vertical-align:1px}
 .hl-live.is-stale::before{background:#ffd166}
@@ -281,7 +310,7 @@ details.pod-apple .pod-frame{margin-top:10px}
 @media(max-width:900px){.hl-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.hl-grid{grid-template-columns:1fr}}
 .hl-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);text-align:left;padding:0;width:100%;color:var(--text);display:flex;flex-direction:column}
-.hl-card:hover{border-color:var(--red);text-decoration:none}
+.hl-card:hover{border-color:var(--red-ink);text-decoration:none}
 .hl-card.is-playing{border-color:var(--red);box-shadow:0 0 0 2px var(--red)}
 .hl-thumb{position:relative;display:block;aspect-ratio:16/9;background:#000;overflow:hidden}
 .hl-thumb img{width:100%;height:100%;object-fit:cover;display:block}
@@ -290,7 +319,7 @@ details.pod-apple .pod-frame{margin-top:10px}
 .hl-kind{position:absolute;right:10px;top:10px;z-index:2;background:rgba(0,0,0,.72);color:#fff;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
 .hl-src{position:absolute;left:10px;top:10px;z-index:2;background:#fff;color:#111;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:4px 7px;border-radius:5px}
 .hl-body{display:block;padding:11px 13px 13px;flex:1}
-.hl-team{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.hl-team{display:block;font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
 .hl-title{display:block;font-size:16px;line-height:1.3;margin:4px 0 4px;font-weight:700}
 .hl-meta{display:block;font-size:12.5px;color:var(--muted);font-weight:600;line-height:1.45}
 .net-row{margin-top:26px;padding:14px 16px;background:var(--card);border:1px solid var(--line);border-radius:12px}
@@ -298,7 +327,7 @@ details.pod-apple .pod-frame{margin-top:10px}
 .net-row p{margin:6px 0 10px;font-size:12.5px;color:var(--muted);line-height:1.45}
 .net-links{display:flex;gap:6px;flex-wrap:wrap}
 .net-links a{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
-.net-links a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+.net-links a:hover{border-color:var(--red-ink);color:var(--red-ink);text-decoration:none}
 
 /* Layout, Feed & Rail */
 .layout{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:4px 0 8px;align-items:start}
@@ -309,12 +338,12 @@ details.pod-apple .pod-frame{margin-top:10px}
 .article{display:grid;grid-template-columns:118px 1fr;gap:14px;padding:16px 0;border-bottom:1px solid var(--line)}
 @media(max-width:560px){.article{grid-template-columns:86px 1fr}.hero-body h1,.page-head h1{font-size:34px}}
 .thumb{min-height:86px;border-radius:10px;display:flex;align-items:flex-end;padding:8px;color:#fff;font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;line-height:1.1}
-.article label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red)}
+.article label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--red-ink)}
 .article h3{font-family:"Barlow",sans-serif;text-transform:none;font-size:19px;line-height:1.2;margin:4px 0 5px;font-weight:700}
 .article p{margin:0;color:var(--muted);font-size:14px;line-height:1.55}
 .byline{font-size:12px;color:var(--muted);margin-top:7px;font-weight:600}
 .byline b{color:var(--text)}
-.dash-link{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--red);border-bottom:2px solid var(--red);padding-bottom:2px;display:inline-block;margin-top:8px}
+.dash-link{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--red-ink);border-bottom:2px solid var(--red-ink);padding-bottom:2px;display:inline-block;margin-top:8px}
 .dash-link:hover{text-decoration:none}
 .rail{position:sticky;top:60px;display:flex;flex-direction:column;gap:16px}
 @media(max-width:980px){.rail{position:static}}
@@ -326,14 +355,14 @@ details.pod-apple .pod-frame{margin-top:10px}
 .headlines{list-style:none;margin:0;padding:6px 0}
 .headlines li{display:flex;gap:11px;padding:10px 14px;border-bottom:1px solid var(--line)}
 .headlines li:last-child{border-bottom:0}
-.headlines .num{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:var(--red);line-height:1;min-width:18px}
+.headlines .num{font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;color:var(--red-ink);line-height:1;min-width:18px}
 .headlines a{font-weight:600;font-size:14.5px;line-height:1.35}
 .headlines small{display:block;color:var(--muted);font-weight:600;font-size:11px;letter-spacing:.06em;text-transform:uppercase;margin-top:2px}
 .standings{width:100%;border-collapse:collapse;font-size:13.5px}
 .standings th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
 .standings td{padding:7px 12px;border-bottom:1px solid var(--line)}
 .standings tr.bean td{font-weight:800}
-.standings a:hover{color:var(--red)}
+.standings a:hover{color:var(--red-ink)}
 .watchlist{padding:10px 14px 14px;display:flex;flex-direction:column;gap:9px}
 .watch-item{display:flex;gap:10px;align-items:center;font-size:13.5px}
 .watch-item .dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -345,16 +374,16 @@ details.pod-apple .pod-frame{margin-top:10px}
 @media(max-width:560px){.hub-grid{grid-template-columns:1fr}}
 .team-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:column}
 .team-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;color:#fff}
-.team-card-head .abbr{width:38px;height:38px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:12px}
+.team-card-head .abbr{width:38px;height:38px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.35);font-size:12px;display:grid;place-items:center;text-align:center;line-height:1;padding:0;flex-shrink:0}
 .team-card-head h3{font-size:20px;color:#fff}
-.team-card-head span{display:block;font-family:"Barlow",sans-serif;text-transform:none;font-size:12px;opacity:.9;font-weight:600}
+.team-card-head span{display:block;font-family:"Barlow",sans-serif;text-transform:none;font-size:12px;opacity:1;font-weight:600}
 .team-card-body{padding:12px 14px 14px;flex:1;display:flex;flex-direction:column}
 .team-card-body p{margin:0;font-size:14px;line-height:1.55;color:var(--muted)}
 .next{margin-top:10px;background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px;display:flex;justify-content:space-between;gap:10px}
-.next b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.next b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--red-ink)}
 .team-links{display:flex;gap:12px;margin-top:auto;padding-top:11px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;flex-wrap:wrap}
-.team-links a,.team-links button{border:0;background:none;color:inherit;padding:0 0 2px;font:inherit;letter-spacing:inherit;text-transform:inherit;border-bottom:2px solid var(--red)}
-.team-links a:hover,.team-links button:hover{text-decoration:none;color:var(--red)}
+.team-links a,.team-links button{border:0;background:none;color:inherit;padding:0 0 2px;font:inherit;letter-spacing:inherit;text-transform:inherit;border-bottom:2px solid var(--red-ink)}
+.team-links a:hover,.team-links button:hover{text-decoration:none;color:var(--red-ink)}
 
 /* Team dashboards */
 .dash-head{border-radius:14px;color:#fff;padding:22px;margin-top:16px;position:relative;overflow:hidden}
@@ -368,10 +397,10 @@ details.pod-apple .pod-frame{margin-top:10px}
 .dash-pills span.solid{background:#fff;color:#111;border-color:#fff}
 .backrow{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
 .backrow button,.backrow a{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--line);background:var(--card);color:var(--text);border-radius:999px;padding:8px 13px}
-.backrow button:hover,.backrow a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+.backrow button:hover,.backrow a:hover{border-color:var(--red-ink);color:var(--red-ink);text-decoration:none}
 .dash-tabs{display:flex;gap:4px;flex-wrap:wrap;margin-top:14px;border-bottom:2px solid var(--text)}
 .dash-tabs a,.dash-tabs button{font-size:13px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:9px 12px;background:none;border:0;color:var(--text)}
-.dash-tabs button:hover{background:var(--card);color:var(--red)}
+.dash-tabs a:hover,.dash-tabs button:hover{background:var(--card);color:var(--red-ink);text-decoration:none}
 .dash-grid{display:grid;grid-template-columns:1fr 340px;gap:20px;padding:12px 0 8px;align-items:start}
 @media(max-width:980px){.dash-grid{grid-template-columns:1fr}}
 .dash-card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow);margin-bottom:16px;scroll-margin-top:64px}
@@ -382,15 +411,17 @@ details.pod-apple .pod-frame{margin-top:10px}
 .dash-headlines li{padding:11px 14px;border-bottom:1px solid var(--line)}
 .dash-headlines li:last-child{border-bottom:0}
 .dash-headlines b{display:block;font-size:15.5px;line-height:1.35;font-weight:700}
+.dash-headlines a{display:block;color:inherit;text-decoration:none}
+.dash-headlines a:hover b{color:var(--red-ink);text-decoration:underline}
 .dash-headlines p{margin:3px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
-.dash-headlines small{display:block;color:var(--red);font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
+.dash-headlines small{display:block;color:var(--red-ink);font-weight:800;font-size:11px;letter-spacing:.07em;text-transform:uppercase;margin-bottom:3px}
 .dash-table-wrap{overflow-x:auto}
 table.dash-table{width:100%;border-collapse:collapse;font-size:13.5px}
 table.dash-table th{text-align:left;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:9px 12px 6px;border-bottom:1px solid var(--line)}
 table.dash-table td{padding:7px 12px;border-bottom:1px solid var(--line);vertical-align:top}
 table.dash-table tr:last-child td{border-bottom:0}
 table.dash-table tr.bean td{font-weight:800}
-.res-w{color:#0a7a33;font-weight:800}.res-l{color:var(--red);font-weight:800}
+.res-w{color:var(--win);font-weight:800}.res-l{color:var(--red-ink);font-weight:800}
 .facts{padding:6px 0;margin:0}
 .facts div{display:flex;justify-content:space-between;gap:14px;padding:8px 14px;border-bottom:1px solid var(--line);font-size:13.5px}
 .facts div:last-child{border-bottom:0}
@@ -399,7 +430,7 @@ table.dash-table tr.bean td{font-weight:800}
 .dash-about{padding:13px 14px 15px;font-size:14px;line-height:1.6;color:var(--muted);margin:0}
 .quick-links{display:flex;flex-wrap:wrap;gap:8px;padding:12px 14px 14px}
 .quick-links a{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border:1px solid var(--line);background:var(--card2);padding:6px 11px;border-radius:999px}
-.quick-links a:hover{border-color:var(--red);color:var(--red);text-decoration:none}
+.quick-links a:hover{border-color:var(--red-ink);color:var(--red-ink);text-decoration:none}
 .next-body{padding:13px 14px 15px}
 .game-day{margin-top:12px}
 .game-day h2{margin:0;font:inherit;font-weight:800}
@@ -408,6 +439,22 @@ table.dash-table tr.bean td{font-weight:800}
 #dashGameCoverage[hidden],#dashPreviewBtn[hidden]{display:none}
 #dashGameCoverage{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:6px;color:var(--text);font-weight:700}
 .next-body .pv-actions button{border-color:var(--line);color:var(--text)}
+
+/* Persistent podcast mini-player */
+.mini-pod{position:fixed;left:0;right:0;bottom:0;z-index:80;background:var(--black);color:#fff;border-top:2px solid var(--red);box-shadow:0 -4px 20px rgba(0,0,0,.45);padding:10px max(16px,env(safe-area-inset-left,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-right,0px))}
+.mini-pod-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mini-pod-play{width:36px;height:36px;border-radius:50%;background:var(--red);color:#fff;border:0;display:grid;place-items:center;font-size:13px;flex-shrink:0}
+.mini-pod-play:hover{background:#a80022}
+.mini-pod-info{flex:1 1 200px;min-width:0;display:block}
+.mini-pod-info:hover{text-decoration:none}
+.mini-pod-info:hover .mini-pod-title{text-decoration:underline}
+.mini-pod-kicker{display:block;font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#ff8aa0}
+.mini-pod-title{display:block;font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini-pod-time{font-size:12px;font-weight:700;color:#c9cad2;font-variant-numeric:tabular-nums;white-space:nowrap}
+.mini-pod-controls{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.mini-pod-controls button{font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:6px 10px;border:1px solid #3a3a44;background:#232329;color:#fff}
+.mini-pod-controls button:hover{border-color:#fff}
+body.has-minipod footer{padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
 
 /* Footer */
 footer{background:var(--black);color:#aeb0ba;margin-top:28px;padding:26px 0 calc(34px + env(safe-area-inset-bottom,0px))}
@@ -620,7 +667,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         <h3 id="podNowTitle"></h3>
         <p id="podNowDesc"></p>
         <audio id="podAudio" controls preload="none"></audio>
-        <div class="pod-skip"><button type="button" id="podBack">↺ 15s</button><button type="button" id="podFwd">30s ↻</button></div>
+        <div class="pod-skip"><button type="button" id="podBack">↺ 15s</button><button type="button" id="podFwd">30s ↻</button><button type="button" id="podSpeed" title="Cycle playback speed">1×</button></div>
         <p class="pod-status" id="podStatus" role="status"></p>
       </div>
       <ol class="pod-list" id="podList"></ol>
@@ -770,6 +817,23 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 </main>
 
 <footer><div class="wrap"><div><div class="footer-brand"><img class="footer-mark" src="icons/bean-sports-icon.svg" alt="" width="32" height="32"><b>BEAN SPORTS</b></div><p>An ESPN-style front page rebuilt around Bean's teams — Detroit Lions, Detroit Pistons, Ohio State Football, Dayton Flyers, South Carolina Gamecocks, and Alter Knights. Powered by a single-source data engine with live ESPN score/schedule syncing.</p></div><nav aria-label="Footer"><a href="#podcast">Podcast</a><a href="#videos">Videos</a><a href="#headlines">Headlines</a><a href="#standings">Standings</a><a href="#my-teams">My Teams</a><a href="#team-lions">Lions</a><a href="#team-pistons">Pistons</a><a href="#team-osu">Ohio State</a><a href="#team-dayton">Dayton</a><a href="#team-gamecocks">Gamecocks</a><a href="#team-alter">Alter</a></nav></div></footer>
+
+<div class="mini-pod" id="miniPod" hidden role="region" aria-label="The Starting Five Daily mini-player">
+  <div class="mini-pod-inner">
+    <button type="button" class="mini-pod-play" id="miniPodPlay" aria-label="Play podcast">▶</button>
+    <a href="#podcast" class="mini-pod-info">
+      <span class="mini-pod-kicker">The Starting Five Daily</span>
+      <span class="mini-pod-title" id="miniPodTitle">Episode</span>
+    </a>
+    <span class="mini-pod-time" id="miniPodTime">0:00</span>
+    <div class="mini-pod-controls">
+      <button type="button" id="miniPodBack" title="Back 15 seconds">↺15</button>
+      <button type="button" id="miniPodFwd" title="Forward 30 seconds">30↻</button>
+      <button type="button" id="miniPodSpeed" title="Cycle playback speed">1×</button>
+      <button type="button" id="miniPodClose" aria-label="Close mini-player">✕</button>
+    </div>
+  </div>
+</div>
 
 <script>
 (function(){
@@ -1779,6 +1843,11 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     var pills=t.pills.slice();
     if(/^\d+[-–]\d+/.test(t.record)&&pills[0].indexOf(t.record)===-1&&t.espn){ pills[0]='Record: '+t.record; }
     $('dashPills').innerHTML=pills.map(function(p,i){ return '<span'+(i===0?' class="solid"':'')+'>'+escapeHtml(p)+'</span>'; }).join('');
+    $('dashHeadlines').innerHTML=t.headlines.map(function(h){
+      var titleHtml=h[3]?'<a href="'+escapeHtml(h[3])+'" target="_blank" rel="noopener noreferrer"><b>'+escapeHtml(h[1])+' ↗</b></a>':'<b>'+escapeHtml(h[1])+'</b>';
+      return '<li><small>'+escapeHtml(h[0])+'</small>'+titleHtml+'<p>'+escapeHtml(h[2])+'</p></li>';
+    }).join('');
+    $('dashSchedNote').textContent=t.espn?'Last 4 Finals + Next 6':'2026 Season';
     $('dash-headlines').hidden=!!section && section!=='headlines';
     $('articleReader').hidden=section!=='article';
     if(section!=='article') $('publisherPage').replaceChildren();
@@ -1837,11 +1906,19 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   /* ---------- Podcast: native in-page player fed by the show's own RSS feed ---------- */
   // Apple's embedded player can't play this show's episodes, so we stream the feed's audio directly.
   var FEED_URL='https://udbean125.github.io/podcasts/the-starting-five-daily/feed.xml';
+  var POD_STATE_KEY='beanPodState_v1', POD_RATES=[1,1.25,1.5,2];
   var episodes=[], podStarted=false, podIdx=-1, podShowAll=false, podCover='';
+  var podRateIdx=0, podPendingSeek=0, podLastSavedAt=0, miniPodDismissed=false;
   var audio=$('podAudio'), podFrame=$('podFrame'), podApple=$('podApple');
+  var miniPod=$('miniPod'), podSpeedBtn=$('podSpeed'), miniPodSpeedBtn=$('miniPodSpeed');
 
   function xmlText(node,tag){ var el=node.getElementsByTagName(tag)[0]; return el?el.textContent.trim():''; }
   function fmtDur(s){ var m=Math.round(s/60); return m>0?m+' min':''; }
+  function fmtClock(sec){
+    var s=Math.max(0,Math.floor(sec||0));
+    var h=Math.floor(s/3600), m=Math.floor((s%3600)/60), r=s%60;
+    return (h>0?h+':'+(m<10?'0':'')+m:m)+':'+(r<10?'0':'')+r;
+  }
   function shortTitle(t){ var x=t.replace(/^The Starting Five\s*-\s*/,''); return x||t; }
   function parseFeed(xml){
     var doc=new DOMParser().parseFromString(xml,'application/xml');
@@ -1872,6 +1949,57 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     },function(err){ clearTimeout(timer); throw err; });
   }
 
+  function loadPodState(){
+    try{
+      var raw=localStorage.getItem(POD_STATE_KEY);
+      if(!raw) return null;
+      var s=JSON.parse(raw);
+      return s&&typeof s==='object'?s:null;
+    }catch(e){ return null; }
+  }
+  function savePodState(){
+    if(podIdx<0||!episodes[podIdx]) return;
+    try{
+      localStorage.setItem(POD_STATE_KEY,JSON.stringify({
+        url:episodes[podIdx].url,
+        title:episodes[podIdx].title,
+        time:Math.floor(audio.currentTime||0),
+        rate:POD_RATES[podRateIdx]
+      }));
+    }catch(e){}
+  }
+  function applyPodRate(rate){
+    var idx=POD_RATES.indexOf(Number(rate));
+    podRateIdx=idx>=0?idx:0;
+    var r=POD_RATES[podRateIdx];
+    audio.playbackRate=r;
+    var lbl=r+'×';
+    if(podSpeedBtn) podSpeedBtn.textContent=lbl;
+    if(miniPodSpeedBtn) miniPodSpeedBtn.textContent=lbl;
+  }
+  function cyclePodSpeed(){
+    podRateIdx=(podRateIdx+1)%POD_RATES.length;
+    applyPodRate(POD_RATES[podRateIdx]);
+    savePodState();
+  }
+  function syncMiniPod(){
+    if(!miniPod) return;
+    var podView=$('view-podcast');
+    var onPodcast=podView&&!podView.hidden;
+    var show=!onPodcast&&podIdx>=0&&!!episodes[podIdx]&&!miniPodDismissed;
+    miniPod.hidden=!show;
+    document.body.classList.toggle('has-minipod',show);
+    if(!show) return;
+    var ep=episodes[podIdx];
+    $('miniPodTitle').textContent=shortTitle(ep.title);
+    var playBtn=$('miniPodPlay');
+    playBtn.textContent=audio.paused?'▶':'❚❚';
+    playBtn.setAttribute('aria-label',audio.paused?'Play podcast':'Pause podcast');
+    var cur=fmtClock(audio.currentTime);
+    var dur=isFinite(audio.duration)&&audio.duration>0?' / '+fmtClock(audio.duration):(ep.secs>0?' / '+fmtClock(ep.secs):'');
+    $('miniPodTime').textContent=cur+dur;
+  }
+
   function renderPodList(){
     var shown=podShowAll?episodes:episodes.slice(0,8);
     $('podList').innerHTML=shown.map(function(e,i){
@@ -1886,19 +2014,24 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     $('podStatus').innerHTML='This episode couldn\'t play in the browser. <a href="https://podcasts.apple.com/us/podcast/the-starting-five-daily/id6825870521" target="_blank" rel="noopener noreferrer">Open the show in Apple Podcasts ↗</a>';
   }
 
-  function selectEpisode(i,play){
+  function selectEpisode(i,play,preserveSeek){
     var e=episodes[i]; if(!e) return;
     podIdx=i;
+    if(!preserveSeek) podPendingSeek=0;
+    miniPodDismissed=false;
     $('podStatus').textContent='';
     $('podNowLabel').textContent=i===0?'Latest episode':'Now selected';
     $('podNowTitle').textContent=e.title;
     $('podNowDesc').textContent=e.desc;
     audio.src=e.url;
+    audio.playbackRate=POD_RATES[podRateIdx];
     if(play){
       var pr=audio.play();
       if(pr&&pr.catch) pr.catch(function(err){ if(!err||err.name!=='AbortError') showPodError(); });
     }
     renderPodList();
+    syncMiniPod();
+    if(!preserveSeek) savePodState();
     try{
       if('mediaSession' in navigator&&window.MediaMetadata){
         navigator.mediaSession.metadata=new MediaMetadata({
@@ -1911,12 +2044,53 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }catch(err){}
   }
 
+  audio.addEventListener('loadedmetadata',function(){
+    if(podPendingSeek>0&&isFinite(audio.duration)&&podPendingSeek<audio.duration-5){
+      try{ audio.currentTime=podPendingSeek; }catch(e){}
+    }
+    podPendingSeek=0;
+    audio.playbackRate=POD_RATES[podRateIdx];
+    syncMiniPod();
+  });
+  audio.addEventListener('play',function(){ miniPodDismissed=false; syncMiniPod(); savePodState(); });
+  audio.addEventListener('pause',function(){ syncMiniPod(); savePodState(); });
+  audio.addEventListener('ended',function(){ syncMiniPod(); savePodState(); });
+  audio.addEventListener('timeupdate',function(){
+    syncMiniPod();
+    var now=Date.now();
+    if(now-podLastSavedAt>=2000){ podLastSavedAt=now; savePodState(); }
+  });
+  audio.addEventListener('ratechange',function(){
+    var idx=POD_RATES.indexOf(audio.playbackRate);
+    if(idx>=0&&idx!==podRateIdx){ applyPodRate(POD_RATES[idx]); savePodState(); }
+  });
   audio.addEventListener('error',function(){ if(audio.getAttribute('src')) showPodError(); });
-  $('podBack').addEventListener('click',function(){ audio.currentTime=Math.max(0,audio.currentTime-15); });
-  $('podFwd').addEventListener('click',function(){ audio.currentTime=audio.currentTime+30; });
+  window.addEventListener('pagehide',savePodState);
+  window.addEventListener('beforeunload',savePodState);
+
+  $('podBack').addEventListener('click',function(){ audio.currentTime=Math.max(0,audio.currentTime-15); savePodState(); });
+  $('podFwd').addEventListener('click',function(){ audio.currentTime=audio.currentTime+30; savePodState(); });
+  podSpeedBtn.addEventListener('click',cyclePodSpeed);
+  $('miniPodPlay').addEventListener('click',function(){
+    if(audio.paused){
+      var pr=audio.play();
+      if(pr&&pr.catch) pr.catch(function(){});
+    } else {
+      audio.pause();
+    }
+  });
+  $('miniPodBack').addEventListener('click',function(){ audio.currentTime=Math.max(0,audio.currentTime-15); syncMiniPod(); savePodState(); });
+  $('miniPodFwd').addEventListener('click',function(){ audio.currentTime=audio.currentTime+30; syncMiniPod(); savePodState(); });
+  miniPodSpeedBtn.addEventListener('click',cyclePodSpeed);
+  $('miniPodClose').addEventListener('click',function(){
+    audio.pause();
+    miniPodDismissed=true;
+    syncMiniPod();
+  });
+
   $('podList').addEventListener('click',function(e){
     var b=e.target.closest('[data-ep]'); if(!b) return;
-    selectEpisode(parseInt(b.getAttribute('data-ep'),10),true);
+    selectEpisode(parseInt(b.getAttribute('data-ep'),10),true,false);
   });
   $('podMore').addEventListener('click',function(){ podShowAll=true; renderPodList(); });
   podApple.addEventListener('toggle',function(){
@@ -1931,7 +2105,19 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       episodes=list;
       $('podLoading').hidden=true;
       $('podNow').hidden=false;
-      selectEpisode(0,false);
+      var saved=loadPodState(), startIdx=0, hasSaved=false;
+      if(saved){
+        applyPodRate(saved.rate||1);
+        if(saved.url){
+          for(var i=0;i<episodes.length;i++){
+            if(episodes[i].url===saved.url){ startIdx=i; hasSaved=true; break; }
+          }
+        }
+        if(hasSaved&&saved.time>0){ podPendingSeek=saved.time; }
+      } else {
+        applyPodRate(1);
+      }
+      selectEpisode(startIdx,false,hasSaved);
     }).catch(function(){
       $('podLoading').textContent='Couldn\'t load the episode list, so here is Apple\'s player instead.';
       podApple.open=true;
@@ -2032,6 +2218,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     if(r.view==='podcast'){ enterPodcast(); }
     if(r.view==='videos'){ enterVideos(); }
     if(['videos','watch','team'].includes(r.view)){ refreshLive(); }
+    syncMiniPod();
 
     scrollTopNow();
     if(!firstRoute){
@@ -2072,13 +2259,30 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }
   });
 
-  /* ---------- Live ESPN Sync (Graceful Fallback) ---------- */
+  /* ---------- Live ESPN Sync (Full Schedules, Headlines & localStorage Cache) ---------- */
+  var ESPN_CACHE_KEY='beanSportsEspnCache_v1';
+  var ESPN_CACHE_TTL=10*60*1000;
+  var ESPN_BOOT_MAX_AGE=24*60*60*1000;
+
   function formatGameDate(iso){
     var d=new Date(iso);
     if(isNaN(d.getTime())) return {short:'TBD',lines:'TBD'};
     var day=d.toLocaleDateString('en-US',{weekday:'short',timeZone:'America/New_York'}).toUpperCase();
     var time=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short',timeZone:'America/New_York'});
     return {short:day+' '+time.replace(':00 ',' '),lines:day+'<br>'+time};
+  }
+
+  function formatSchedWhen(iso,state,timeValid,shortDetail){
+    var d=new Date(iso);
+    if(state==='in') return shortDetail||'LIVE';
+    if(isNaN(d.getTime())) return shortDetail||'TBD';
+    if(state==='post'){
+      return d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'America/New_York'});
+    }
+    var datePart=d.toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric',timeZone:'America/New_York'});
+    if(timeValid===false) return datePart+' • TBD';
+    var timePart=d.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZoneName:'short',timeZone:'America/New_York'});
+    return datePart+' • '+timePart;
   }
 
   function fetchJSON(url,ms){
@@ -2093,11 +2297,67 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   function scoreOf(c){ return c.score&&c.score.displayValue!=null?c.score.displayValue:(c.score||'0'); }
 
-  function fetchTeamLive(key){
+  function parseEspnSchedule(events,teamId){
+    var finals=[], live=[], upcoming=[];
+    events.forEach(function(ev){
+      var comp=ev&&ev.competitions&&ev.competitions[0];
+      if(!comp||!comp.competitors) return;
+      var me=null, opp=null;
+      comp.competitors.forEach(function(c){
+        if(String(c.team&&c.team.id)===String(teamId)) me=c; else opp=c;
+      });
+      if(!me||!opp||!opp.team) return;
+      var st=(comp.status&&comp.status.type)||{};
+      var state=st.state||'pre';
+      var ts=Date.parse(ev.date)||0;
+      var prefix=me.homeAway==='home'?'vs. ':'at ';
+      var oppName=opp.team.displayName||opp.team.shortDisplayName||'Opponent';
+      var when=formatSchedWhen(ev.date,state,comp.timeValid,st.shortDetail);
+      var details='', resCls='';
+      if(state==='post'){
+        var ms=scoreOf(me), os=scoreOf(opp);
+        var wl=me.winner===true?'W ':me.winner===false?'L ':'';
+        resCls=me.winner===true?'w':(me.winner===false?'l':'');
+        details=wl+ms+'–'+os;
+        if(st.shortDetail&&/OT/i.test(st.shortDetail)) details+=' ('+st.shortDetail.replace(/^Final\/?/i,'')+')';
+        finals.push({ts:ts,row:[when,prefix+oppName,details,resCls]});
+      } else if(state==='in'){
+        details='LIVE • '+scoreOf(me)+'–'+scoreOf(opp)+(st.shortDetail?' ('+st.shortDetail+')':'');
+        live.push({ts:ts,row:[when,prefix+oppName,details,'']});
+      } else {
+        var venue=comp.venue&&comp.venue.fullName?comp.venue.fullName:'';
+        var bcast=(comp.broadcasts&&comp.broadcasts[0]&&comp.broadcasts[0].names&&comp.broadcasts[0].names[0])||'';
+        details=[venue,bcast].filter(Boolean).join(' • ')||st.shortDetail||'Scheduled';
+        upcoming.push({ts:ts,row:[when,prefix+oppName,details,'']});
+      }
+    });
+    finals.sort(function(a,b){ return a.ts-b.ts; });
+    live.sort(function(a,b){ return a.ts-b.ts; });
+    upcoming.sort(function(a,b){ return a.ts-b.ts; });
+    return finals.slice(-4).concat(live,upcoming.slice(0,6)).map(function(item){ return item.row; });
+  }
+
+  function parseEspnHeadlines(articles){
+    return articles.slice(0,5).map(function(a){
+      var d=a.published?new Date(a.published):null;
+      var kicker=d&&!isNaN(d.getTime())?d.toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'America/New_York'}):'ESPN';
+      var url=(a.links&&a.links.web&&a.links.web.href)||'';
+      return [kicker,a.headline||'Team Update',a.description||'',url];
+    });
+  }
+
+  function fetchTeamLive(key,deep){
     var t=TEAMS[key];
     if(!t.espn) return Promise.resolve(false);
-    var url='https://site.api.espn.com/apis/site/v2/sports/'+t.espn.sport+'/'+t.espn.league+'/teams/'+t.espn.teamId;
-    return fetchJSON(url,9000).then(function(data){
+    var base='https://site.api.espn.com/apis/site/v2/sports/'+t.espn.sport+'/'+t.espn.league;
+    var coreUrl=base+'/teams/'+t.espn.teamId;
+    var reqs=[fetchJSON(coreUrl,9000)];
+    if(deep){
+      reqs.push(fetchJSON(coreUrl+'/schedule',9000).catch(function(){ return null; }));
+      reqs.push(fetchJSON(base+'/news?team='+t.espn.teamId+'&limit=5',9000).catch(function(){ return null; }));
+    }
+    return Promise.all(reqs).then(function(res){
+      var data=res[0], schedData=deep?res[1]:null, newsData=deep?res[2]:null;
       var tm=data&&data.team; if(!tm) return false;
       if(tm.record&&tm.record.items&&tm.record.items[0]&&tm.record.items[0].summary){
         t.record=tm.record.items[0].summary;
@@ -2143,17 +2403,75 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
           }
         }
       }
+      if(schedData&&Array.isArray(schedData.events)){
+        var rows=parseEspnSchedule(schedData.events,t.espn.teamId);
+        if(rows.length) t.schedule=rows;
+      }
+      if(newsData&&Array.isArray(newsData.articles)){
+        var hl=parseEspnHeadlines(newsData.articles);
+        if(hl.length) t.headlines=hl;
+      }
       return true;
     }).catch(function(){ return false; });
   }
 
-  var syncing=false, lastEspnUpdate=null;
-  function syncLive(){
+  var syncing=false, lastEspnUpdate=null, lastDeepTs=0;
+
+  function hydrateEspnCache(){
+    try{
+      var raw=localStorage.getItem(ESPN_CACHE_KEY);
+      if(!raw) return null;
+      var cache=JSON.parse(raw);
+      if(!cache||!cache.ts) return null;
+      var age=Date.now()-cache.ts;
+      if(age>=ESPN_BOOT_MAX_AGE) return null;
+      TEAM_ORDER.forEach(function(key){
+        var t=TEAMS[key];
+        if(!t.espn||!cache.teams||!cache.teams[key]) return;
+        var c=cache.teams[key];
+        if(c.record) t.record=c.record;
+        if(c.pills0) t.pills[0]=c.pills0;
+        if(c.game) t.game=c.game;
+        if(Array.isArray(c.schedule)&&c.schedule.length) t.schedule=c.schedule;
+        if(Array.isArray(c.headlines)&&c.headlines.length) t.headlines=c.headlines;
+      });
+      lastDeepTs=cache.deepTs||0;
+      lastEspnUpdate=new Date(cache.ts).toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
+      return {
+        freshCore:age<ESPN_CACHE_TTL,
+        freshDeep:!!(lastDeepTs&&(Date.now()-lastDeepTs<ESPN_CACHE_TTL))
+      };
+    }catch(e){ return null; }
+  }
+
+  function saveEspnCache(deep){
+    try{
+      var now=Date.now();
+      if(deep) lastDeepTs=now;
+      var snap={};
+      TEAM_ORDER.forEach(function(key){
+        var t=TEAMS[key];
+        if(!t.espn) return;
+        snap[key]={
+          record:t.record,
+          pills0:t.pills[0],
+          game:t.game,
+          schedule:t.schedule,
+          headlines:t.headlines
+        };
+      });
+      localStorage.setItem(ESPN_CACHE_KEY,JSON.stringify({ts:now,deepTs:lastDeepTs,teams:snap}));
+    }catch(e){}
+  }
+
+  function syncLive(opts){
+    opts=opts||{};
+    var deep=!!opts.deep;
     if(syncing) return;
     syncing=true;
     var dot=$('liveDot'), lbl=$('liveLabel');
-    lbl.textContent='SYNCING…';
-    Promise.all(TEAM_ORDER.map(fetchTeamLive)).then(function(results){
+    lbl.textContent=deep?'SYNCING ESPN…':'UPDATING LIVE…';
+    Promise.all(TEAM_ORDER.map(function(key){ return fetchTeamLive(key,deep); })).then(function(results){
       syncing=false;
       var okCount=results.filter(Boolean).length;
       if(okCount>0){
@@ -2161,6 +2479,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
         lastEspnUpdate=new Date().toLocaleString('en-US',{timeZone:'America/New_York',month:'short',day:'numeric',hour:'numeric',minute:'2-digit'});
         lbl.textContent='ESPN UPDATED '+okCount+'/5 • '+lastEspnUpdate+' ET';
         $('standingsBadge').textContent=okCount===5?'Updated Records':'Partial ESPN Update';
+        saveEspnCache(deep);
       } else {
         dot.className='live-dot';
         lbl.textContent=lastEspnUpdate?'REFRESH FAILED • LAST ESPN UPDATE '+lastEspnUpdate+' ET':'UNVERIFIED SNAPSHOT • ESPN UNAVAILABLE';
@@ -2172,7 +2491,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       if(currentTeam&&!$('view-team').hidden) renderDash(currentTeam);
     });
   }
-  $('refreshBtn').addEventListener('click',syncLive);
+  $('refreshBtn').addEventListener('click',function(){ syncLive({deep:true,force:true}); });
 
   var following=new Set();
   var localTime=false;
@@ -2229,15 +2548,25 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   };
 
   /* ---------- Initial Boot ---------- */
+  var cacheInfo=hydrateEspnCache();
   renderScoreboard();
   renderSections();
   updateCountdown();
   route();
-  syncLive();
+  if(cacheInfo&&cacheInfo.freshCore&&cacheInfo.freshDeep){
+    $('liveDot').className='live-dot ok pulse';
+    $('liveLabel').textContent='ESPN CACHED • '+lastEspnUpdate+' ET';
+    $('standingsBadge').textContent='Updated Records';
+    if(TEAM_ORDER.some(function(k){ return TEAMS[k].game.status==='live'; })){
+      syncLive({deep:false});
+    }
+  } else {
+    syncLive({deep:!(cacheInfo&&cacheInfo.freshDeep)});
+  }
   setInterval(updateCountdown,30000);
   setInterval(function(){
     var anyLive=TEAM_ORDER.some(function(k){ return TEAMS[k].game.status==='live'; });
-    if(anyLive) syncLive();
+    if(anyLive) syncLive({deep:false});
   },60000);
 })();
 </script>
