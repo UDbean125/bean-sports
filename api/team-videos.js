@@ -15,16 +15,19 @@ const teams = {
   osu: {
     queries: ['Ohio State football highlights', 'Ohio State Buckeyes game highlights'],
     title: /ohio state|buckeyes/i,
+    exclude: /basketball|hockey|baseball|softball|volleyball|soccer|lacrosse|wrestling|women|gymnastics/i,
     channels: ['big ten network', 'ohio state football', 'ohio state buckeyes', 'the ohio state university', 'fox college football', 'fox sports', 'espn', 'espn college football', 'cbs sports', 'cbs sports hq', 'nbc sports', 'peacock']
   },
   dayton: {
     queries: ['Dayton Flyers basketball highlights', 'Dayton Flyers game highlights'],
-    title: /dayton|flyers/i,
+    title: /\bdayton\b/i,
+    exclude: /football|hockey|baseball|softball|volleyball|soccer|women/i,
     channels: ['dayton flyers', 'atlantic 10 conference', 'espn', 'espn college basketball', 'cbs sports', 'cbs sports hq', 'nbc sports', 'peacock', 'fox sports']
   },
   gamecocks: {
     queries: ['South Carolina Gamecocks football highlights', 'South Carolina Gamecocks game highlights'],
     title: /south carolina|gamecocks/i,
+    exclude: /basketball|hockey|baseball|softball|volleyball|soccer|lacrosse|wrestling|women|gymnastics/i,
     channels: ['south carolina gamecocks', 'gamecocks', 'sec network', 'espn', 'espn college football', 'cbs sports', 'cbs sports hq', 'fox college football', 'fox sports', 'nbc sports', 'peacock']
   },
   alter: {
@@ -103,6 +106,7 @@ function parseResults(html, team, now = Date.now()) {
     if (secs < 45) continue;
     if (!allowedChannel(channel, cfg.channels)) continue;
     if (!cfg.title.test(title) || !highlightWords.test(title) || unwanted.test(title)) continue;
+    if (cfg.exclude && cfg.exclude.test(title)) continue;
     out.push({
       id, title, channel, secs,
       published: new Date(now - age).toISOString(),
