@@ -163,7 +163,7 @@ async function teamVideos(req, res) {
   const top = videos.slice(0, PER_TEAM);
   const flags = await Promise.all(top.map((v) => embeddable(v.id)));
   top.forEach((v, i) => { v.embeddable = flags[i]; });
-  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=900, stale-if-error=3600');
+  res.setHeader('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=60, stale-if-error=3600');
   res.status(200).json({ team, generated: new Date().toISOString(), videos: top });
 }
 
