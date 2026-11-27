@@ -274,6 +274,9 @@ details.pod-apple .pod-frame{margin-top:10px}
 .hl-filters{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0 12px}
 .hl-filters button{border:1px solid var(--line);background:var(--card);color:var(--text);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 12px;border-radius:999px}
 .hl-filters button.active{background:var(--black);color:#fff;border-color:var(--black)}
+.hl-live{margin:0 0 12px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--muted,#6b6f7b)}
+.hl-live::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:#2fb344;margin-right:7px;vertical-align:1px}
+.hl-live.is-stale::before{background:#ffd166}
 .hl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media(max-width:900px){.hl-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:560px){.hl-grid{grid-template-columns:1fr}}
@@ -654,6 +657,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     <button type="button" data-team="gamecocks" aria-pressed="false">Gamecocks</button>
     <button type="button" data-team="alter" aria-pressed="false">Alter</button>
   </div>
+  <p class="hl-live" id="hlLive" role="status" hidden></p>
   <div class="hl-grid" id="hlGrid"></div>
   <section class="net-row" aria-labelledby="netHead">
     <h2 id="netHead">More Sports Networks</h2>
@@ -1180,6 +1184,9 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     {id:'KnQyn-Dkfvw',team:'alter',kind:'Postgame Interview',source:'youtube',sourceLabel:'YouTube',title:'Alter QB Rod Owens Jr. leads Knights to rivalry win over Fairmont',meta:'Battle of Kettering • Owens ran for 137 yards & 2 TDs, threw for another in the 28–21 win.'}
   ];
 
+  // The list above is the saved fallback. Fresh clips from /api/team-videos replace it team by team.
+  var STATIC_VIDEOS=VIDEOS.slice();
+
   var EXTERNAL=[
     {team:'lions',source:'sportsnet',sourceLabel:'Sportsnet',url:'https://www.sportsnet.ca/nfl/video/nfl-highlights-lions-31-buccaneers-21/',kind:'Game Highlights • 3:09',title:'NFL Highlights: Lions 31, Buccaneers 21 — Sportsnet Cut',meta:'Nov 22, 2026 • Goff threw for 2 TDs, Gibbs added 2 on the ground.',bestFor:'Lions • NFL roundup'},
     {team:'pistons',source:'nba',sourceLabel:'NBC Sports',url:'https://www.nbcsports.com/watch/nba/nba-2026-27-highlights-detroit-pistons-105-san-antonio-spurs-93',kind:'Game Highlights',title:'Highlights: Pistons snap Spurs’ 12-game win streak, 105–93',meta:'Nov 17, 2026 • Coast 2 Coast Tuesday on NBC Sports — Detroit’s depth ends the streak.',bestFor:'Detroit Pistons'},
@@ -1202,9 +1209,14 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
   // playsinline=1 keeps playback inside the page on iPhone instead of jumping to fullscreen.
   function ytEmbed(id,autoplay){ return 'https://www.youtube.com/embed/'+id+'?rel=0&modestbranding=1&playsinline=1&autoplay='+(autoplay?1:0); }
   function firstForTeam(team){
-    if(!team||team==='all') return VIDEOS[0]||null;
-    for(var i=0;i<VIDEOS.length;i++){ if(VIDEOS[i].team===team) return VIDEOS[i]; }
-    return null;
+    var any=null;
+    for(var i=0;i<VIDEOS.length;i++){
+      var v=VIDEOS[i];
+      if(team&&team!=='all'&&v.team!==team) continue;
+      if(!blocked[v.id]) return v;
+      if(!any) any=v;
+    }
+    return any;
   }
   function scrollTopNow(){
     try{ window.scrollTo({top:0,left:0,behavior:'instant'}); }catch(e){ window.scrollTo(0,0); }
@@ -1363,9 +1375,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     return u;
   }
 
-  function buildVideos(){
-    if(videosBuilt) return;
-    videosBuilt=true;
+  function renderGrid(){
     gridEl.innerHTML='';
     VIDEOS.forEach(function(v){
       var t=TEAMS[v.team];
@@ -1377,6 +1387,18 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       gridEl.appendChild(card);
     });
     applyBlocked();
+    applyVideoFilter();
+    if(currentVideo){
+      gridEl.querySelectorAll('.hl-card').forEach(function(c){
+        c.classList.toggle('is-playing',c.getAttribute('data-vid')===currentVideo.id);
+      });
+    }
+  }
+
+  function buildVideos(){
+    if(videosBuilt) return;
+    videosBuilt=true;
+    renderGrid();
 
     // "More Sports Networks": third-party sites that block iframe embeds, so they open in a new tab.
     var NET_ORDER=['espn','sportsnet','nba','nfl','fox','other'];
@@ -1499,17 +1521,104 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
 
   }
 
+  /* ---------- Live highlights (YouTube search via the Bean Sports API) ---------- */
+  var VIDEO_API='https://bean-sports.vercel.app/api/team-videos?team=';
+  var LIVE_MAX_PER_TEAM=6, LIVE_STALE_MS=3*60*1000;
+  var live={done:false,pending:null,at:0,byTeam:{},ok:false};
+
+  function agoText(ms){
+    var d=Date.now()-ms;
+    if(!(d>=0)) d=0;
+    var h=Math.floor(d/36e5), days=Math.floor(d/864e5);
+    if(h<1) return 'Just now';
+    if(h<24) return h+(h===1?' hour ago':' hours ago');
+    if(days<7) return days+(days===1?' day ago':' days ago');
+    try{ return new Date(ms).toLocaleDateString('en-US',{month:'short',day:'numeric',timeZone:'America/New_York'}); }catch(e){ return ''; }
+  }
+  function liveItem(team,v){
+    if(!v||typeof v.id!=='string'||!/^[\w-]{11}$/.test(v.id)||typeof v.title!=='string'||!v.title) return null;
+    var published=Date.parse(v.published);
+    if(isNaN(published)) return null;
+    var channel=typeof v.channel==='string'&&v.channel?v.channel:'YouTube';
+    if(v.embeddable===false) blocked[v.id]=1;
+    return {id:v.id,team:team,kind:typeof v.kind==='string'&&v.kind?v.kind:'Video',source:'youtube',sourceLabel:channel,
+      title:v.title,meta:agoText(published)+' • '+channel,published:published,live:true};
+  }
+  function fetchTeamVideos(team){
+    return fetch(VIDEO_API+team,{signal:AbortSignal.timeout(12000)}).then(function(r){
+      if(!r.ok) throw new Error('HTTP '+r.status);
+      return r.json();
+    }).then(function(d){
+      var out=[];
+      (d&&Array.isArray(d.videos)?d.videos:[]).forEach(function(v){ var it=liveItem(team,v); if(it) out.push(it); });
+      return out;
+    }).catch(function(){ return null; });
+  }
+  // Fresh clips replace a team's saved ones; the saved clips only fill in when the live list is short.
+  function mergeVideos(){
+    var fresh=[], saved=[];
+    TEAM_ORDER.forEach(function(team){
+      var liv=(live.byTeam[team]||[]).slice(0,LIVE_MAX_PER_TEAM);
+      liv.forEach(function(v){ fresh.push(v); });
+      if(liv.length<3){
+        STATIC_VIDEOS.forEach(function(v){
+          if(v.team===team&&!liv.some(function(l){ return l.id===v.id; })) saved.push(v);
+        });
+      }
+    });
+    fresh.sort(function(a,b){ return b.published-a.published; });
+    VIDEOS=fresh.concat(saved);
+  }
+  function showLiveStatus(){
+    var el=$('hlLive');
+    if(!el) return;
+    if(live.ok){
+      var t='';
+      try{ t=new Date(live.at).toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',timeZone:'America/New_York'})+' ET'; }catch(e){}
+      el.textContent='Live from YouTube • updated '+t;
+      el.classList.remove('is-stale');
+    } else {
+      el.textContent='Showing saved clips — the live feed is unavailable right now.';
+      el.classList.add('is-stale');
+    }
+    el.hidden=false;
+  }
+  function refreshLive(force){
+    if(live.pending) return live.pending;
+    if(!force&&live.done&&Date.now()-live.at<LIVE_STALE_MS) return Promise.resolve();
+    live.pending=Promise.all(TEAM_ORDER.map(fetchTeamVideos)).then(function(results){
+      var any=false;
+      TEAM_ORDER.forEach(function(team,i){
+        if(results[i]){ live.byTeam[team]=results[i]; if(results[i].length) any=true; }
+      });
+      live.ok=any; live.at=Date.now(); live.done=true; live.pending=null;
+      if(any) mergeVideos();
+      if(videosBuilt) renderGrid();
+      showLiveStatus();
+    });
+    return live.pending;
+  }
+  // Wait for the first live load (never longer than `ms`) so the first click lands on a fresh clip.
+  function liveFirst(ms){
+    if(live.done) return Promise.resolve();
+    return Promise.race([refreshLive(),new Promise(function(res){ setTimeout(res,ms); })]);
+  }
+
   // Jump to the Video Center, filtered to one team, and play that team's top highlight.
   function goVideos(team){
     vidTeam=team||'all';
-    var clip=firstForTeam(vidTeam);
-    if(clip) location.hash='watch/'+clip.id;
+    function go(){ var clip=firstForTeam(vidTeam); if(clip) location.hash='watch/'+clip.id; }
+    if(live.done) go(); else liveFirst(4000).then(go);
   }
 
   function enterVideos(){
     buildVideos();
     applyVideoFilter();
   }
+  // Keep the list fresh while someone sits on the Videos pages.
+  setInterval(function(){
+    if(document.visibilityState==='visible'&&(location.hash==='#videos'||location.hash.indexOf('#watch/')===0)) refreshLive();
+  },60*1000);
 
   $('hlFilters').addEventListener('click',function(e){
     var btn=e.target.closest('button'); if(!btn) return;
@@ -1850,7 +1959,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
       var key=parts[0].replace(/^team-/,'');
       if(parts[0]==='team-'+key && TEAM_ORDER.includes(key) && Object.hasOwn(teamSections,parts[1]))
         return {view:parts[1]==='preview'?'preview':'team',nav:key,team:key,section:parts[1]};
-      if(parts[0]==='watch' && videoById(parts[1])) return {view:'watch',nav:'videos',video:parts[1]};
+      if(parts[0]==='watch' && /^[\w-]{11}$/.test(parts[1])) return {view:'watch',nav:'videos',video:parts[1]};
       return null;
     }
     if(h.indexOf('team-')===0&&TEAM_ORDER.includes(h.slice(5))) return {view:'team',team:h.slice(5),nav:h.slice(5)};
@@ -1879,6 +1988,15 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     }
     if(openPreviewKey) closePreview();
     for(var i=0;i<viewEls.length;i++){ viewEls[i].hidden=(viewEls[i].getAttribute('data-view')!==r.view); }
+    if(r.view==='watch'&&!videoById(r.video)){
+      // Deep link to a clip that isn't in the saved list: wait for the live list, then retry once.
+      var wanted=r.video;
+      r={view:'videos',nav:'videos'};
+      liveFirst(6000).then(function(){
+        if(location.hash!=='#watch/'+wanted) return;
+        if(videoById(wanted)) route(); else location.replace('#videos');
+      });
+    }
     var teamPage=r.view!=='home';
     $('allTeamsScoreboard').hidden=teamPage;
     $('countdownBar').hidden=teamPage;
@@ -1908,6 +2026,7 @@ footer nav{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;font-weight:700;l
     // Heavy embeds load only when their page is first opened.
     if(r.view==='podcast'){ enterPodcast(); }
     if(r.view==='videos'){ enterVideos(); }
+    if(r.view==='videos'||r.view==='watch'){ refreshLive(); }
 
     scrollTopNow();
     if(!firstRoute){
